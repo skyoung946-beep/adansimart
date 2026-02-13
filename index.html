@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AdansiMart | Official Pro</title>
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/adansimart/manifest.json">
+<meta name="theme-color" content="#001F3F">
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('/adansimart/sw.js')
+      .then(() => console.log("AdansiMart App Ready"))
+      .catch((err) => console.log("App Error", err));
   }
 </script>
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -391,5 +394,6 @@
     </script>
 </body>
 </html>
+
 
 
