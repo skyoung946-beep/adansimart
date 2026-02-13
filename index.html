@@ -19,31 +19,23 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             padding-bottom: 90px; 
             overflow-x: hidden; 
-            touch-action: manipulation; 
         }
         .jiji-green { background-color: var(--dark-blue); }
         .hidden { display: none !important; }
-        header { 
-            padding-top: calc(15px + var(--safe-top)); 
-            border-bottom: 2px solid var(--gold);
-        }
+        header { padding-top: calc(15px + var(--safe-top)); border-bottom: 2px solid var(--gold); }
         
-        .input-box { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 16px; background: white; color: black; }
+        .input-box { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 16px; color: black; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .nav-item { color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; }
+        .nav-item { color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; }
         .nav-active { color: var(--gold); }
         
         .page-fade { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .loc-select { background: rgba(255,255,255,0.2); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 4px 8px; font-size: 10px; font-weight: bold; color: white; outline: none; }
-        .loc-select option { color: black; }
-
-        /* Animation for the call button */
-        .call-btn:active { transform: scale(0.9); background-color: #10b981; }
     </style>
 </head>
 <body id="main-body">
@@ -52,65 +44,51 @@
         <header class="jiji-green p-5 text-white sticky top-0 z-50 shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-black italic text-[#D4AF37]">ADANSIMART</h1>
-                
                 <select id="locationFilter" onchange="window.renderMarket()" class="loc-select">
                     <option value="All Adansi">All Adansi 📍</option>
                     <option value="New Edubiase">New Edubiase</option>
-                    <option value="Adansi Apagya">Adansi Apagya</option>
-                    <option value="Adansi Akrofuom">Adansi Akrofuom</option>
-                    <option value="Adansi Asokwa">Adansi Asokwa</option>
                     <option value="Fomena">Fomena</option>
-                    <option value="Dompoase">Dompoase</option>
+                    <option value="Adansi Asokwa">Adansi Asokwa</option>
                 </select>
             </div>
             <div class="bg-white rounded-xl p-3 flex items-center shadow-inner mb-4">
                 <input type="text" id="searchInput" onkeyup="window.renderMarket()" placeholder="Search products..." class="w-full outline-none text-black text-sm">
             </div>
-
             <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-[10px] font-bold uppercase">
                 <button onclick="window.filterCat('All')" class="cat-btn bg-[#D4AF37] text-white px-5 py-2 rounded-full whitespace-nowrap">All</button>
                 <button onclick="window.filterCat('Electronics')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Electronics</button>
                 <button onclick="window.filterCat('Fashion')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Fashion</button>
                 <button onclick="window.filterCat('Food')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Food</button>
-                <button onclick="window.filterCat('Home')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Home</button>
                 <button onclick="window.filterCat('Services')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Services</button>
             </div>
         </header>
         <main class="p-3 grid grid-cols-2 gap-3" id="market-grid"></main>
     </div>
 
-    <div id="sell-view" class="hidden p-6 page-fade">
-        <div id="post-container"></div>
+    <div id="details-modal" class="fixed inset-0 bg-white z-[100] hidden overflow-y-auto page-fade">
+        <button onclick="window.closeDetails()" class="fixed top-6 left-6 bg-white/80 backdrop-blur-md shadow-lg rounded-full w-10 h-10 z-[110] font-bold flex items-center justify-center border">✕</button>
+        <div id="modal-content" class="pb-32"></div>
     </div>
 
+    <div id="sell-view" class="hidden p-6 page-fade"><div id="post-container"></div></div>
     <div id="profile-view" class="hidden page-fade">
         <div class="bg-white p-8 pt-16 border-b shadow-sm">
             <h2 id="userName" class="font-black text-3xl text-blue-900">My Shop</h2>
             <div id="userStatus" class="mt-2 inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase"></div>
-            <button onclick="window.logout()" class="text-red-500 text-xs font-black mt-10 uppercase block">Sign Out</button>
         </div>
-        <div class="p-6">
-            <h3 class="font-black text-sm uppercase mb-4 text-gray-400">Your Listings</h3>
-            <div id="my-ads-list"></div>
-        </div>
+        <div class="p-6" id="my-ads-list"></div>
     </div>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around p-4 border-t z-50 shadow-2xl pb-8">
-        <div onclick="window.showSection('home')" id="nav-home" class="nav-item nav-active">
-            <div class="text-xl mb-1">🏠</div><p>Market</p>
-        </div>
-        <div onclick="window.showSection('sell')" id="nav-sell" class="nav-item">
-            <div class="text-xl mb-1">➕</div><p>Sell</p>
-        </div>
-        <div onclick="window.showSection('profile')" id="nav-profile" class="nav-item">
-            <div class="text-xl mb-1">👤</div><p>My Shop</p>
-        </div>
+        <div onclick="window.showSection('home')" id="nav-home" class="nav-item nav-active"><div class="text-xl mb-1">🏠</div><p>Market</p></div>
+        <div onclick="window.showSection('sell')" id="nav-sell" class="nav-item"><div class="text-xl mb-1">➕</div><p>Sell</p></div>
+        <div onclick="window.showSection('profile')" id="nav-profile" class="nav-item"><div class="text-xl mb-1">👤</div><p>My Shop</p></div>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC4895RrHcz4dikOD7EXP4rxjXM4zT6DYM",
@@ -125,9 +103,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let currentUser = null;
-        let userData = null;
-        let tempItemUrl = "";
+        let currentUser = null, userData = null, tempItemUrl = "";
         window.currentCategory = "All";
 
         onAuthStateChanged(auth, async (user) => {
@@ -142,17 +118,46 @@
         window.filterCat = (cat) => {
             window.currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
-                const isActive = btn.innerText.trim().includes(cat);
-                btn.className = isActive ? "cat-btn bg-[#D4AF37] text-white px-5 py-2 rounded-full whitespace-nowrap" : "cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap";
+                btn.className = btn.innerText.trim().includes(cat) ? "cat-btn bg-[#D4AF37] text-white px-5 py-2 rounded-full whitespace-nowrap" : "cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap";
             });
             window.renderMarket();
         };
 
-        // NEW: Global call function
-        window.callSeller = (event, phone) => {
-            event.stopPropagation(); // Prevents opening the details page
-            window.location.href = `tel:${phone}`;
+        window.viewDetails = (id) => {
+            const ad = window.allAds.find(a => a.id === id);
+            const phone = ad.whatsapp || "";
+            document.getElementById('modal-content').innerHTML = `
+                <img src="${ad.image}" class="w-full h-[400px] object-cover">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase">${ad.category}</span>
+                        <span class="text-gray-400 text-[10px] font-bold italic">📍 ${ad.location}</span>
+                    </div>
+                    <h2 class="text-2xl font-black text-gray-900 leading-tight mb-2">${ad.title}</h2>
+                    <p class="text-2xl font-black text-[#D4AF37] mb-6">₵${ad.price}</p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-2xl mb-6">
+                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Description</p>
+                        <p class="text-gray-700 leading-relaxed text-sm">${ad.desc || 'No description provided.'}</p>
+                    </div>
+
+                    <div class="border-t pt-6">
+                        <p class="text-center text-xs font-bold text-gray-400 uppercase mb-4">Contact Seller (${ad.shopName})</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="https://wa.me/233${phone.substring(1)}?text=I'm interested in ${ad.title}" class="flex items-center justify-center gap-2 bg-green-500 text-white py-4 rounded-2xl font-black shadow-lg">
+                                <span>💬</span> WhatsApp
+                            </a>
+                            <a href="tel:${phone}" class="flex items-center justify-center gap-2 bg-[#001F3F] text-white py-4 rounded-2xl font-black shadow-lg">
+                                <span>📞</span> Call Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('details-modal').classList.remove('hidden');
         };
+
+        window.closeDetails = () => document.getElementById('details-modal').classList.add('hidden');
 
         window.renderMarket = () => {
             const s = document.getElementById('searchInput').value.toLowerCase();
@@ -163,92 +168,60 @@
             if (loc !== "All Adansi") filt = filt.filter(a => a.location === loc);
             if (window.currentCategory !== "All") filt = filt.filter(a => a.category === window.currentCategory);
 
-            document.getElementById('market-grid').innerHTML = filt.map(a => {
-                const isCheap = parseFloat(a.price) < 50;
-                // Get WhatsApp/Phone from listing data
-                const phone = a.whatsapp || ""; 
-                
-                return `
+            document.getElementById('market-grid').innerHTML = filt.map(a => `
                 <div onclick="window.viewDetails('${a.id}')" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden active:scale-95 transition-transform flex flex-col">
-                    <div class="relative w-full">
-                        <img src="${a.image}" class="w-full h-44 object-cover">
-                        <div class="absolute top-2 right-2 bg-black/40 text-[7px] text-white px-2 py-1 rounded-md uppercase font-black backdrop-blur-md">${a.category || 'General'}</div>
-                        <div class="absolute bottom-2 left-2 bg-blue-900/90 text-[8px] text-white px-2 py-1 rounded-lg font-black backdrop-blur-sm">📍 ${a.location}</div>
+                    <img src="${a.image}" class="w-full h-40 object-cover">
+                    <div class="p-3">
+                        <p class="text-[10px] font-bold text-gray-800 uppercase line-clamp-1">${a.title}</p>
+                        <p class="text-sm font-black text-[#D4AF37] mt-1">₵${a.price}</p>
+                        <p class="text-[8px] text-gray-400 mt-1 font-bold italic">📍 ${a.location}</p>
                     </div>
-                    <div class="p-3 flex-grow flex flex-col justify-between">
-                        <p class="text-[11px] font-bold text-gray-800 uppercase line-clamp-2 leading-tight">${a.title}</p>
-                        <div class="flex justify-between items-center mt-3">
-                            <div>
-                                <p class="text-[8px] text-gray-400 font-bold uppercase">${a.shopName || 'Seller'}</p>
-                                <p class="text-sm font-black ${isCheap ? 'text-green-500' : 'text-[#D4AF37]'}">₵${a.price}</p>
-                            </div>
-                            <div class="flex gap-1">
-                                <button onclick="window.callSeller(event, '${phone}')" class="call-btn bg-green-500 text-white p-2 rounded-lg shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                    </svg>
-                                </button>
-                                <span class="text-[8px] font-bold bg-gray-100 text-gray-400 px-2 py-2 rounded-lg border border-gray-100 uppercase">View</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
+                </div>`).join('');
         };
 
         function updateProfileUI() {
             if(!userData) return;
-            document.getElementById('userName').innerText = userData.shopName;
             const isVer = userData.isApproved;
-            const statusEl = document.getElementById('userStatus');
-            statusEl.innerText = isVer ? "✅ VERIFIED SELLER" : "⏳ PENDING VERIFICATION";
-            statusEl.className = isVer ? "bg-green-100 text-green-600 p-1 px-3 rounded-full font-bold text-[10px] mt-2 inline-block" : "bg-orange-100 text-orange-600 p-1 px-3 rounded-full font-bold text-[10px] mt-2 inline-block";
+            document.getElementById('userName').innerText = userData.shopName;
+            document.getElementById('userStatus').innerText = isVer ? "✅ VERIFIED" : "⏳ PENDING";
+            document.getElementById('userStatus').className = isVer ? "bg-green-100 text-green-600 px-3 py-1 rounded-full font-bold text-[10px] mt-2 inline-block" : "bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-bold text-[10px] mt-2 inline-block";
             
-            const postContainer = document.getElementById('post-container');
             if(isVer) {
-                postContainer.innerHTML = `
-                    <h1 class="text-2xl font-black mb-6 text-blue-900">List New Item</h1>
-                    <div id="itemPhotoBox" onclick="window.uploadItem()" class="h-56 border-4 border-dashed rounded-2xl flex flex-col items-center justify-center bg-white mb-6 text-gray-400 font-bold overflow-hidden">
-                        <span class="text-3xl mb-2">📸</span>
-                        <span>Add Product Photo</span>
+                document.getElementById('post-container').innerHTML = `
+                    <h1 class="text-2xl font-black mb-6 text-blue-900">New Item</h1>
+                    <div id="itemPhotoBox" onclick="window.uploadItem()" class="h-48 border-4 border-dashed rounded-2xl flex flex-col items-center justify-center bg-white mb-4 text-gray-400 font-bold overflow-hidden">
+                        <span>📸 Add Photo</span>
                     </div>
-                    <input type="text" id="pTitle" placeholder="What are you selling?" class="input-box">
+                    <input type="text" id="pTitle" placeholder="Item Name" class="input-box">
                     <select id="pCategory" class="input-box">
-                        <option value="" disabled selected>Select Category</option>
+                        <option value="" disabled selected>Category</option>
                         <option value="Electronics">Electronics</option>
                         <option value="Fashion">Fashion</option>
-                        <option value="Food">Food & Provisions</option>
-                        <option value="Home">Home & Office</option>
+                        <option value="Food">Food</option>
                         <option value="Services">Services</option>
                     </select>
-                    <input type="number" id="pPrice" placeholder="Price (GH₵)" class="input-box">
-                    <textarea id="pDesc" placeholder="Description..." class="input-box h-32"></textarea>
+                    <input type="number" id="pPrice" placeholder="Price" class="input-box">
+                    <textarea id="pDesc" placeholder="Description" class="input-box h-24"></textarea>
                     <button onclick="window.postItem()" class="w-full jiji-green text-white py-4 rounded-xl font-black shadow-lg uppercase">Post Now</button>
                 `;
             }
         }
 
         window.postItem = async () => {
-            const title = document.getElementById('pTitle').value;
-            const price = document.getElementById('pPrice').value;
-            const category = document.getElementById('pCategory').value;
-            const desc = document.getElementById('pDesc').value;
-
-            if(!tempItemUrl || !category || !title) return alert("Fill all fields and upload photo.");
-
+            const title = document.getElementById('pTitle').value, price = document.getElementById('pPrice').value, 
+                  cat = document.getElementById('pCategory').value, desc = document.getElementById('pDesc').value;
+            if(!tempItemUrl || !cat || !title) return alert("Missing info");
             await addDoc(collection(db, "listings"), { 
-                title, price, category, desc, image: tempItemUrl, 
+                title, price, category: cat, desc, image: tempItemUrl, 
                 sellerUid: currentUser.uid, whatsapp: userData.whatsapp, 
-                shopName: userData.shopName, location: userData.location, 
-                createdAt: serverTimestamp() 
+                shopName: userData.shopName, location: userData.location, createdAt: serverTimestamp() 
             });
-            alert("Item Posted!");
-            window.showSection('home');
+            alert("Posted!"); window.showSection('home');
         };
 
         window.uploadItem = () => { 
             cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => { 
-                if (res && res.event === "success") { 
+                if (res?.event === "success") { 
                     tempItemUrl = res.info.secure_url; 
                     document.getElementById('itemPhotoBox').innerHTML = `<img src="${tempItemUrl}" class="w-full h-full object-cover">`;
                 } 
@@ -260,14 +233,12 @@
             document.getElementById(id+'-view').classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
             document.getElementById('nav-'+id).classList.add('nav-active');
-            window.scrollTo(0,0);
         };
 
         onSnapshot(query(collection(db, "listings"), orderBy("createdAt", "desc")), (snap) => {
             window.allAds = snap.docs.map(d => ({ id: d.id, ...d.data() })); 
             window.renderMarket();
         });
-
     </script>
 </body>
 </html>
