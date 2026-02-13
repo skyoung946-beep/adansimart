@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AdansiMart | Buy & Sell in Adansi</title>
+    <title>AdansiMart | Official</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,7 +24,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             padding-bottom: 100px; 
             overflow-x: hidden; 
-            -webkit-tap-highlight-color: transparent;
         }
         .jiji-green { background-color: var(--dark-blue); }
         .hidden { display: none !important; }
@@ -33,24 +32,24 @@
             border-bottom: 2px solid var(--gold);
         }
         .input-box { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 16px; background: white; color: black; }
-        .nav-item { color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; }
+        .nav-item { color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; }
         .nav-active { color: var(--gold); }
-        
-        /* Pull to Refresh */
-        #ptr-element { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; transform: translateY(-100%); transition: transform 0.2s; z-index: 100; pointer-events: none; }
-        .refreshing #ptr-element { transform: translateY(0); }
         
         .page-fade { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .loc-select { background: rgba(255,255,255,0.2); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 4px 8px; font-size: 10px; font-weight: bold; color: white; outline: none; }
-        .category-chip { flex: 0 0 auto; padding: 8px 18px; border-radius: 20px; background: rgba(255,255,255,0.15); font-size: 10px; font-weight: 800; color: white; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; text-transform: uppercase; }
-        .chip-active { background: var(--gold); color: var(--dark-blue); border-color: var(--gold); }
+        /* Category Bar Logic */
+        .category-chip { flex: 0 0 auto; padding: 8px 18px; border-radius: 20px; background: rgba(255,255,255,0.15); font-size: 10px; font-weight: 800; color: white; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; text-transform: uppercase; white-space: nowrap; }
+        .chip-active { background: var(--gold) !important; color: var(--dark-blue) !important; border-color: var(--gold); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Grid styling */
+        /* Pull to Refresh Styling */
+        #ptr-element { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; transform: translateY(-100%); transition: transform 0.2s; z-index: 100; pointer-events: none; }
+        .refreshing #ptr-element { transform: translateY(0); }
+        
+        /* Product Cards */
         .sold-badge { background: rgba(0,0,0,0.7); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 14px; z-index: 10; }
-        .product-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; position: relative; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -59,23 +58,22 @@
 
     <div id="welcome-modal" class="fixed inset-0 bg-black/80 z-[1000] hidden flex items-center justify-center p-6">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl page-fade">
-            <div class="text-6xl mb-4">🏠</div>
+            <div class="text-6xl mb-4">🇬🇭</div>
             <h2 class="text-3xl font-black mb-2 text-blue-900">Akwaaba!</h2>
-            <p class="text-gray-500 mb-8 leading-relaxed">Welcome to <b>AdansiMart</b>. The safest way to buy and sell in Adansi and beyond.</p>
-            <button onclick="window.closeWelcome()" class="w-full jiji-green text-white py-4 rounded-2xl font-black shadow-lg">START EXPLORING</button>
+            <p class="text-gray-500 mb-8 leading-relaxed">Welcome to <b>AdansiMart</b>. The safest local marketplace for the Adansi community.</p>
+            <button onclick="window.closeWelcome()" class="w-full jiji-green text-white py-4 rounded-2xl font-black shadow-lg">START BROWSING</button>
         </div>
     </div>
 
     <div id="safety-modal" class="fixed inset-0 bg-black/70 z-[600] hidden flex items-center justify-center p-6">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
-            <h2 class="text-2xl font-black mb-4 text-blue-900">🛡️ Safety Tips</h2>
+            <h2 class="text-2xl font-black mb-4 text-blue-900">🛡️ Deal Safely</h2>
             <ul class="text-sm text-gray-600 space-y-4 mb-8">
-                <li>• Always meet in <b>Public Places</b> (e.g. Fomena Station).</li>
-                <li>• <b>Inspect the item</b> thoroughly before paying.</li>
-                <li>• <b>Never pay</b> before you see the product.</li>
-                <li>• Use the <b>Call Button</b> to verify the seller.</li>
+                <li>• <b>Public Meetings:</b> Meet at Fomena Station or Edubiase Market.</li>
+                <li>• <b>Verify Items:</b> Test electronics before paying.</li>
+                <li>• <b>No Pre-payments:</b> Don't send MoMo before seeing the item.</li>
             </ul>
-            <button id="safety-continue-btn" class="w-full jiji-green text-white py-4 rounded-2xl font-black">I UNDERSTAND</button>
+            <button id="safety-continue-btn" class="w-full jiji-green text-white py-4 rounded-2xl font-black uppercase">I Agree, Show Contacts</button>
         </div>
     </div>
 
@@ -83,25 +81,28 @@
         <header class="jiji-green p-5 text-white sticky top-0 z-50 shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-black italic text-[#D4AF37]">ADANSIMART</h1>
-                <select id="locationFilter" onchange="window.renderMarket()" class="loc-select">
-                    <option value="All Adansi">All Adansi 📍</option>
-                    <option value="Fomena">Fomena</option>
-                    <option value="New Edubiase">New Edubiase</option>
-                    <option value="Adansi Asokwa">Adansi Asokwa</option>
-                    <option value="Akrofuom">Akrofuom</option>
-                    <option value="Obuasi">Obuasi (Nearby)</option>
+                <select id="locationFilter" onchange="window.renderMarket()" class="bg-white/10 border border-gold/30 rounded px-2 py-1 text-[10px] font-bold outline-none text-white">
+                    <option value="All Adansi" class="text-black">All Adansi 📍</option>
+                    <option value="Fomena" class="text-black">Fomena</option>
+                    <option value="New Edubiase" class="text-black">New Edubiase</option>
+                    <option value="Adansi Asokwa" class="text-black">Asokwa</option>
+                    <option value="Akrokerri" class="text-black">Akrokerri</option>
+                    <option value="Bodwesango" class="text-black">Bodwesango</option>
+                    <option value="Dompoase" class="text-black">Dompoase</option>
+                    <option value="Akrofuom" class="text-black">Akrofuom</option>
+                    <option value="Obuasi" class="text-black">Obuasi (Nearby)</option>
                 </select>
             </div>
             <div class="bg-white rounded-xl p-3 flex items-center shadow-inner mb-4">
-                <input type="text" id="searchInput" onkeyup="window.renderMarket()" placeholder="Search products..." class="w-full outline-none text-black text-sm">
+                <input type="text" id="searchInput" onkeyup="window.renderMarket()" placeholder="Search products in Adansi..." class="w-full outline-none text-black text-sm">
             </div>
             <div class="flex overflow-x-auto gap-2 pb-2 no-scrollbar" id="category-bar">
-                <button onclick="window.filterCat('All')" class="category-chip chip-active">All</button>
-                <button onclick="window.filterCat('Electronics')" class="category-chip">Electronics</button>
-                <button onclick="window.filterCat('Fashion')" class="category-chip">Fashion</button>
-                <button onclick="window.filterCat('Food')" class="category-chip">Food</button>
-                <button onclick="window.filterCat('Home')" class="category-chip">Home</button>
-                <button onclick="window.filterCat('Services')" class="category-chip">Services</button>
+                <button onclick="window.filterCat('All', this)" class="category-chip chip-active">All</button>
+                <button onclick="window.filterCat('Electronics', this)" class="category-chip">Electronics</button>
+                <button onclick="window.filterCat('Fashion', this)" class="category-chip">Fashion</button>
+                <button onclick="window.filterCat('Food', this)" class="category-chip">Food</button>
+                <button onclick="window.filterCat('Home', this)" class="category-chip">Home</button>
+                <button onclick="window.filterCat('Services', this)" class="category-chip">Services</button>
             </div>
         </header>
         
@@ -114,21 +115,21 @@
 
     <div id="profile-view" class="hidden page-fade">
         <div class="bg-white p-8 pt-16 border-b shadow-sm">
-            <h2 id="userName" class="font-black text-3xl text-blue-900">My Shop</h2>
+            <h2 id="userName" class="font-black text-3xl text-blue-900 uppercase">Shop Name</h2>
             <div id="userStatus" class="mt-2 inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase"></div>
             <div id="admin-entry" class="hidden mt-4">
-                <button onclick="window.showSection('admin')" class="text-gold font-bold text-xs underline uppercase">Admin Dashboard</button>
+                <button onclick="window.showSection('admin')" class="text-gold font-bold text-xs underline uppercase">Verify New Sellers</button>
             </div>
             <button onclick="window.logout()" class="text-red-500 text-xs font-black mt-10 uppercase block">Sign Out</button>
         </div>
         <div class="p-6">
-            <h3 class="font-black text-sm uppercase mb-4 text-gray-400">Inventory Management</h3>
+            <h3 class="font-black text-sm uppercase mb-4 text-gray-400">My Listings</h3>
             <div id="my-ads-list" class="space-y-3"></div>
         </div>
     </div>
 
     <div id="admin-view" class="hidden p-6 page-fade">
-        <button onclick="window.showSection('profile')" class="mb-4 text-blue-900 font-bold">← Back</button>
+        <button onclick="window.showSection('profile')" class="mb-4 text-blue-900 font-bold">← BACK TO PROFILE</button>
         <h1 class="text-2xl font-black mb-6 uppercase text-blue-900">Verification Desk</h1>
         <div id="pending-list" class="space-y-4"></div>
     </div>
@@ -139,23 +140,28 @@
             <h1 class="text-3xl font-black mb-2 text-blue-900">Seller Login</h1>
             <input type="email" id="loginEmail" placeholder="Email Address" class="input-box">
             <input type="password" id="loginPass" placeholder="Password" class="input-box">
-            <button onclick="window.handleLogin()" class="w-full jiji-green text-white py-4 rounded-2xl font-black shadow-lg">LOG IN</button>
-            <p class="text-center mt-8 text-sm text-gray-500">New seller? <span onclick="window.toggleAuthForm()" class="text-blue-900 font-bold cursor-pointer underline">Create Account</span></p>
+            <button onclick="window.handleLogin()" class="w-full jiji-green text-white py-4 rounded-2xl font-black">LOG IN</button>
+            <p class="text-center mt-8 text-sm text-gray-500">Want to sell? <span onclick="window.toggleAuthForm()" class="text-blue-900 font-bold cursor-pointer underline">Create Shop</span></p>
         </div>
         <div id="register-form" class="hidden">
-            <h1 class="text-3xl font-black mb-2 text-blue-900">Seller Signup</h1>
-            <input type="text" id="regName" placeholder="Full Name" class="input-box">
-            <input type="text" id="regShop" placeholder="Business Name" class="input-box">
-            <input type="tel" id="regWhatsapp" placeholder="WhatsApp (e.g. 054...)" class="input-box">
-            <input type="email" id="regEmail" placeholder="Email Address" class="input-box">
-            <input type="password" id="regPass" placeholder="Password (Min 6 chars)" class="input-box">
-            
-            <button onclick="window.uploadID()" id="idBtn" class="w-full bg-gray-50 py-5 rounded-2xl text-[10px] font-black mb-4 border-2 border-dashed border-gray-300">
-                📸 UPLOAD GHANA CARD (FOR VERIFICATION)
-            </button>
-            <div id="idPreview" class="hidden text-green-600 text-center font-black text-xs mb-6 italic">ID Photo Attached Successfully ✅</div>
-            
-            <button onclick="window.handleRegister()" class="w-full jiji-green text-white py-4 rounded-2xl font-black">COMPLETE REGISTRATION</button>
+            <h1 class="text-3xl font-black mb-2 text-blue-900">Open Your Shop</h1>
+            <input type="text" id="regName" placeholder="Full Name (Admin Only)" class="input-box">
+            <input type="text" id="regShop" placeholder="Business/Shop Name" class="input-box">
+            <select id="regTown" class="input-box">
+                <option value="Fomena">Fomena</option>
+                <option value="New Edubiase">New Edubiase</option>
+                <option value="Adansi Asokwa">Asokwa</option>
+                <option value="Akrokerri">Akrokerri</option>
+                <option value="Bodwesango">Bodwesango</option>
+                <option value="Dompoase">Dompoase</option>
+                <option value="Akrofuom">Akrofuom</option>
+            </select>
+            <input type="tel" id="regWhatsapp" placeholder="WhatsApp Number (e.g. 054...)" class="input-box">
+            <input type="email" id="regEmail" placeholder="Login Email" class="input-box">
+            <input type="password" id="regPass" placeholder="Create Password" class="input-box">
+            <button onclick="window.uploadID()" id="idBtn" class="w-full bg-gray-50 py-5 rounded-2xl text-[10px] font-black mb-4 border-2 border-dashed border-gray-300">📸 UPLOAD GHANA CARD</button>
+            <div id="idPreview" class="hidden text-green-600 text-center font-black text-xs mb-6 italic">ID ATTACHED ✅</div>
+            <button onclick="window.handleRegister()" class="w-full jiji-green text-white py-4 rounded-2xl font-black">START SELLING</button>
         </div>
     </div>
 
@@ -167,7 +173,7 @@
     <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around p-4 border-t z-50 shadow-2xl pb-8">
         <div onclick="window.showSection('home')" id="nav-home" class="nav-item nav-active"><div class="text-xl mb-1">🏠</div><p>Market</p></div>
         <div onclick="window.checkAuth('sell')" id="nav-sell" class="nav-item"><div class="text-xl mb-1">➕</div><p>Sell</p></div>
-        <div onclick="window.checkAuth('profile')" id="nav-profile" class="nav-item"><div class="text-xl mb-1">👤</div><p>My Shop</p></div>
+        <div onclick="window.checkAuth('profile')" id="nav-profile" class="nav-item"><div class="text-xl mb-1">👤</div><p>Shop</p></div>
     </nav>
 
     <script type="module">
@@ -175,6 +181,7 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, deleteDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // --- CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyC4895RrHcz4dikOD7EXP4rxjXM4zT6DYM",
             authDomain: "adansimart-web.firebaseapp.com",
@@ -196,7 +203,7 @@
         window.allAds = [];
         window.currentCat = "All";
 
-        // --- CORE HELPERS ---
+        // --- HELPERS ---
         window.formatGhanaPhone = (num) => {
             let cleaned = num.replace(/\D/g, ''); 
             if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
@@ -204,26 +211,38 @@
             return cleaned;
         };
 
+        // --- NAVIGATION ---
         window.showSection = (id) => {
-            ['home', 'sell', 'profile', 'admin'].forEach(v => document.getElementById(v+'-view').classList.add('hidden'));
+            ['home', 'sell', 'profile', 'admin'].forEach(v => {
+                const el = document.getElementById(v+'-view');
+                if(el) el.classList.add('hidden');
+            });
             document.getElementById(id+'-view').classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
             if(document.getElementById('nav-'+id)) document.getElementById('nav-'+id).classList.add('nav-active');
             window.scrollTo(0,0);
         };
 
-        // --- WELCOME/SAFETY LOGIC ---
+        // --- CATEGORY FILTERING ---
+        window.filterCat = (cat, btn) => {
+            window.currentCat = cat;
+            document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('chip-active'));
+            btn.classList.add('chip-active');
+            window.renderMarket();
+        };
+
+        // --- WELCOME PERSISTENCE ---
         window.onload = () => {
-            if(!localStorage.getItem('firstVisit')) {
+            if(!localStorage.getItem('returningUser')) {
                 document.getElementById('welcome-modal').classList.remove('hidden');
             }
         };
         window.closeWelcome = () => {
-            localStorage.setItem('firstVisit', 'done');
+            localStorage.setItem('returningUser', 'true');
             document.getElementById('welcome-modal').classList.add('hidden');
         };
 
-        // --- AUTH ---
+        // --- AUTH SYNC ---
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (user) {
@@ -237,46 +256,6 @@
             }
         });
 
-        window.handleRegister = async () => {
-            if(!tempIDUrl) return alert("Please upload your Ghana Card first.");
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value);
-                await setDoc(doc(db, "sellers", cred.user.uid), {
-                    name: regName.value, shopName: regShop.value, whatsapp: regWhatsapp.value,
-                    idPhoto: tempIDUrl, isApproved: false, uid: cred.user.uid,
-                    createdAt: serverTimestamp()
-                });
-                alert("Account created! Wait for admin verification.");
-            } catch (e) { alert(e.message); }
-        };
-
-        window.handleLogin = async () => {
-            try { await signInWithEmailAndPassword(auth, loginEmail.value, loginPass.value); } catch(e) { alert(e.message); }
-        };
-
-        window.logout = () => signOut(auth);
-        window.checkAuth = (target) => currentUser ? window.showSection(target) : document.getElementById('auth-view').classList.remove('hidden');
-        window.hideAuth = () => document.getElementById('auth-view').classList.add('hidden');
-        window.toggleAuthForm = () => {
-            document.getElementById('login-form').classList.toggle('hidden');
-            document.getElementById('register-form').classList.toggle('hidden');
-        };
-
-        // --- CLOUDINARY UPLOADS ---
-        window.uploadID = () => {
-            cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => {
-                if (res?.event === "success") { tempIDUrl = res.info.secure_url; idPreview.classList.remove('hidden'); }
-            });
-        };
-        window.uploadItem = () => {
-            cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => {
-                if (res?.event === "success") {
-                    tempItemUrl = res.info.secure_url;
-                    document.getElementById('itemPhotoBox').innerHTML = `<img src="${tempItemUrl}" class="w-full h-full object-cover rounded-2xl">`;
-                }
-            });
-        };
-
         // --- MARKET LOGIC ---
         onSnapshot(query(collection(db, "listings"), orderBy("createdAt", "desc")), (snap) => {
             window.allAds = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -288,21 +267,20 @@
             const s = document.getElementById('searchInput').value.toLowerCase();
             const loc = document.getElementById('locationFilter').value;
             let filt = window.allAds.filter(a => 
-                a.title.toLowerCase().includes(s) &&
+                (a.title.toLowerCase().includes(s)) &&
                 (window.currentCat === "All" || a.category === window.currentCat) &&
                 (loc === "All Adansi" || a.location === loc)
             );
 
             document.getElementById('market-grid').innerHTML = filt.map(a => `
-                <div onclick="window.viewDetails('${a.id}')" class="product-card shadow-sm active:scale-95 transition-transform">
+                <div onclick="window.viewDetails('${a.id}')" class="product-card active:scale-95 transition-transform">
                     ${a.isSold ? '<div class="sold-badge">SOLD</div>' : ''}
                     <img src="${a.image}" class="w-full h-32 object-cover ${a.isSold ? 'grayscale' : ''}">
                     <div class="p-3">
                         <p class="text-[10px] font-bold text-gray-800 uppercase truncate mb-0.5">${a.title}</p>
                         <p class="text-sm font-black text-blue-900">₵${a.price}</p>
-                        <p class="text-[8px] text-gray-400 mt-1 flex justify-between">
-                            <span>📍 ${a.location || 'Fomena'}</span>
-                            <span class="text-gold font-bold">VERIFIED ✅</span>
+                        <p class="text-[8px] text-gray-400 mt-1 flex justify-between uppercase">
+                            <span>📍 ${a.location || 'Adansi'}</span>
                         </p>
                     </div>
                 </div>
@@ -313,59 +291,50 @@
             const a = window.allAds.find(x => x.id === id);
             const cleanPhone = window.formatGhanaPhone(a.whatsapp);
             
-            // Trigger Safety Modal
             document.getElementById('safety-modal').classList.remove('hidden');
             document.getElementById('safety-continue-btn').onclick = () => {
                 document.getElementById('safety-modal').classList.add('hidden');
                 document.getElementById('details-modal').classList.remove('hidden');
+                document.getElementById('modal-content').innerHTML = `
+                    <img src="${a.image}" class="w-full aspect-square object-cover">
+                    <div class="p-6 bg-white -mt-6 rounded-t-3xl relative z-10 shadow-xl min-h-screen">
+                        <div class="flex justify-between items-start mb-2">
+                            <h1 class="text-2xl font-black uppercase text-blue-900">${a.title}</h1>
+                            <p class="text-2xl font-black text-[#D4AF37]">₵${a.price}</p>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-400 mb-4 uppercase">📍 Location: ${a.location}</p>
+                        <p class="text-gray-600 mb-8 leading-relaxed">${a.desc || 'No further description.'}</p>
+                        
+                        <div class="space-y-3">
+                            <a href="https://wa.me/${cleanPhone}?text=Hello, I saw your ${a.title} on AdansiMart" target="_blank" 
+                               class="w-full bg-green-500 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2">
+                               WHATSAPP SELLER
+                            </a>
+                            <a href="tel:+${cleanPhone}" 
+                               class="w-full bg-blue-900 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2">
+                               CALL DIRECT
+                            </a>
+                            <button onclick="window.reportAd('${a.id}')" class="w-full text-red-500 font-bold text-[9px] mt-6 uppercase underline">Report suspicious item</button>
+                        </div>
+                        <div class="mt-8 p-4 bg-gray-50 rounded-xl border border-dashed">
+                            <p class="text-[8px] text-gray-400 font-black uppercase mb-1">Sold By</p>
+                            <p class="font-black text-blue-900">${a.shopName}</p>
+                        </div>
+                    </div>
+                `;
             };
-
-            document.getElementById('modal-content').innerHTML = `
-                <img src="${a.image}" class="w-full aspect-square object-cover">
-                <div class="p-6 bg-white -mt-6 rounded-t-3xl relative z-10 shadow-xl min-h-screen">
-                    <div class="flex justify-between items-start mb-2">
-                        <h1 class="text-2xl font-black uppercase text-blue-900">${a.title}</h1>
-                        <p class="text-2xl font-black text-[#D4AF37]">₵${a.price}</p>
-                    </div>
-                    <p class="text-xs font-bold text-gray-400 mb-4">📍 ${a.location || 'Adansi'}</p>
-                    <p class="text-gray-600 mb-8 leading-relaxed">${a.desc || 'No details provided.'}</p>
-                    
-                    <div class="space-y-3">
-                        <a href="https://wa.me/${cleanPhone}?text=Hi ${a.shopName}, I'm interested in ${a.title}" target="_blank" 
-                           class="w-full bg-green-500 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2">
-                           WHATSAPP SELLER
-                        </a>
-                        <a href="tel:+${cleanPhone}" 
-                           class="w-full bg-blue-900 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2">
-                           CALL DIRECT
-                        </a>
-                        <button onclick="window.reportItem('${a.id}')" class="w-full text-red-500 font-bold text-[10px] mt-4 uppercase underline">Report Suspicious Listing</button>
-                    </div>
-
-                    <div class="mt-8 p-4 bg-gray-50 rounded-xl border border-dashed">
-                        <p class="text-[8px] text-gray-400 font-black uppercase mb-1">Store Profile</p>
-                        <p class="font-black text-blue-900">${a.shopName}</p>
-                    </div>
-                </div>
-            `;
         };
 
-        window.closeDetails = () => document.getElementById('details-modal').classList.add('hidden');
-
-        // --- SELLER MANAGEMENT ---
+        // --- SELLER FLOW ---
         window.postItem = async () => {
-            const title = document.getElementById('pTitle').value;
-            const price = document.getElementById('pPrice').value;
-            if(!tempItemUrl || !title || !price) return alert("Upload photo and fill title/price.");
-
+            if(!tempItemUrl) return alert("Please upload a photo first.");
             await addDoc(collection(db, "listings"), {
-                title, price, category: document.getElementById('pCat').value,
-                image: tempItemUrl, desc: document.getElementById('pDesc').value,
-                sellerUid: currentUser.uid, whatsapp: userData.whatsapp,
-                shopName: userData.shopName, location: userData.location || "Fomena",
-                isSold: false, createdAt: serverTimestamp()
+                title: pTitle.value, price: pPrice.value, category: pCat.value,
+                image: tempItemUrl, desc: pDesc.value, sellerUid: currentUser.uid,
+                whatsapp: userData.whatsapp, shopName: userData.shopName,
+                location: userData.location, isSold: false, createdAt: serverTimestamp()
             });
-            alert("Product Live!");
+            alert("Product published!");
             window.showSection('home');
         };
 
@@ -381,16 +350,13 @@
                             <p class="text-blue-900 font-black text-xs">₵${a.price}</p>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="window.markSold('${a.id}', ${!a.isSold})" class="text-[10px] font-black ${a.isSold ? 'text-green-500':'text-gold'} uppercase">${a.isSold ? 'Restock':'Mark Sold'}</button>
-                        <button onclick="window.deleteAd('${a.id}')" class="text-red-500 font-bold text-[10px] uppercase">Delete</button>
+                    <div class="flex gap-2">
+                        <button onclick="window.markSold('${a.id}', ${!a.isSold})" class="text-[10px] font-black uppercase ${a.isSold ? 'text-green-500':'text-gold'}">${a.isSold ? 'Restock':'Mark Sold'}</button>
+                        <button onclick="window.deleteAd('${a.id}')" class="text-red-500 font-bold text-[10px]">✕</button>
                     </div>
                 </div>
             `).join('');
         }
-
-        window.markSold = async (id, status) => { await updateDoc(doc(db, "listings", id), { isSold: status }); };
-        window.deleteAd = async (id) => { if(confirm("Permanently delete?")) await deleteDoc(doc(db, "listings", id)); };
 
         // --- ADMIN SYSTEM ---
         onSnapshot(query(collection(db, "sellers"), where("isApproved", "==", false)), (snap) => {
@@ -400,62 +366,54 @@
                 return `
                     <div class="bg-white p-4 rounded-xl border-2 border-gold shadow-sm">
                         <p class="font-black text-blue-900">${s.shopName}</p>
-                        <p class="text-xs mb-3">Seller: ${s.name}</p>
+                        <p class="text-xs mb-3">Owner: ${s.name}</p>
                         <img src="${s.idPhoto}" class="w-full h-40 object-contain bg-black rounded-lg mb-4">
-                        <button onclick="window.approveSeller('${d.id}')" class="w-full bg-blue-900 text-white py-3 rounded-lg font-black text-xs uppercase">Approve Shop</button>
+                        <button onclick="window.approveSeller('${d.id}')" class="w-full bg-blue-900 text-white py-3 rounded-lg font-black text-xs uppercase">Verify This Seller</button>
                     </div>
                 `;
             }).join('');
         });
 
-        window.approveSeller = async (id) => {
-            await updateDoc(doc(db, "sellers", id), { isApproved: true });
-            alert("Seller Approved!");
-        };
-
-        window.reportItem = (id) => {
-            alert("Report sent to Admin. We will investigate this listing immediately.");
-            // In a real app, you'd add this to a 'reports' collection in Firebase
-        };
+        // --- SYSTEM ACTIONS ---
+        window.uploadID = () => cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => { if(res?.event === "success") { tempIDUrl = res.info.secure_url; idPreview.classList.remove('hidden'); } });
+        window.uploadItem = () => cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => { if(res?.event === "success") { tempItemUrl = res.info.secure_url; document.getElementById('itemPhotoBox').innerHTML = `<img src="${tempItemUrl}" class="w-full h-full object-cover rounded-3xl">`; } });
+        window.handleRegister = async () => { if(!tempIDUrl) return alert("Upload Ghana Card"); try { const cred = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value); await setDoc(doc(db, "sellers", cred.user.uid), { name: regName.value, shopName: regShop.value, whatsapp: regWhatsapp.value, location: regTown.value, idPhoto: tempIDUrl, isApproved: false, uid: cred.user.uid }); } catch(e) { alert(e.message); } };
+        window.handleLogin = async () => { try { await signInWithEmailAndPassword(auth, loginEmail.value, loginPass.value); } catch(e) { alert(e.message); } };
+        window.logout = () => signOut(auth);
+        window.deleteAd = async (id) => { if(confirm("Delete product?")) await deleteDoc(doc(db, "listings", id)); };
+        window.markSold = async (id, stat) => { await updateDoc(doc(db, "listings", id), { isSold: stat }); };
+        window.reportAd = (id) => alert("Report received. Our safety team is investigating this listing.");
+        window.approveSeller = async (id) => { await updateDoc(doc(db, "sellers", id), { isApproved: true }); alert("Seller Verified!"); };
+        window.closeDetails = () => document.getElementById('details-modal').classList.add('hidden');
+        window.hideAuth = () => document.getElementById('auth-view').classList.add('hidden');
+        window.checkAuth = (target) => currentUser ? window.showSection(target) : document.getElementById('auth-view').classList.remove('hidden');
+        window.toggleAuthForm = () => { document.getElementById('login-form').classList.toggle('hidden'); document.getElementById('register-form').classList.toggle('hidden'); };
 
         function updateProfileUI() {
             document.getElementById('userName').innerText = userData.shopName;
-            document.getElementById('userStatus').innerText = userData.isApproved ? "Verified Seller ✅" : "Pending Verification ⏳";
+            document.getElementById('userStatus').innerText = userData.isApproved ? "VERIFIED ✅" : "PENDING VERIFICATION ⏳";
             document.getElementById('userStatus').className = userData.isApproved ? "bg-green-100 text-green-600 px-3 py-1 rounded-full font-black text-[10px]" : "bg-gold/20 text-gold px-3 py-1 rounded-full font-black text-[10px]";
-            
             document.getElementById('post-container').innerHTML = `
-                <h1 class="text-2xl font-black mb-6 text-blue-900">Post an Item</h1>
+                <h1 class="text-2xl font-black mb-6 text-blue-900">List New Item</h1>
                 <div id="itemPhotoBox" onclick="window.uploadItem()" class="h-52 border-4 border-dashed rounded-3xl flex flex-col items-center justify-center bg-white mb-6 text-gray-300">
                     <span class="text-4xl">📸</span>
-                    <p class="text-[10px] font-black mt-2">CLICK TO UPLOAD PHOTO</p>
+                    <p class="text-[10px] font-black mt-2 uppercase">Tap to add photo</p>
                 </div>
-                <input type="text" id="pTitle" placeholder="What are you selling?" class="input-box">
+                <input type="text" id="pTitle" placeholder="Title (e.g. iPhone 13)" class="input-box">
                 <select id="pCat" class="input-box">
-                    <option value="Electronics">Electronics</option>
-                    <option value="Fashion">Fashion</option>
-                    <option value="Food">Food</option>
-                    <option value="Home">Home</option>
-                    <option value="Services">Services</option>
+                    <option value="Electronics">Electronics</option><option value="Fashion">Fashion</option><option value="Food">Food</option><option value="Home">Home</option><option value="Services">Services</option>
                 </select>
                 <input type="number" id="pPrice" placeholder="Price (GH₵)" class="input-box">
-                <textarea id="pDesc" placeholder="Describe your item..." class="input-box h-28"></textarea>
-                <button onclick="window.postItem()" class="w-full jiji-green text-white py-5 rounded-2xl font-black shadow-lg">POST NOW</button>
+                <textarea id="pDesc" placeholder="Describe the condition/features..." class="input-box h-28"></textarea>
+                <button onclick="window.postItem()" class="w-full jiji-green text-white py-5 rounded-2xl font-black shadow-lg">PUBLISH NOW</button>
             `;
         }
 
-        // --- PULL TO REFRESH LOGIC ---
-        let touchStart = 0;
-        document.addEventListener('touchstart', e => { touchStart = e.touches[0].pageY; }, {passive: true});
-        document.addEventListener('touchmove', e => {
-            const touchY = e.touches[0].pageY;
-            if (window.scrollY === 0 && touchY > touchStart + 80) document.body.classList.add('refreshing');
-        }, {passive: true});
-        document.addEventListener('touchend', () => {
-            if (document.body.classList.contains('refreshing')) {
-                setTimeout(() => location.reload(), 500);
-            }
-        });
-
+        // --- PULL TO REFRESH ---
+        let touchS = 0;
+        document.addEventListener('touchstart', e => { touchS = e.touches[0].pageY; }, {passive: true});
+        document.addEventListener('touchmove', e => { if (window.scrollY === 0 && e.touches[0].pageY > touchS + 80) document.body.classList.add('refreshing'); }, {passive: true});
+        document.addEventListener('touchend', () => { if (document.body.classList.contains('refreshing')) setTimeout(() => location.reload(), 500); });
     </script>
 </body>
 </html>
