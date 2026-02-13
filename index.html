@@ -2,111 +2,546 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AdansiMart | Market</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AdansiMart</title>
+    
+    <link rel="manifest" href="manifest.json">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFkYW5zaU1hcnQiLAogICJzaG9ydF9uYW1lIjogIkFkYW5zaU1hcnQiLAogICJzdGFydF91cmwiOiAiLi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjMjJiYzY2IiwKICAiaWNvbnMiOiBbIHsgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8zMDgxLzMwODE4NDAucG5nIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJpbWFnZS9wbmciIH0gXQp9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#001F3F">
+    <link rel="apple-touch-icon" href="icon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    
     <style>
-        body { background-color: #f4f4f4; font-family: 'Roboto', sans-serif; padding-bottom: 80px; }
-        .jiji-green { background-color: #38b245; }
-        .category-card { min-width: 85px; text-align: center; }
-        .category-icon { width: 50px; height: 50px; background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .search-container { border-radius: 10px; background: white; display: flex; align-items: center; padding: 8px 15px; margin-top: 10px; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 100; }
-        .nav-item { text-align: center; color: #777; font-size: 11px; font-weight: 500; }
-        .nav-item.active { color: #38b245; }
-        .product-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .hidden { display: none; }
+        :root { 
+            --safe-top: env(safe-area-inset-top); 
+            --dark-blue: #001F3F;
+            --gold: #D4AF37;
+        }
+        body { 
+            background-color: #f2f5f8; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding-bottom: 90px; 
+            overflow-x: hidden; 
+            touch-action: manipulation; 
+        }
+        .jiji-green { background-color: var(--dark-blue); }
+        .hidden { display: none !important; }
+        header { 
+            padding-top: calc(15px + var(--safe-top)); 
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        .input-box { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 16px; background: white; color: black; }
+        
+        .nav-item { color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; }
+        .nav-active { color: var(--gold); }
+        
+        #ptr-element { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; transform: translateY(-100%); transition: transform 0.2s; z-index: 100; pointer-events: none; }
+        .refreshing #ptr-element { transform: translateY(0); }
+        
+        .page-fade { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .loc-select { background: rgba(255,255,255,0.2); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 4px 8px; font-size: 10px; font-weight: bold; color: white; outline: none; }
+        .loc-select option { color: black; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <header class="jiji-green p-4 pt-8 text-white">
-        <div class="flex justify-between items-center mb-4">
-             <h1 onclick="adminTrigger()" class="text-xl font-bold tracking-tight">ADANSIMART.</h1>
-             <div class="text-sm bg-white/20 px-3 py-1 rounded-full">Ashanti ▾</div>
-        </div>
-        <p class="text-center font-medium mb-2">What are you looking for?</p>
-        <div class="search-container text-gray-400">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" placeholder="I am looking for..." class="bg-transparent w-full outline-none text-black text-sm">
-        </div>
-    </header>
+    <div id="ptr-element" class="bg-white shadow-md text-blue-900 font-black text-xs uppercase">
+        🔄 Refreshing Market...
+    </div>
 
-    <section class="p-4 grid grid-cols-3 gap-3">
-        <div onclick="openModal('sellerModal')" class="bg-green-50 p-3 rounded-xl border border-green-100 text-center">
-            <span class="block text-2xl mb-1">💼</span>
-            <p class="text-[10px] font-bold text-gray-700">Apply for job</p>
-        </div>
-        <div onclick="checkSellerStatus()" class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-center">
-            <span class="block text-2xl mb-1">💰</span>
-            <p class="text-[10px] font-bold text-gray-700">How to sell</p>
-        </div>
-        <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-center">
-            <span class="block text-2xl mb-1">🛒</span>
-            <p class="text-[10px] font-bold text-gray-700">How to buy</p>
-        </div>
-    </section>
-
-    <h3 class="px-4 text-sm font-bold text-gray-600 mb-3 uppercase tracking-wider">Recommended for you</h3>
-    <section class="flex overflow-x-auto gap-4 px-4 no-scrollbar mb-6">
-        <div class="category-card"><div class="category-icon">🔥</div><p class="text-[10px] font-medium">Trending</p></div>
-        <div class="category-card"><div class="category-icon">🚗</div><p class="text-[10px] font-medium">Vehicles</p></div>
-        <div class="category-card"><div class="category-icon">🏠</div><p class="text-[10px] font-medium">Property</p></div>
-        <div class="category-card"><div class="category-icon">📱</div><p class="text-[10px] font-medium">Phones</p></div>
-        <div class="category-card"><div class="category-icon">💻</div><p class="text-[10px] font-medium">Electronics</p></div>
-    </section>
-
-    <main id="app-feed" class="p-4 grid grid-cols-2 gap-4">
-        </main>
-
-    <nav class="bottom-nav">
-        <div onclick="switchView('all')" class="nav-item active">
-            <div class="text-xl">🏠</div>
-            <p>Home</p>
-        </div>
-        <div class="nav-item">
-            <div class="text-xl">🔖</div>
-            <p>Saved</p>
-        </div>
-        <div onclick="checkSellerStatus()" class="nav-item">
-            <div class="text-3xl font-bold text-green-600 mt-[-10px]">⊕</div>
-            <p>Sell</p>
-        </div>
-        <div class="nav-item">
-            <div class="text-xl">💬</div>
-            <p>Messages</p>
-        </div>
-        <div onclick="openModal('settingsModal')" class="nav-item">
-            <div class="text-xl">👤</div>
-            <p>Profile</p>
-        </div>
-    </nav>
-
-    <div id="sellerModal" class="fixed inset-0 bg-black/60 hidden flex-col items-center justify-center p-6 z-[200]">
-        <div class="bg-white p-6 w-full max-w-sm rounded-2xl">
-            <h2 class="text-xl font-bold mb-4 text-center">Verify Your Business</h2>
-            <input type="text" id="regShopName" placeholder="Business Name" class="input-field">
-            <input type="text" id="regUsername" placeholder="Username" class="input-field">
-            <input type="text" id="regGhanaCardNum" value="GHA-" class="input-field">
-            <input type="text" id="regPhone" placeholder="WhatsApp (233...)" class="input-field">
-            <p class="text-[10px] text-gray-400 mb-2 uppercase">Ghana Card Photo</p>
-            <input type="file" id="regCardPhoto" class="mb-4 block w-full text-xs">
-            <button id="regSubmitBtn" onclick="saveSellerProfile()" class="jiji-green text-white w-full py-3 rounded-lg font-bold">Submit for Review</button>
-            <button onclick="closeModal('sellerModal')" class="w-full mt-4 text-gray-400 text-sm">Close</button>
+    <div id="welcome-modal" class="fixed inset-0 bg-black/80 z-[1000] hidden flex items-center justify-center p-6">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl page-fade">
+            <div class="text-6xl mb-4">🏠</div>
+            <h2 class="text-3xl font-black mb-2 text-blue-900">Akwaaba!</h2>
+            <p class="text-gray-500 mb-8 leading-relaxed">Welcome to <b>AdansiMart</b>. The official marketplace for Fomena, New Edubiase, and all Adansi towns. Buy and sell safely.</p>
+            <button onclick="window.closeWelcome()" class="w-full jiji-green text-white py-4 rounded-2xl font-black shadow-lg uppercase">Start Exploring</button>
         </div>
     </div>
 
-    <script type="module">
-        // [Add your existing Firebase script here - It handles the data flow]
-        // Make sure it renders products into the #app-feed using the grid-cols-2 style!
-        // Your Admin Key remains: Adansi2026
-    </script>
+    <div id="safety-modal" class="fixed inset-0 bg-black/70 z-[600] hidden flex items-center justify-center p-6">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+            <h2 class="text-2xl font-black mb-4 text-blue-900">🛡️ Safety First</h2>
+            <ul class="text-sm text-gray-600 space-y-4 mb-8">
+                <li>• Meet the seller in a <b>Public Place</b>.</li>
+                <li>• <b>Check the item</b> thoroughly before paying.</li>
+                <li>• <b>Never send money</b> (Momo) before seeing the product.</li>
+            </ul>
+            <button id="safety-continue-btn" class="w-full jiji-green text-white py-4 rounded-2xl font-black">I UNDERSTAND</button>
+            <button onclick="document.getElementById('safety-modal').classList.add('hidden')" class="w-full mt-2 text-gray-400 font-bold text-xs uppercase">Cancel</button>
+        </div>
+    </div>
 
+    <div id="auth-view" class="fixed inset-0 bg-white z-[300] hidden overflow-y-auto p-6 pt-12 page-fade">
+        <button onclick="window.hideAuth()" class="text-3xl mb-6 p-2">✕</button>
+        <div id="login-form">
+            <h1 class="text-3xl font-black mb-2 text-blue-900">Welcome Back</h1>
+            <input type="email" id="loginEmail" placeholder="Email Address" class="input-box">
+            <input type="password" id="loginPass" placeholder="Password" class="input-box">
+            <button onclick="window.handleForgotPassword()" class="text-xs font-bold text-blue-900 uppercase mb-6 block w-full text-right">Forgot Password?</button>
+            <button onclick="window.handleLogin()" class="w-full jiji-green text-white py-4 rounded-2xl font-black shadow-lg">LOG IN</button>
+            <p class="text-center mt-8 text-sm text-gray-500">New seller? <span onclick="window.toggleAuthForm()" class="text-blue-900 font-bold cursor-pointer underline">Register Shop</span></p>
+        </div>
+        <div id="register-form" class="hidden">
+            <h1 class="text-3xl font-black mb-2 text-blue-900">Create Shop</h1>
+            <input type="text" id="regName" placeholder="Full Name" class="input-box">
+            <input type="text" id="regShop" placeholder="Business Name" class="input-box">
+            
+            <select id="regLocation" class="input-box">
+                <option value="" disabled selected>Select Your Town</option>
+                <option value="New Edubiase">New Edubiase</option>
+                <option value="Adansi Apagya">Adansi Apagya</option>
+                <option value="Adansi Akrofuom">Adansi Akrofuom</option>
+                <option value="Adansi Asokwa">Adansi Asokwa</option>
+                <option value="Fomena">Fomena</option>
+                <option value="Kumawu">Kumawu</option>
+                <option value="Dompoase">Dompoase</option>
+                <option value="Kusa">Kusa</option>
+                <option value="Anhwiaso">Anhwiaso</option>
+                <option value="Bodwesango">Bodwesango</option>
+                <option value="Aboabo">Aboabo</option>
+                <option value="Ahinsan">Ahinsan</option>
+                <option value="Gyankobaa">Gyankobaa</option>
+                <option value="Kwapia">Kwapia</option>
+                <option value="Praso">Praso</option>
+                <option value="Wuruwuru">Wuruwuru</option>
+                <option value="Asokwa Junction">Asokwa Junction</option>
+                <option value="Old Edubiase">Old Edubiase</option>
+                <option value="Nankawora">Nankawora</option>
+                <option value="Piapong">Piapong</option>
+            </select>
+
+            <input type="tel" id="regWhatsapp" placeholder="WhatsApp Number" class="input-box">
+            <input type="email" id="regEmail" placeholder="Email Address" class="input-box">
+            <input type="password" id="regPass" placeholder="Password" class="input-box">
+            <input type="text" id="regIDNum" placeholder="Ghana Card Number" class="input-box">
+            <button onclick="window.uploadID()" id="idBtn" class="w-full bg-gray-50 py-5 rounded-2xl text-xs font-black mb-4 border-2 border-dashed border-gray-300">📸 UPLOAD GHANA CARD</button>
+            <div id="idPreview" class="hidden text-blue-900 text-center font-black text-sm mb-6">✅ ID ATTACHED</div>
+            <button onclick="window.handleRegister()" class="w-full jiji-green text-white py-4 rounded-2xl font-black">START SELLING</button>
+            <p onclick="window.toggleAuthForm()" class="text-center mt-6 text-sm underline text-gray-400">Back to Login</p>
+        </div>
+    </div>
+
+    <div id="home-view" class="page-fade">
+        <header class="jiji-green p-5 text-white sticky top-0 z-50 shadow-md">
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-black italic text-[#D4AF37]">ADANSIMART</h1>
+                
+                <select id="locationFilter" onchange="window.renderMarket()" class="loc-select">
+                    <option value="All Adansi">All Adansi 📍</option>
+                    <option value="New Edubiase">New Edubiase</option>
+                    <option value="Adansi Apagya">Adansi Apagya</option>
+                    <option value="Adansi Akrofuom">Adansi Akrofuom</option>
+                    <option value="Adansi Asokwa">Adansi Asokwa</option>
+                    <option value="Fomena">Fomena</option>
+                    <option value="Kumawu">Kumawu</option>
+                    <option value="Dompoase">Dompoase</option>
+                    <option value="Kusa">Kusa</option>
+                    <option value="Anhwiaso">Anhwiaso</option>
+                    <option value="Bodwesango">Bodwesango</option>
+                    <option value="Aboabo">Aboabo</option>
+                    <option value="Ahinsan">Ahinsan</option>
+                    <option value="Gyankobaa">Gyankobaa</option>
+                    <option value="Kwapia">Kwapia</option>
+                    <option value="Praso">Praso</option>
+                    <option value="Wuruwuru">Wuruwuru</option>
+                    <option value="Asokwa Junction">Asokwa Junction</option>
+                    <option value="Old Edubiase">Old Edubiase</option>
+                    <option value="Nankawora">Nankawora</option>
+                    <option value="Piapong">Piapong</option>
+                </select>
+            </div>
+            <div class="bg-white rounded-xl p-3 flex items-center shadow-inner">
+                <input type="text" id="searchInput" onkeyup="window.renderMarket()" placeholder="Search products..." class="w-full outline-none text-black text-sm">
+            </div>
+        </header>
+        <main class="p-1 grid grid-cols-4 gap-1" id="market-grid"></main>
+    </div>
+
+    <div id="admin-view" class="hidden p-6 page-fade">
+        <h1 class="text-2xl font-black mb-4 uppercase">Verification Desk</h1>
+        
+        <div class="flex gap-2 mb-6">
+            <button onclick="window.switchAdminTab('sellers')" id="tab-sellers" class="flex-1 bg-[#001F3F] text-white py-2 rounded-lg text-[10px] font-bold uppercase transition-colors">Sellers</button>
+            <button onclick="window.switchAdminTab('reports')" id="tab-reports" class="flex-1 bg-gray-200 text-gray-500 py-2 rounded-lg text-[10px] font-bold uppercase transition-colors">Reports</button>
+        </div>
+
+        <div id="pending-list"></div>
+        <div id="reports-list" class="hidden"></div>
+
+        <button onclick="window.showSection('profile')" class="mt-10 text-gray-400 font-bold text-sm block mx-auto underline text-center w-full">Back to Shop</button>
+    </div>
+
+    <div id="sell-view" class="hidden p-6 page-fade">
+        <div id="post-container"></div>
+    </div>
+
+    <div id="profile-view" class="hidden page-fade">
+        <div class="bg-white p-8 pt-16 border-b shadow-sm">
+            <h2 id="userName" class="font-black text-3xl text-blue-900">My Shop</h2>
+            <div id="userStatus" class="mt-2 inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase"></div>
+            <div id="admin-link" class="hidden mt-8">
+                <button onclick="window.showSection('admin')" class="bg-black text-white px-8 py-4 rounded-2xl text-xs font-black uppercase w-full">Admin: Verify Sellers</button>
+            </div>
+            <button onclick="window.logout()" class="text-red-500 text-xs font-black mt-10 uppercase block">Sign Out</button>
+        </div>
+        <div class="p-6">
+            <h3 class="font-black text-sm uppercase mb-4 text-gray-400">Your Listings</h3>
+            <div id="my-ads-list"></div>
+        </div>
+    </div>
+
+    <div id="details-modal" class="fixed inset-0 bg-white z-[400] hidden overflow-y-auto page-fade">
+        <button onclick="window.closeDetails()" class="fixed top-6 left-6 bg-white shadow-xl rounded-full w-12 h-12 z-50 font-bold flex items-center justify-center border">✕</button>
+        <div id="modal-content"></div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around p-4 border-t z-50 shadow-2xl pb-8">
+        <div onclick="window.showSection('home')" id="nav-home" class="nav-item nav-active">
+            <div class="text-xl mb-1">🏠</div><p>Market</p>
+        </div>
+        <div onclick="window.checkAuth('sell')" id="nav-sell" class="nav-item">
+            <div class="text-xl mb-1">➕</div><p>Sell</p>
+        </div>
+        <div onclick="window.checkAuth('profile')" id="nav-profile" class="nav-item">
+            <div class="text-xl mb-1">👤</div><p>My Shop</p>
+        </div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4895RrHcz4dikOD7EXP4rxjXM4zT6DYM",
+            authDomain: "adansimart-web.firebaseapp.com",
+            projectId: "adansimart-web",
+            storageBucket: "adansimart-web.firebasestorage.app",
+            messagingSenderId: "319539198262",
+            appId: "1:319539198262:web:c600365a5eab9945ea9b97"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const ADMIN_EMAIL = 'skyoung946@gmail.com';
+        
+        let currentUser = null; 
+        let userData = null; 
+        let tempIDUrl = ""; 
+        let tempItemUrl = "";
+
+        // WELCOME MESSAGE LOGIC
+        window.addEventListener('load', () => {
+            if(!localStorage.getItem('am_visited')) {
+                document.getElementById('welcome-modal').classList.remove('hidden');
+            }
+        });
+        window.closeWelcome = () => {
+            localStorage.setItem('am_visited', 'true');
+            document.getElementById('welcome-modal').classList.add('hidden');
+        };
+
+        // SAFETY MODAL LOGIC
+        window.showSafety = (url) => {
+            const modal = document.getElementById('safety-modal');
+            modal.classList.remove('hidden');
+            document.getElementById('safety-continue-btn').onclick = () => {
+                modal.classList.add('hidden');
+                window.open(url, '_blank');
+            };
+        };
+
+        // REPORTING LOGIC
+        window.reportItem = async (itemId, title) => {
+            const reason = prompt("Why are you reporting this item? (e.g. Fraud, Fake, Prohibited)");
+            if(reason) {
+                await addDoc(collection(db, "reports"), {
+                    itemId,
+                    title,
+                    reason,
+                    reportedAt: serverTimestamp()
+                });
+                alert("Report sent to Admin. Thank you for keeping AdansiMart safe.");
+            }
+        };
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { 
+                navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error", err)); 
+            });
+        }
+
+        let startY = 0;
+        document.addEventListener('touchstart', e => { startY = e.touches[0].pageY; }, {passive: true});
+        document.addEventListener('touchmove', e => {
+            const y = e.touches[0].pageY;
+            if (window.scrollY === 0 && y > startY + 80) { document.body.classList.add('refreshing'); }
+        }, {passive: true});
+        document.addEventListener('touchend', () => {
+            if (document.body.classList.contains('refreshing')) { 
+                setTimeout(() => { location.reload(); }, 600); 
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+            if (user) {
+                const docSnap = await getDoc(doc(db, "sellers", user.uid));
+                userData = docSnap.data();
+                if(user.email === ADMIN_EMAIL) document.getElementById('admin-link').classList.remove('hidden');
+                updateProfileUI();
+                document.getElementById('auth-view').classList.add('hidden');
+            } else { 
+                window.showSection('home'); 
+            }
+        });
+
+        window.handleLogin = async () => { 
+            try { 
+                await signInWithEmailAndPassword(auth, loginEmail.value, loginPass.value); 
+            } catch (err) { alert("Login failed: " + err.message); } 
+        };
+
+        window.handleForgotPassword = async () => { 
+            if(!loginEmail.value) return alert("Please enter your email address first."); 
+            try { await sendPasswordResetEmail(auth, loginEmail.value); alert("Reset link sent to your email!"); } catch (err) { alert(err.message); } 
+        };
+
+        window.handleRegister = async () => {
+            if(!tempIDUrl) return alert("Please upload your Ghana Card image first.");
+            if(!regLocation.value) return alert("Please select your town.");
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value);
+                await setDoc(doc(db, "sellers", cred.user.uid), {
+                    name: regName.value, 
+                    shopName: regShop.value, 
+                    location: regLocation.value, 
+                    whatsapp: regWhatsapp.value, 
+                    email: regEmail.value, 
+                    ghanaCard: regIDNum.value, 
+                    idPhoto: tempIDUrl, 
+                    isApproved: (regEmail.value === ADMIN_EMAIL), 
+                    uid: cred.user.uid, 
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) { alert(err.message); }
+        };
+
+        window.uploadID = () => { 
+            cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => { 
+                if (res.event === "success") { tempIDUrl = res.info.secure_url; idPreview.classList.remove('hidden'); } 
+            }); 
+        };
+
+        window.uploadItem = () => { 
+            cloudinary.openUploadWidget({ cloudName: 'dpua9ympq', uploadPreset: 'adansimart' }, (err, res) => { 
+                if (res.event === "success") { 
+                    tempItemUrl = res.info.secure_url; 
+                    itemPhotoBox.innerHTML = `<img src="${tempItemUrl}" class="w-full h-full object-cover rounded-2xl">`; 
+                } 
+            }); 
+        };
+
+        window.postItem = async () => {
+            if(!tempItemUrl) return alert("Please upload a photo of the item.");
+            await addDoc(collection(db, "listings"), { 
+                title: pTitle.value, 
+                price: pPrice.value, 
+                desc: pDesc.value, 
+                image: tempItemUrl, 
+                sellerUid: currentUser.uid, 
+                whatsapp: userData.whatsapp, 
+                shopName: userData.shopName, 
+                location: userData.location, 
+                createdAt: serverTimestamp() 
+            });
+            alert("Success! Your item is live."); 
+            window.showSection('home');
+        };
+
+        window.showSection = (id) => {
+            ['home', 'sell', 'profile', 'admin'].forEach(v => {
+                const el = document.getElementById(v+'-view');
+                if(el) el.classList.add('hidden');
+            });
+            document.getElementById(id+'-view').classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
+            document.getElementById('nav-'+id)?.classList.add('nav-active');
+            window.scrollTo(0,0);
+        };
+
+        window.checkAuth = (target) => currentUser ? window.showSection(target) : document.getElementById('auth-view').classList.remove('hidden');
+        window.hideAuth = () => document.getElementById('auth-view').classList.add('hidden');
+        window.toggleAuthForm = () => { 
+            document.getElementById('login-form').classList.toggle('hidden'); 
+            document.getElementById('register-form').classList.toggle('hidden'); 
+        };
+        window.closeDetails = () => document.getElementById('details-modal').classList.add('hidden');
+        window.logout = () => signOut(auth);
+        window.approveSeller = async (uid) => { await updateDoc(doc(db, "sellers", uid), { isApproved: true }); alert("Seller Approved!"); };
+        window.deleteAd = async (id) => { if(confirm("Are you sure you want to delete this listing?")) { await deleteDoc(doc(db, "listings", id)); alert("Item Deleted"); } };
+
+        // NEW ADMIN LOGIC: TAB SWITCHER
+        window.switchAdminTab = (tab) => {
+            const sTab = document.getElementById('tab-sellers');
+            const rTab = document.getElementById('tab-reports');
+            const sList = document.getElementById('pending-list');
+            const rList = document.getElementById('reports-list');
+
+            if(tab === 'sellers') {
+                sTab.classList.replace('bg-gray-200', 'bg-[#001F3F]'); sTab.classList.replace('text-gray-500', 'text-white');
+                rTab.classList.replace('bg-[#001F3F]', 'bg-gray-200'); rTab.classList.replace('text-white', 'text-gray-500');
+                sList.classList.remove('hidden'); rList.classList.add('hidden');
+            } else {
+                rTab.classList.replace('bg-gray-200', 'bg-[#001F3F]'); rTab.classList.replace('text-gray-500', 'text-white');
+                sTab.classList.replace('bg-[#001F3F]', 'bg-gray-200'); sTab.classList.replace('text-white', 'text-gray-500');
+                rList.classList.remove('hidden'); sList.classList.add('hidden');
+            }
+        };
+
+        // NEW ADMIN LOGIC: DISMISS REPORTS
+        window.dismissReport = async (reportId) => {
+            if(confirm("Ignore this report?")) {
+                await deleteDoc(doc(db, "reports", reportId));
+            }
+        };
+
+        function updateProfileUI() {
+            if(!userData) return;
+            document.getElementById('userName').innerText = userData.shopName;
+            const isVer = userData.isApproved || currentUser.email === ADMIN_EMAIL;
+            const statusEl = document.getElementById('userStatus');
+            statusEl.innerText = isVer ? "✅ VERIFIED SELLER" : "⏳ PENDING VERIFICATION";
+            statusEl.className = isVer ? "bg-green-100 text-green-600 p-1 px-3 rounded-full font-bold text-[10px]" : "bg-orange-100 text-orange-600 p-1 px-3 rounded-full font-bold text-[10px]";
+            
+            if(isVer) {
+                document.getElementById('post-container').innerHTML = `
+                    <h1 class="text-2xl font-black mb-6 text-blue-900">List New Item</h1>
+                    <div id="itemPhotoBox" onclick="window.uploadItem()" class="h-56 border-4 border-dashed rounded-2xl flex flex-col items-center justify-center bg-white mb-6 text-gray-400 font-bold">
+                        <span class="text-3xl mb-2">📸</span>
+                        <span>Add Product Photo</span>
+                    </div>
+                    <input type="text" id="pTitle" placeholder="What are you selling?" class="input-box">
+                    <input type="number" id="pPrice" placeholder="Price (GH₵)" class="input-box">
+                    <textarea id="pDesc" placeholder="Describe the item (condition, size, etc.)" class="input-box h-32"></textarea>
+                    <button onclick="window.postItem()" class="w-full jiji-green text-white py-4 rounded-xl font-black shadow-lg">POST NOW</button>
+                `;
+            } else {
+                document.getElementById('post-container').innerHTML = `
+                    <div class="text-center py-20 px-6">
+                        <div class="text-5xl mb-4">⌛</div>
+                        <h2 class="text-xl font-black mb-2">Account Review</h2>
+                        <p class="text-gray-500 text-sm">Our team is reviewing your Ghana Card. You'll be able to post items once verified (usually within 24 hours).</p>
+                    </div>
+                `;
+            }
+        }
+
+        onSnapshot(query(collection(db, "listings"), orderBy("createdAt", "desc")), (snap) => {
+            window.allAds = snap.docs.map(d => ({ id: d.id, ...d.data() })); 
+            window.renderMarket();
+            if(currentUser) {
+                const my = window.allAds.filter(a => a.sellerUid === currentUser.uid);
+                document.getElementById('my-ads-list').innerHTML = my.length ? my.map(a => `
+                    <div class="bg-white p-4 rounded-xl mb-3 flex justify-between items-center shadow-sm border">
+                        <div class="flex items-center">
+                            <img src="${a.image}" class="w-10 h-10 rounded object-cover mr-3">
+                            <p class="font-bold text-xs uppercase truncate w-32">${a.title}</p>
+                        </div>
+                        <button onclick="window.deleteAd('${a.id}')" class="text-red-500 text-[10px] font-black border border-red-200 px-3 py-1 rounded-lg">DELETE</button>
+                    </div>
+                `).join('') : '<p class="text-center text-gray-400 py-10 text-xs">No active listings.</p>';
+            }
+        });
+
+        window.renderMarket = () => {
+            const s = document.getElementById('searchInput').value.toLowerCase();
+            const loc = document.getElementById('locationFilter').value;
+            
+            let filt = (window.allAds || []).filter(a => a.title.toLowerCase().includes(s));
+            
+            if (loc !== "All Adansi") {
+                filt = filt.filter(a => a.location === loc);
+            }
+
+            document.getElementById('market-grid').innerHTML = filt.map(a => `
+                <div onclick="window.viewDetails('${a.id}')" class="bg-white rounded shadow-sm border overflow-hidden active:scale-95 transition-transform">
+                    <div class="relative">
+                        <img src="${a.image}" class="w-full h-20 object-cover">
+                        <div class="absolute bottom-0 left-0 bg-blue-900/80 text-[6px] text-white px-1 font-bold">📍 ${a.location || 'Adansi'}</div>
+                    </div>
+                    <div class="p-1">
+                        <p class="text-[8px] font-bold text-gray-800 uppercase truncate mb-0.5">${a.title}</p>
+                        <p class="text-[9px] font-black text-[#D4AF37]">₵${a.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.viewDetails = (id) => {
+            const a = window.allAds.find(x => x.id === id);
+            const whatsappUrl = `https://wa.me/${a.whatsapp}?text=Hi, I am interested in your ${a.title} on AdansiMart`;
+            document.getElementById('modal-content').innerHTML = `
+                <img src="${a.image}" class="w-full aspect-square object-cover">
+                <div class="p-8 bg-white -mt-8 rounded-t-3xl relative z-10 shadow-2xl"> 
+                    <div class="flex justify-between items-start mb-4">
+                        <h1 class="text-2xl font-black w-2/3">${a.title}</h1>
+                        <p class="text-2xl font-black text-[#D4AF37]">₵${a.price}</p>
+                    </div>
+                    <p class="text-blue-900 font-bold text-xs mb-4 uppercase">📍 ${a.location || 'Adansi'}</p>
+                    <p class="text-gray-500 mb-6 leading-relaxed">${a.desc}</p> 
+                    <div class="bg-gray-50 p-4 rounded-2xl mb-8 flex items-center">
+                        <div class="w-10 h-10 bg-[#001F3F] rounded-full flex items-center justify-center text-white font-bold mr-3">${a.shopName.charAt(0)}</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Seller</p>
+                            <p class="font-black">${a.shopName}</p>
+                        </div>
+                    </div>
+                    <button onclick="window.showSafety('${whatsappUrl}')" class="w-full bg-[#25D366] text-white text-center py-5 rounded-2xl font-black shadow-lg">CHAT ON WHATSAPP</button>
+                    <button onclick="window.reportItem('${a.id}', '${a.title}')" class="w-full mt-4 text-red-400 text-[10px] font-bold uppercase text-center">⚠️ Report Listing</button>
+                </div>
+            `;
+            document.getElementById('details-modal').classList.remove('hidden');
+        };
+
+        onSnapshot(collection(db, "sellers"), (snap) => {
+            if(currentUser?.email !== ADMIN_EMAIL) return;
+            const pending = snap.docs.map(d => ({uid: d.id, ...d.data()})).filter(s => !s.isApproved);
+            document.getElementById('pending-list').innerHTML = pending.length ? pending.map(s => `
+                <div class="bg-white p-5 rounded-2xl mb-4 shadow-md border-l-8 border-[#001F3F]">
+                    <p class="font-black uppercase text-lg mb-1">${s.shopName}</p>
+                    <p class="text-xs text-gray-400 mb-1">Owner: ${s.name} | Town: ${s.location}</p>
+                    <p class="text-xs text-gray-400 mb-4 font-bold">ID: ${s.ghanaCard}</p>
+                    <img src="${s.idPhoto}" class="w-full h-48 object-cover rounded-xl mb-4 border shadow-inner">
+                    <button onclick="window.approveSeller('${s.uid}')" class="w-full jiji-green text-white py-4 rounded-xl font-black">APPROVE SELLER</button>
+                </div>
+            `).join('') : '<p class="text-center py-20 text-gray-400 font-bold">No sellers waiting for approval.</p>';
+        });
+
+        // NEW: LISTENER FOR REPORTS COLLECTION
+        onSnapshot(collection(db, "reports"), (snap) => {
+            if(currentUser?.email !== ADMIN_EMAIL) return;
+            const reports = snap.docs.map(d => ({id: d.id, ...d.data()}));
+            document.getElementById('reports-list').innerHTML = reports.length ? reports.map(r => `
+                <div class="bg-white p-4 rounded-2xl mb-3 shadow-sm border-l-8 border-red-500">
+                    <p class="text-[10px] font-black text-red-500 uppercase mb-1">Scam Alert / Issue</p>
+                    <h3 class="font-bold text-sm mb-1">${r.title}</h3>
+                    <p class="text-xs text-gray-500 mb-4">Reason: "${r.reason}"</p>
+                    <div class="flex gap-2">
+                        <button onclick="window.deleteAd('${r.itemId}')" class="flex-1 bg-red-600 text-white py-2 rounded-lg text-[10px] font-bold uppercase">Delete Item</button>
+                        <button onclick="window.dismissReport('${r.id}')" class="flex-1 bg-gray-100 text-gray-400 py-2 rounded-lg text-[10px] font-bold uppercase">Dismiss</button>
+                    </div>
+                </div>
+            `).join('') : '<p class="text-center py-20 text-gray-400 font-bold">No reports found.</p>';
+        });
+    </script>
 </body>
 </html>
