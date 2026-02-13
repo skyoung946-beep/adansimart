@@ -1,7 +1,8 @@
 {
-  "name": "AdansiMart",
+  "name": "AdansiMart Marketplace",
   "short_name": "AdansiMart",
   "start_url": "/adansimart/",
+  "scope": "/adansimart/",
   "display": "standalone",
   "background_color": "#001F3F",
   "theme_color": "#001F3F",
@@ -9,7 +10,8 @@
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3081/3081840.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
