@@ -35,7 +35,8 @@
         .page-fade { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .loc-select { background: rgba(255,255,255,0.2); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 4px 8px; font-size: 10px; font-weight: bold; color: white; outline: none; }
+        .loc-select { background: rgba(255,255,255,0.2); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: bold; color: white; outline: none; width: 165px; }
+        .loc-select option { color: black; }
     </style>
 </head>
 <body id="main-body">
@@ -46,10 +47,29 @@
                 <h1 class="text-2xl font-black italic text-[#D4AF37]">ADANSIMART</h1>
                 <select id="locationFilter" onchange="window.renderMarket()" class="loc-select">
                     <option value="All Adansi">All Adansi 📍</option>
-                    <option value="New Edubiase">New Edubiase</option>
-                    <option value="Fomena">Fomena</option>
-                    <option value="Adansi Asokwa">Adansi Asokwa</option>
+                    <option value="Aboabo">Aboabo</option>
                     <option value="Adansi Akrofuom">Adansi Akrofuom</option>
+                    <option value="Adansi Apagya">Adansi Apagya</option>
+                    <option value="Adansi Asokwa">Adansi Asokwa</option>
+                    <option value="Adansi Praso">Adansi Praso</option>
+                    <option value="Ahinsan">Ahinsan</option>
+                    <option value="Anhwiaso">Anhwiaso</option>
+                    <option value="Asokwa Junction">Asokwa Junction</option>
+                    <option value="Ataase">Ataase</option>
+                    <option value="Atobiase">Atobiase</option>
+                    <option value="Bodwesango">Bodwesango</option>
+                    <option value="Dompoase">Dompoase</option>
+                    <option value="Fomena">Fomena</option>
+                    <option value="Gyankobaa">Gyankobaa</option>
+                    <option value="Kumawu">Kumawu</option>
+                    <option value="Kusa">Kusa</option>
+                    <option value="Kwapia">Kwapia</option>
+                    <option value="Nankawora">Nankawora</option>
+                    <option value="New Edubiase">New Edubiase</option>
+                    <option value="Old Edubiase">Old Edubiase</option>
+                    <option value="Piapong">Piapong</option>
+                    <option value="Praso">Praso</option>
+                    <option value="Wuruwuru">Wuruwuru</option>
                 </select>
             </div>
             <div class="bg-white rounded-xl p-3 flex items-center shadow-inner mb-4">
@@ -60,6 +80,7 @@
                 <button onclick="window.filterCat('Electronics')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Electronics</button>
                 <button onclick="window.filterCat('Fashion')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Fashion</button>
                 <button onclick="window.filterCat('Food')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Food</button>
+                <button onclick="window.filterCat('Home')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Home</button>
                 <button onclick="window.filterCat('Services')" class="cat-btn bg-white/10 border border-white/20 text-white px-5 py-2 rounded-full whitespace-nowrap">Services</button>
             </div>
         </header>
@@ -132,7 +153,6 @@
         window.viewDetails = (id) => {
             const ad = window.allAds.find(a => a.id === id);
             const phone = ad.whatsapp || "";
-            // Clean number for WhatsApp (remove leading 0, add 233)
             const waPhone = phone.startsWith('0') ? '233' + phone.substring(1) : phone;
 
             document.getElementById('modal-content').innerHTML = `
@@ -211,6 +231,7 @@
                         <option value="Electronics">Electronics</option>
                         <option value="Fashion">Fashion</option>
                         <option value="Food">Food</option>
+                        <option value="Home">Home</option>
                         <option value="Services">Services</option>
                     </select>
                     <input type="number" id="pPrice" placeholder="Price" class="input-box">
