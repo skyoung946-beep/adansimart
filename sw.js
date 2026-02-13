@@ -1,14 +1,18 @@
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open('adansimart-v1').then((cache) => cache.addAll([
-      '/adansimart/',
-      '/adansimart/index.html'
-    ]))
+const CACHE_NAME = 'adansi-v1';
+const ASSETS = [
+  '/adansimart/',
+  '/adansimart/index.html',
+  '/adansimart/manifest.json'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => response || fetch(e.request))
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => response || fetch(event.request))
   );
 });
