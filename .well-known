@@ -1,1 +1,8 @@
-
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.example.adansimart",
+    "sha256_cert_fingerprints": ["16:20:8D:4A:06:D2:A8:27:24:CD:19:4C:36:F9:26:41:8F:D7:58:3B:C5:75:C3:80:0D:D9:4F:31:E0:C3:99:03"]
+  }
+}]
