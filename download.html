@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download AdansiMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 flex flex-col items-center justify-center min-h-screen p-6 font-sans">
+
+    <div class="mb-8 text-center">
+        <div class="w-24 h-24 bg-blue-900 rounded-2xl mx-auto mb-4 shadow-lg flex items-center justify-center text-white text-4xl font-bold">A</div>
+        <h1 class="text-2xl font-bold text-slate-800">AdansiMart</h1>
+        <p class="text-slate-500">Shop & Sell in Adansi</p>
+    </div>
+
+    <div id="android-box" class="w-full max-w-sm bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-4">
+        <h2 class="font-bold text-lg mb-2">Android User?</h2>
+        <p class="text-sm text-slate-600 mb-4">Download our official app for the fastest experience.</p>
+        <a href="app-debug.apk" class="block w-full bg-blue-900 text-white text-center py-3 rounded-xl font-bold hover:bg-blue-800 transition">
+            Download APK
+        </a>
+    </div>
+
+    <div id="ios-box" class="w-full max-w-sm bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="font-bold text-lg mb-2">iPhone User?</h2>
+        <p class="text-sm text-slate-600 mb-4">To install: Tap the <strong>Share</strong> icon <span class="text-blue-500">⎋</span> and select <strong>'Add to Home Screen'</strong>.</p>
+        <a href="index.html" class="block w-full bg-slate-100 text-slate-800 text-center py-3 rounded-xl font-bold border border-slate-300">
+            Open in Safari
+        </a>
+    </div>
+
+    <p class="mt-8 text-xs text-slate-400">© 2026 AdansiMart - Fomena, Ghana</p>
+
+    <script>
+        // Detection Logic: Highlight the right box for the user
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (isAndroid) {
+            document.getElementById('android-box').classList.add('ring-4', 'ring-blue-100', 'border-blue-500');
+        } else if (isIOS) {
+            document.getElementById('ios-box').classList.add('ring-4', 'ring-blue-100', 'border-blue-500');
+        }
+    </script>
+</body>
+</html>
