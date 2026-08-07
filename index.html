@@ -37,7 +37,6 @@
                 0 0 80px rgba(255, 255, 255, 0.02);
         }
 
-        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -94,7 +93,6 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* ===== PAYMENT FORM ===== */
         .form-section {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 16px;
@@ -230,7 +228,6 @@
             transform: scale(0.97);
         }
 
-        /* ===== COLLAPSIBLE HISTORY ===== */
         .history-section {
             margin-top: 20px;
         }
@@ -404,7 +401,6 @@
             font-size: 12px;
         }
 
-        /* ===== RECEIPT MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -545,7 +541,6 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -558,7 +553,21 @@
             font-weight: 500;
         }
 
-        /* ===== RESPONSIVE ===== */
+        .status-box {
+            background: rgba(255, 200, 0, 0.08);
+            border: 1px solid rgba(255, 200, 0, 0.12);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+        .status-box.show { display: block; }
+        .status-box.error { background: rgba(255, 0, 0, 0.08); border-color: rgba(255, 0, 0, 0.15); color: rgba(255, 100, 100, 0.8); }
+        .status-box.success { background: rgba(0, 255, 100, 0.08); border-color: rgba(0, 255, 100, 0.12); color: rgba(100, 255, 150, 0.8); }
+
         @media (max-width: 480px) {
             .container {
                 padding: 20px 15px;
@@ -579,7 +588,6 @@
 <body>
 
     <div class="container">
-        <!-- ===== HEADER ===== -->
         <div class="header">
             <div class="logo">
                 <span class="icon">💳</span>
@@ -590,9 +598,10 @@
             </div>
         </div>
 
-        <!-- ===== PAYMENT FORM ===== -->
         <div class="form-section">
             <div class="section-title">📝 New Payment</div>
+
+            <div class="status-box" id="statusBox"></div>
 
             <div class="form-group">
                 <label>📱 Phone Number</label>
@@ -615,16 +624,13 @@
             </button>
         </div>
 
-        <!-- ===== COLLAPSIBLE HISTORY ===== -->
         <div class="history-section">
             <button class="history-toggle" onclick="toggleHistory()">
                 <span>📋 Transaction History <span class="badge" id="txnBadge">0</span></span>
                 <span class="arrow" id="arrowIcon">▼</span>
             </button>
             <div class="history-content" id="historyContent">
-                <div class="history-list" id="historyList">
-                    <!-- Dynamically populated -->
-                </div>
+                <div class="history-list" id="historyList"></div>
             </div>
         </div>
 
@@ -633,7 +639,6 @@
         </div>
     </div>
 
-    <!-- ===== RECEIPT MODAL ===== -->
     <div class="modal-overlay" id="receiptModal">
         <div class="modal">
             <div class="receipt-header">
@@ -641,9 +646,7 @@
                 <h2>Payment Receipt</h2>
                 <p class="sub">ADM MoMo Payment</p>
             </div>
-
             <div class="receipt-divider"></div>
-
             <div class="receipt-row">
                 <span class="label">Status</span>
                 <span class="value" id="receiptStatus" style="color:#4ade80;">✅ Successful</span>
@@ -664,9 +667,7 @@
                 <span class="label">Date & Time</span>
                 <span class="value" id="receiptDate" style="font-size:12px;">2026-08-07 14:30</span>
             </div>
-
             <div class="receipt-divider"></div>
-
             <div class="receipt-actions">
                 <button class="close-btn" onclick="closeReceipt()">Close</button>
                 <button class="print-btn" onclick="printReceipt()">🖨️ Print</button>
@@ -676,9 +677,9 @@
 
     <script>
         // ============================================
-        // CONFIGURATION - 👇 REPLACE WITH YOUR PUBLIC KEY
+        // CONFIGURATION - Your Test Key
         // ============================================
-        const PAYSTACK_PUBLIC_KEY = pk_live_beaf994cee5d20a1c612a1571b22fa8df74e8536
+        const PAYSTACK_PUBLIC_KEY = 'pk_live_beaf994cee5d20a1c612a1571b22fa8df74e8536';
 
         // ============================================
         // STATE
@@ -687,9 +688,15 @@
         let currentReceiptIndex = -1;
         let isHistoryOpen = false;
 
-        // ============================================
-        // INIT - Load from localStorage
-        // ============================================
+        function showStatus(message, type = 'info') {
+            const box = document.getElementById('statusBox');
+            box.textContent = message;
+            box.className = 'status-box show ' + type;
+            setTimeout(() => {
+                box.className = 'status-box';
+            }, 8000);
+        }
+
         function loadTransactions() {
             const saved = localStorage.getItem('adm_momo_transactions');
             if (saved) {
@@ -713,9 +720,6 @@
             document.getElementById('txnBadge').textContent = transactions.length;
         }
 
-        // ============================================
-        // TOGGLE HISTORY
-        // ============================================
         function toggleHistory() {
             isHistoryOpen = !isHistoryOpen;
             const content = document.getElementById('historyContent');
@@ -730,9 +734,6 @@
             }
         }
 
-        // ============================================
-        // RENDER HISTORY
-        // ============================================
         function renderHistory() {
             const list = document.getElementById('historyList');
 
@@ -776,9 +777,6 @@
             }).join('');
         }
 
-        // ============================================
-        // INITIATE PAYMENT
-        // ============================================
         function initiatePayment() {
             const phoneInput = document.getElementById('phone');
             const amountInput = document.getElementById('amount');
@@ -787,13 +785,13 @@
             const amount = parseFloat(amountInput.value);
 
             if (!phone || phone.length < 7) {
-                alert('❌ Please enter a valid phone number.');
+                showStatus('❌ Please enter a valid phone number.', 'error');
                 phoneInput.focus();
                 return;
             }
 
             if (!amount || amount <= 0) {
-                alert('❌ Please enter a valid amount.');
+                showStatus('❌ Please enter a valid amount.', 'error');
                 amountInput.focus();
                 return;
             }
@@ -801,6 +799,13 @@
             if (!phone.startsWith('+')) {
                 phone = '+233' + phone.replace(/^0/, '');
             }
+
+            if (typeof PaystackPop === 'undefined') {
+                showStatus('❌ Paystack library not loaded. Check internet.', 'error');
+                return;
+            }
+
+            showStatus('⏳ Initializing payment...', 'info');
 
             const pendingTxn = {
                 phone: phone,
@@ -820,34 +825,38 @@
             const index = transactions.length - 1;
             viewReceipt(index);
 
-            const handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: 'customer@adm-pay.com',
-                amount: Math.round(amount * 100),
-                currency: 'GHS',
-                phone: phone,
-                callback: function(response) {
-                    transactions[index].status = 'success';
-                    transactions[index].reference = response.reference;
-                    transactions[index].timestamp = Date.now();
-                    saveTransactions();
-                    viewReceipt(index);
-                    document.getElementById('amount').value = '';
-                },
-                onClose: function() {
-                    if (transactions[index] && transactions[index].status === 'pending') {
-                        transactions[index].status = 'failed';
+            try {
+                const handler = PaystackPop.setup({
+                    key: PAYSTACK_PUBLIC_KEY,
+                    email: 'customer@adm-pay.com',
+                    amount: Math.round(amount * 100),
+                    currency: 'GHS',
+                    phone: phone,
+                    callback: function(response) {
+                        transactions[index].status = 'success';
+                        transactions[index].reference = response.reference;
+                        transactions[index].timestamp = Date.now();
                         saveTransactions();
                         viewReceipt(index);
+                        document.getElementById('amount').value = '';
+                        showStatus('✅ Payment successful! Ref: ' + response.reference, 'success');
+                    },
+                    onClose: function() {
+                        if (transactions[index] && transactions[index].status === 'pending') {
+                            transactions[index].status = 'failed';
+                            saveTransactions();
+                            viewReceipt(index);
+                            showStatus('❌ Payment cancelled or closed.', 'error');
+                        }
                     }
-                }
-            });
-            handler.openIframe();
+                });
+                handler.openIframe();
+            } catch (error) {
+                showStatus('❌ Error: ' + error.message, 'error');
+                console.error('Paystack Error:', error);
+            }
         }
 
-        // ============================================
-        // RECEIPT VIEW
-        // ============================================
         function viewReceipt(index) {
             const txn = transactions[index];
             if (!txn) return;
@@ -909,9 +918,6 @@
             location.reload();
         }
 
-        // ============================================
-        // CLEAR HISTORY
-        // ============================================
         function clearHistory() {
             if (transactions.length === 0) return;
             if (confirm('🗑️ Delete all transaction history?')) {
@@ -920,19 +926,14 @@
                 if (isHistoryOpen) {
                     toggleHistory();
                 }
+                showStatus('🗑️ History cleared.', 'info');
             }
         }
 
-        // ============================================
-        // CLOSE MODAL ON OVERLAY CLICK
-        // ============================================
         document.getElementById('receiptModal').addEventListener('click', function(e) {
             if (e.target === this) closeReceipt();
         });
 
-        // ============================================
-        // KEYBOARD SHORTCUT: Enter to pay
-        // ============================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const active = document.activeElement;
@@ -942,11 +943,16 @@
             }
         });
 
-        // ============================================
-        // START
-        // ============================================
         loadTransactions();
         document.getElementById('phone').focus();
+
+        window.addEventListener('load', function() {
+            if (typeof PaystackPop !== 'undefined') {
+                showStatus('✅ Paystack loaded successfully! Ready for payments.', 'success');
+            } else {
+                showStatus('⚠️ Paystack library not loaded. Check your internet connection.', 'error');
+            }
+        });
     </script>
 
 </body>
