@@ -1,47 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADM MoMo Payment</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smile Life Enterprise - Premium Gadgets & Fashion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
+        /* ============================================================
+           DESIGNED BY MR. K — PROFESSIONAL BLUE/WHITE THEME
+           ============================================================ */
+
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: radial-gradient(ellipse at center, #2a2a2a, #0d0d0d);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            background: #f0f4f8;
+            color: #1a2332;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 35px 30px;
-            max-width: 520px;
-            width: 100%;
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06),
-                0 0 80px rgba(255, 255, 255, 0.02);
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .header {
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e8ecf1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c7be5;
+            border-radius: 3px;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: #1a2332;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            padding: 6px 0;
+        }
+
+        .top-bar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .top-bar a {
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s;
+        }
+
+        .top-bar a:hover {
+            color: #fff;
+        }
+
+        .top-bar .left span {
+            margin-right: 14px;
+        }
+
+        .top-bar .right a {
+            margin-left: 12px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .logo {
@@ -50,909 +108,2063 @@
             gap: 10px;
         }
 
-        .logo .icon {
-            font-size: 32px;
-        }
-
-        .logo h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #e0e0e0, #a0a0a0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .logo h1 span {
-            background: linear-gradient(135deg, #d4d4d4, #888888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .header-actions button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.4);
-            padding: 8px 14px;
+        .logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #2c7be5;
             border-radius: 10px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .header-actions button:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.7);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .form-section {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .form-section .section-title {
-            color: rgba(255, 255, 255, 0.25);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.35);
-            margin-bottom: 5px;
-            letter-spacing: 0.3px;
-        }
-
-        .phone-input {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .phone-input:focus-within {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
-        }
-
-        .phone-input .country-code {
-            padding: 12px 0 12px 14px;
-            color: rgba(255, 255, 255, 0.25);
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .phone-input input {
-            width: 100%;
-            padding: 12px 14px 12px 8px;
-            border: none !important;
-            background: transparent !important;
-            font-size: 15px;
-            color: #e0e0e0;
-            outline: none;
-            box-shadow: none !important;
-        }
-
-        .phone-input input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        .amount-display {
-            position: relative;
-        }
-
-        .amount-display .currency {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .amount-display input {
-            width: 100%;
-            padding: 12px 14px 12px 36px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-            font-size: 15px;
-            color: #e0e0e0;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .amount-display input:focus {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
-        }
-
-        .amount-display input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        .pay-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #4a4a4a, #1a1a1a);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #d4d4d4;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            margin-top: 4px;
-        }
-
-        .pay-btn:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #5a5a5a, #2a2a2a);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        .pay-btn:active {
-            transform: scale(0.97);
-        }
-
-        .history-section {
-            margin-top: 20px;
-        }
-
-        .history-toggle {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            letter-spacing: 0.3px;
-        }
-
-        .history-toggle:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .history-toggle .arrow {
-            transition: transform 0.3s ease;
-            font-size: 16px;
-        }
-
-        .history-toggle .arrow.open {
-            transform: rotate(180deg);
-        }
-
-        .history-toggle .badge {
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.3);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .history-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
-            opacity: 0;
-            margin-top: 0;
-        }
-
-        .history-content.open {
-            max-height: 600px;
-            opacity: 1;
-            margin-top: 12px;
-        }
-
-        .history-list {
-            max-height: 400px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
-            padding-right: 4px;
-        }
-
-        .history-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .history-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .history-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-        }
-
-        .transaction-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .transaction-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.06);
-        }
-
-        .transaction-item .row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .transaction-item .left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .transaction-item .status-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
+            font-size: 18px;
+            color: #fff;
         }
 
-        .transaction-item .status-icon.success {
-            background: rgba(34, 197, 94, 0.1);
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a2332;
         }
 
-        .transaction-item .status-icon.failed {
-            background: rgba(239, 68, 68, 0.1);
+        .logo h1 span {
+            color: #2c7be5;
         }
 
-        .transaction-item .status-icon.pending {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .transaction-item .info .phone {
-            color: #e0e0e0;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .transaction-item .info .ref {
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 10px;
-            font-family: monospace;
-        }
-
-        .transaction-item .right {
-            text-align: right;
-        }
-
-        .transaction-item .right .amount {
-            color: #d4d4d4;
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .transaction-item .right .date {
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 10px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 25px 10px;
-            color: rgba(255, 255, 255, 0.1);
-        }
-
-        .empty-state .emoji {
-            font-size: 30px;
+        .logo .tagline {
+            font-size: 9px;
+            color: #8a9bb5;
             display: block;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            font-weight: 500;
+            color: #4a5a72;
+            transition: color 0.3s;
+            font-size: 13px;
+            position: relative;
+            letter-spacing: 0.3px;
+        }
+
+        nav a:hover {
+            color: #2c7be5;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #2c7be5;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-icons a {
+            font-size: 16px;
+            color: #4a5a72;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-icons a:hover {
+            color: #2c7be5;
+        }
+
+        .nav-icons .cart-count {
+            background: #2c7be5;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -8px;
+            right: -10px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4a5a72;
+            background: none;
+            border: none;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 50px 0 40px;
+            background: linear-gradient(135deg, #1a2332, #2c3e5a);
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(44, 123, 229, 0.08), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .hero-text h2 span {
+            color: #6aafff;
+        }
+
+        .hero-text p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            margin: 14px 0 20px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 26px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: #2c7be5;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1a5fc7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44, 123, 229, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            border-color: #fff;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #1e8a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 11px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .hero-stats div {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+        }
+
+        .hero-stats div strong {
+            display: block;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .section-title h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a2332;
+        }
+
+        .section-title p {
+            color: #8a9bb5;
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .section-title .line {
+            width: 40px;
+            height: 3px;
+            background: #2c7be5;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            padding: 40px 0 10px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .category-card {
+            background: #ffffff;
+            border: 1px solid #e8ecf1;
+            border-radius: 12px;
+            padding: 16px 10px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: #2c7be5;
+            box-shadow: 0 8px 25px rgba(44, 123, 229, 0.08);
+        }
+
+        .category-card .icon {
+            font-size: 26px;
+            color: #2c7be5;
+            margin-bottom: 4px;
+        }
+
+        .category-card h4 {
+            font-size: 12px;
+            font-weight: 500;
+            color: #4a5a72;
+        }
+
+        .category-card:hover h4 {
+            color: #2c7be5;
+        }
+
+        .category-card.active {
+            border-color: #2c7be5;
+            background: #f0f7ff;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .products {
+            padding: 10px 0 50px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 16px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e8ecf1;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: #d0d9e6;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .product-image {
+            height: 180px;
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.04);
+        }
+
+        .product-image .badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .product-image .badge.hot {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .product-image .badge.sale {
+            background: #28a745;
+            color: #fff;
+        }
+        .product-image .badge.new {
+            background: #2c7be5;
+            color: #fff;
+        }
+        .product-image .badge.eco {
+            background: #17a2b8;
+            color: #fff;
+        }
+        .product-image .badge.limited {
+            background: #fd7e14;
+            color: #fff;
+        }
+        .product-image .badge.staff {
+            background: #6f42c1;
+            color: #fff;
+        }
+
+        .product-image .wishlist-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #b0c0d0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .product-image .wishlist-btn:hover {
+            color: #e74c3c;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-info {
+            padding: 12px 14px 14px;
+        }
+
+        .product-info .category-tag {
+            font-size: 9px;
+            color: #8a9bb5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .product-info .name {
+            font-weight: 500;
+            font-size: 13px;
+            color: #1a2332;
+            margin: 2px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 36px;
+        }
+
+        .product-info .price {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2c7be5;
+        }
+
+        .product-info .old-price {
+            font-size: 12px;
+            color: #b0c0d0;
+            text-decoration: line-through;
+            margin-left: 6px;
+        }
+
+        .product-info .rating {
+            color: #f5a623;
+            font-size: 12px;
+            margin: 2px 0 8px;
+        }
+
+        .product-info .rating span {
+            color: #b0c0d0;
+            margin-left: 4px;
+        }
+
+        .product-info .add-btn {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            background: #f8fafc;
+            color: #4a5a72;
+            font-weight: 500;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-info .add-btn:hover {
+            background: #2c7be5;
+            color: #fff;
+            border-color: #2c7be5;
+        }
+
+        .product-info .add-btn.added {
+            background: #28a745;
+            color: #fff;
+            border-color: #28a745;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 40px 0;
+            background: #ffffff;
+            border-top: 1px solid #e8ecf1;
+            border-bottom: 1px solid #e8ecf1;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .feature-item .icon {
+            font-size: 28px;
+            color: #2c7be5;
             margin-bottom: 6px;
         }
 
-        .empty-state p {
-            font-size: 12px;
+        .feature-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2332;
         }
 
-        .modal-overlay {
+        .feature-item p {
+            font-size: 12px;
+            color: #8a9bb5;
+            margin-top: 2px;
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            padding: 50px 0;
+            background: #f8fafc;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 14px;
+        }
+
+        .about-text h3 span {
+            color: #2c7be5;
+        }
+
+        .about-text p {
+            color: #5a6a82;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .about-text ul {
+            list-style: none;
+            margin: 14px 0;
+        }
+
+        .about-text ul li {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4a5a72;
+            font-size: 13px;
+        }
+
+        .about-text ul li i {
+            color: #2c7be5;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 50px 0;
+            background: #ffffff;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .testimonial-card {
+            background: #f8fafc;
+            border: 1px solid #e8ecf1;
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            border-color: #d0d9e6;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .testimonial-card .stars {
+            color: #f5a623;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .testimonial-card p {
+            color: #5a6a82;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .testimonial-card .author img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #e8ecf1;
+        }
+
+        .testimonial-card .author .name {
+            font-weight: 500;
+            font-size: 13px;
+            color: #1a2332;
+        }
+
+        .testimonial-card .author .role {
+            font-size: 11px;
+            color: #8a9bb5;
+        }
+
+        /* ===== PAYMENT METHODS ===== */
+        .payment-methods {
+            padding: 25px 0;
+            background: #f8fafc;
+            border-top: 1px solid #e8ecf1;
+            border-bottom: 1px solid #e8ecf1;
+        }
+
+        .payment-methods .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .payment-methods .payment-icon {
+            font-size: 22px;
+            color: #8a9bb5;
+            transition: color 0.3s;
+        }
+
+        .payment-methods .payment-icon:hover {
+            color: #2c7be5;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact {
+            padding: 50px 0;
+            background: #ffffff;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 14px;
+        }
+
+        .contact-info h3 span {
+            color: #2c7be5;
+        }
+
+        .contact-info p {
+            color: #5a6a82;
+            line-height: 1.8;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8ecf1;
+        }
+
+        .contact-detail:last-child {
+            border-bottom: none;
+        }
+
+        .contact-detail i {
+            font-size: 16px;
+            color: #2c7be5;
+            width: 24px;
+        }
+
+        .contact-detail .label {
+            font-weight: 500;
+            font-size: 11px;
+            color: #8a9bb5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-detail .value {
+            font-size: 13px;
+            color: #4a5a72;
+        }
+
+        .contact-detail .value a {
+            color: #4a5a72;
+        }
+
+        .contact-detail .value a:hover {
+            color: #2c7be5;
+        }
+
+        .contact-form {
+            background: #f8fafc;
+            border: 1px solid #e8ecf1;
+            padding: 26px;
+            border-radius: 12px;
+        }
+
+        .contact-form h4 {
+            font-size: 18px;
+            color: #1a2332;
+            margin-bottom: 14px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+            outline: none;
+            color: #1a2332;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #2c7be5;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #b0c0d0;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #1a2332;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .footer-brand h3 {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .footer-brand h3 span {
+            color: #2c7be5;
+        }
+
+        .footer-brand p {
+            margin: 8px 0 14px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+            line-height: 1.7;
+        }
+
+        .footer-social a {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-right: 4px;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-social a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            padding: 4px 0;
+        }
+
+        .footer-col ul a {
+            color: rgba(255, 255, 255, 0.3);
+            transition: color 0.2s;
+            font-size: 13px;
+        }
+
+        .footer-col ul a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-bottom .designer {
+            color: #2c7be5;
+            font-weight: 500;
+        }
+
+        .footer-bottom .heart {
+            color: #e74c3c;
+        }
+
+        /* ===== CART SIDEBAR ===== */
+        .cart-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal {
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 35px 30px;
-            max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
         }
 
-        .modal .receipt-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .modal .receipt-header .icon {
-            font-size: 48px;
+        .cart-overlay.active {
             display: block;
-            margin-bottom: 6px;
         }
 
-        .modal .receipt-header h2 {
-            color: #e0e0e0;
-            font-size: 20px;
-            font-weight: 700;
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90vw;
+            height: 100%;
+            background: #ffffff;
+            z-index: 2001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -4px 0 40px rgba(0, 0, 0, 0.04);
         }
 
-        .modal .receipt-header .sub {
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 12px;
-            margin-top: 2px;
-            font-weight: 500;
-            letter-spacing: 1px;
+        .cart-sidebar.open {
+            right: 0;
         }
 
-        .modal .receipt-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.04), transparent);
-            margin: 16px 0;
-        }
-
-        .modal .receipt-row {
+        .cart-sidebar .cart-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e8ecf1;
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
+            align-items: center;
+            background: #f8fafc;
         }
 
-        .modal .receipt-row .label {
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 600;
+        .cart-sidebar .cart-header h3 {
+            font-size: 17px;
+            color: #1a2332;
         }
 
-        .modal .receipt-row .value {
-            color: #d4d4d4;
-            font-weight: 500;
-        }
-
-        .modal .receipt-row .value.amount {
-            color: #d4d4d4;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .modal .receipt-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .modal .receipt-actions button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
+        .cart-sidebar .cart-header button {
+            background: none;
             border: none;
-            font-size: 14px;
-            font-weight: 600;
+            color: #8a9bb5;
+            font-size: 20px;
             cursor: pointer;
+        }
+
+        .cart-sidebar .cart-header button:hover {
+            color: #1a2332;
+        }
+
+        .cart-sidebar .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 18px;
+        }
+
+        .cart-sidebar .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8ecf1;
+            align-items: center;
+        }
+
+        .cart-sidebar .cart-item img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e8ecf1;
+        }
+
+        .cart-sidebar .cart-item .item-info {
+            flex: 1;
+        }
+
+        .cart-sidebar .cart-item .item-info .name {
+            font-weight: 500;
+            font-size: 12px;
+            color: #1a2332;
+        }
+
+        .cart-sidebar .cart-item .item-info .price {
+            color: #2c7be5;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .cart-sidebar .cart-item .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cart-sidebar .cart-item .qty-control button {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #e8ecf1;
+            background: #ffffff;
+            color: #4a5a72;
+            cursor: pointer;
+            font-weight: 600;
             transition: all 0.2s;
         }
 
-        .modal .receipt-actions .close-btn {
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        .cart-sidebar .cart-item .qty-control button:hover {
+            background: #f0f4f8;
+            border-color: #2c7be5;
         }
 
-        .modal .receipt-actions .close-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .modal .receipt-actions .print-btn {
-            background: linear-gradient(135deg, #4a4a4a, #1a1a1a);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: #d4d4d4;
-        }
-
-        .modal .receipt-actions .print-btn:hover {
-            background: linear-gradient(135deg, #5a5a5a, #2a2a2a);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .footer {
+        .cart-sidebar .cart-item .qty-control span {
+            min-width: 20px;
             text-align: center;
-            margin-top: 20px;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.06);
-        }
-
-        .footer span {
-            color: rgba(255, 255, 255, 0.15);
-            font-weight: 500;
-        }
-
-        .status-box {
-            background: rgba(255, 200, 0, 0.08);
-            border: 1px solid rgba(255, 200, 0, 0.12);
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 15px;
-            color: rgba(255, 255, 255, 0.6);
+            color: #1a2332;
             font-size: 13px;
-            text-align: center;
-            display: none;
         }
-        .status-box.show { display: block; }
-        .status-box.error { background: rgba(255, 0, 0, 0.08); border-color: rgba(255, 0, 0, 0.15); color: rgba(255, 100, 100, 0.8); }
-        .status-box.success { background: rgba(0, 255, 100, 0.08); border-color: rgba(0, 255, 100, 0.12); color: rgba(100, 255, 150, 0.8); }
+
+        .cart-sidebar .cart-item .remove-btn {
+            color: #b0c0d0;
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .cart-sidebar .cart-item .remove-btn:hover {
+            color: #e74c3c;
+        }
+
+        .cart-sidebar .cart-footer {
+            padding: 14px 18px;
+            border-top: 1px solid #e8ecf1;
+            background: #f8fafc;
+        }
+
+        .cart-sidebar .cart-footer .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 10px;
+        }
+
+        .cart-sidebar .cart-footer .checkout-btn {
+            width: 100%;
+            padding: 13px;
+            background: #2c7be5;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cart-sidebar .cart-footer .checkout-btn:hover {
+            background: #1a5fc7;
+            box-shadow: 0 4px 20px rgba(44, 123, 229, 0.3);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 0;
+            color: #b0c0d0;
+        }
+
+        .empty-cart i {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a2332;
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 3px solid #28a745;
+        }
+
+        .toast.error {
+            border-left: 3px solid #e74c3c;
+        }
+
+        .toast.info {
+            border-left: 3px solid #2c7be5;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-text h2 {
+                font-size: 28px;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero-image img {
+                max-height: 220px;
+                object-fit: cover;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            nav {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 14px 0;
+                gap: 10px;
+                background: #ffffff;
+                border-top: 1px solid #e8ecf1;
+            }
+            nav.open {
+                display: flex;
+            }
+            .nav-icons {
+                gap: 10px;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+                gap: 12px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .top-bar .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .top-bar .right a {
+                margin: 0 4px;
+            }
+            .cart-sidebar {
+                width: 100%;
+                max-width: 100%;
+                right: -100%;
+            }
+            .hero .container {
+                padding: 30px 20px;
+            }
+            .hero-text h2 {
+                font-size: 22px;
+            }
+        }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 20px 15px;
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
-            .logo h1 {
+            .product-info .name {
+                font-size: 11px;
+                height: 30px;
+            }
+            .product-info .price {
+                font-size: 14px;
+            }
+            .product-image {
+                height: 140px;
+            }
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .category-card {
+                padding: 12px 6px;
+            }
+            .category-card .icon {
                 font-size: 20px;
             }
-            .header-actions button {
+            .category-card h4 {
                 font-size: 10px;
-                padding: 6px 10px;
             }
-            .modal {
-                padding: 25px 20px;
+            .container {
+                padding: 0 12px;
+            }
+            .hero-text h2 {
+                font-size: 18px;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 12px;
+            }
+            .logo h1 {
+                font-size: 17px;
+            }
+            .hero-image img {
+                max-height: 160px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="left">
+                <span><i class="fas fa-store"></i> Open: Mon-Sat 8AM - 8PM</span>
+                <span><i class="fas fa-phone"></i> <a href="tel:+233544514692">054 451 4692</a></span>
+            </div>
+            <div class="right">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="https://wa.me/233544514692"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
             <div class="logo">
-                <span class="icon">💳</span>
-                <h1>ADM <span>MoMo</span></h1>
-            </div>
-            <div class="header-actions">
-                <button onclick="clearHistory()">🗑️ Clear</button>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="section-title">📝 New Payment</div>
-
-            <div class="status-box" id="statusBox"></div>
-
-            <div class="form-group">
-                <label>📱 Phone Number</label>
-                <div class="phone-input">
-                    <span class="country-code">+233</span>
-                    <input type="tel" id="phone" placeholder="50 123 4567" value="501234567">
+                <div class="logo-icon"><i class="fas fa-smile"></i></div>
+                <div>
+                    <h1>Smile <span>Life</span></h1>
+                    <span class="tagline">Enterprise</span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>💰 Amount (GHS)</label>
-                <div class="amount-display">
-                    <span class="currency">₵</span>
-                    <input type="number" id="amount" placeholder="0.00" value="100.00" step="0.01">
+            <nav id="mainNav">
+                <a href="#">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="nav-icons">
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="javascript:void(0)" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+                <button class="hamburger" id="hamburgerBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-text">
+                <h2>Premium <span>Gadgets & Fashion</span> for Every Lifestyle</h2>
+                <p>Discover the best smartphones, electronics, gaming consoles, and trending clothing at unbeatable prices. Fast delivery across Ghana.</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+                    <a href="#about" class="btn btn-outline"><i class="fas fa-info-circle"></i> Learn More</a>
+                </div>
+                <div class="hero-stats">
+                    <div><strong>5,000+</strong> Happy Customers</div>
+                    <div><strong>500+</strong> Products</div>
+                    <div><strong>1-3 Days</strong> Delivery</div>
                 </div>
             </div>
-
-            <button class="pay-btn" onclick="initiatePayment()">
-                💳 Pay Now
-            </button>
-        </div>
-
-        <div class="history-section">
-            <button class="history-toggle" onclick="toggleHistory()">
-                <span>📋 Transaction History <span class="badge" id="txnBadge">0</span></span>
-                <span class="arrow" id="arrowIcon">▼</span>
-            </button>
-            <div class="history-content" id="historyContent">
-                <div class="history-list" id="historyList"></div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" alt="Smile Life" />
             </div>
         </div>
+    </section>
 
-        <div class="footer">
-            🔒 Secured by <span>Paystack</span> • ADM MoMo v2.0
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="receiptModal">
-        <div class="modal">
-            <div class="receipt-header">
-                <span class="icon">🧾</span>
-                <h2>Payment Receipt</h2>
-                <p class="sub">ADM MoMo Payment</p>
+    <!-- ===== CATEGORIES ===== -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h3>Shop by Category</h3>
+                <p>Find exactly what you're looking for</p>
+                <div class="line"></div>
             </div>
-            <div class="receipt-divider"></div>
-            <div class="receipt-row">
-                <span class="label">Status</span>
-                <span class="value" id="receiptStatus" style="color:#4ade80;">✅ Successful</span>
-            </div>
-            <div class="receipt-row">
-                <span class="label">Amount</span>
-                <span class="value amount" id="receiptAmount">₵ 100.00</span>
-            </div>
-            <div class="receipt-row">
-                <span class="label">Phone</span>
-                <span class="value" id="receiptPhone">+233 50 123 4567</span>
-            </div>
-            <div class="receipt-row">
-                <span class="label">Reference</span>
-                <span class="value" id="receiptRef" style="font-family:monospace;font-size:12px;">TXN-123456</span>
-            </div>
-            <div class="receipt-row">
-                <span class="label">Date & Time</span>
-                <span class="value" id="receiptDate" style="font-size:12px;">2026-08-07 14:30</span>
-            </div>
-            <div class="receipt-divider"></div>
-            <div class="receipt-actions">
-                <button class="close-btn" onclick="closeReceipt()">Close</button>
-                <button class="print-btn" onclick="printReceipt()">🖨️ Print</button>
+            <div class="category-grid" id="categoryGrid">
+                <!-- Categories rendered by JavaScript -->
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        // ============================================
-        // CONFIGURATION - Your Test Key
-        // ============================================
-        const PAYSTACK_PUBLIC_KEY = 'pk_live_beaf994cee5d20a1c612a1571b22fa8df74e8536';
+    <!-- ===== PRODUCTS ===== -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h3>🔥 Featured Products</h3>
+                <p id="categoryLabel">All Categories</p>
+                <div class="line"></div>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Products rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
 
-        // ============================================
-        // STATE
-        // ============================================
-        let transactions = [];
-        let currentReceiptIndex = -1;
-        let isHistoryOpen = false;
+    <!-- ===== FEATURES ===== -->
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-truck"></i></div>
+                    <h4>Fast Delivery</h4>
+                    <p>1-3 days across Ghana</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-store-alt"></i></div>
+                    <h4>Pickup Available</h4>
+                    <p>Visit our store in Accra</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-undo"></i></div>
+                    <h4>3-Day Returns</h4>
+                    <p>Hassle-free returns</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <h4>Secure Payments</h4>
+                    <p>All payment methods accepted</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        function showStatus(message, type = 'info') {
-            const box = document.getElementById('statusBox');
-            box.textContent = message;
-            box.className = 'status-box show ' + type;
-            setTimeout(() => {
-                box.className = 'status-box';
-            }, 8000);
-        }
+    <!-- ===== ABOUT ===== -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>About <span>Smile Life</span> Enterprise</h3>
+                    <p>Smile Life Enterprise is a premium retail and wholesale company based in Accra, Ghana. We specialize in high-quality smartphones, electronics, gaming consoles, and fashion.</p>
+                    <p>Our mission is to bring the best products to our customers at competitive prices, backed by excellent customer service and reliable delivery.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Quality guaranteed products</li>
+                        <li><i class="fas fa-check-circle"></i> Free delivery on orders over ₵500</li>
+                        <li><i class="fas fa-check-circle"></i> 3-day return & refund policy</li>
+                        <li><i class="fas fa-check-circle"></i> Customer support 7 days a week</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&h=400&fit=crop" alt="About" />
+                </div>
+            </div>
+        </div>
+    </section>
 
-        function loadTransactions() {
-            const saved = localStorage.getItem('adm_momo_transactions');
-            if (saved) {
-                try {
-                    transactions = JSON.parse(saved);
-                } catch {
-                    transactions = [];
-                }
-            }
-            renderHistory();
-            updateBadge();
-        }
-
-        function saveTransactions() {
-            localStorage.setItem('adm_momo_transactions', JSON.stringify(transactions));
-            renderHistory();
-            updateBadge();
-        }
-
-        function updateBadge() {
-            document.getElementById('txnBadge').textContent = transactions.length;
-        }
-
-        function toggleHistory() {
-            isHistoryOpen = !isHistoryOpen;
-            const content = document.getElementById('historyContent');
-            const arrow = document.getElementById('arrowIcon');
-
-            if (isHistoryOpen) {
-                content.classList.add('open');
-                arrow.classList.add('open');
-            } else {
-                content.classList.remove('open');
-                arrow.classList.remove('open');
-            }
-        }
-
-        function renderHistory() {
-            const list = document.getElementById('historyList');
-
-            if (transactions.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <span class="emoji">📭</span>
-                        <p>No transactions yet</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const sorted = [...transactions].reverse();
-
-            list.innerHTML = sorted.map((txn, index) => {
-                const realIndex = transactions.length - 1 - index;
-                const statusClass = txn.status === 'success' ? 'success' : txn.status === 'failed' ? 'failed' : 'pending';
-                const statusEmoji = txn.status === 'success' ? '✅' : txn.status === 'failed' ? '❌' : '⏳';
-                const amount = parseFloat(txn.amount).toFixed(2);
-                const date = new Date(txn.timestamp).toLocaleDateString();
-                const time = new Date(txn.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                return `
-                    <div class="transaction-item" onclick="viewReceipt(${realIndex})">
-                        <div class="row">
-                            <div class="left">
-                                <div class="status-icon ${statusClass}">${statusEmoji}</div>
-                                <div class="info">
-                                    <div class="phone">${txn.phone}</div>
-                                    <div class="ref">${txn.reference || 'N/A'}</div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="amount">₵ ${amount}</div>
-                                <div class="date">${date} ${time}</div>
-                            </div>
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h3>What Our Customers Say</h3>
+                <p>Real reviews from real people</p>
+                <div class="line"></div>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Bought an iPhone 15 from Smile Life. The best price in Accra! Delivery was fast and the phone is genuine."</p>
+                    <div class="author">
+                        <img src="https://i.postimg.cc/nLkmd8kt/avatar1.jpg" alt="Kwame" />
+                        <div>
+                            <div class="name">Kwame Mensah</div>
+                            <div class="role">Tema, Ghana</div>
                         </div>
                     </div>
-                `;
-            }).join('');
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Their clothing collection is amazing. I've ordered 3 times and always received quality items."</p>
+                    <div class="author">
+                        <img src="https://i.postimg.cc/gJ0k2XpT/avatar2.jpg" alt="Ama" />
+                        <div>
+                            <div class="name">Ama Serwaa</div>
+                            <div class="role">Accra, Ghana</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Best place for gaming consoles. Got my PS5 at a great price. Their customer service is top-notch."</p>
+                    <div class="author">
+                        <img src="https://i.postimg.cc/t4p2Fb6d/avatar3.jpg" alt="Junior" />
+                        <div>
+                            <div class="name">Junior Asare</div>
+                            <div class="role">Kumasi, Ghana</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PAYMENT METHODS ===== -->
+    <section class="payment-methods">
+        <div class="container">
+            <span class="payment-icon"><i class="fab fa-cc-visa"></i></span>
+            <span class="payment-icon"><i class="fab fa-cc-mastercard"></i></span>
+            <span class="payment-icon"><i class="fas fa-mobile-alt"></i> MTN</span>
+            <span class="payment-icon"><i class="fas fa-mobile-alt"></i> Airtel</span>
+            <span class="payment-icon"><i class="fas fa-mobile-alt"></i> Telecel</span>
+            <span class="payment-icon"><i class="fas fa-credit-card"></i> Paystack</span>
+            <span class="payment-icon"><i class="fas fa-university"></i> Bank</span>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h3>Get In Touch</h3>
+                <p>We'd love to hear from you</p>
+                <div class="line"></div>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contact <span>Smile Life</span></h3>
+                    <p>Have questions about our products, delivery, or returns? Reach out to us — we're here to help!</p>
+
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <div class="label">Location</div>
+                            <div class="value">Tip Toe Lane, Circle, Accra, Ghana</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <div class="label">WhatsApp / Phone</div>
+                            <div class="value"><a href="tel:+233544514692">054 451 4692</a></div>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <div class="label">Email</div>
+                            <div class="value"><a href="mailto:info@smilelifeenterprise.com">info@smilelifeenterprise.com</a></div>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div class="label">Working Hours</div>
+                            <div class="value">Mon - Sat: 8:00 AM - 8:00 PM<br />Sunday: Closed</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                        <a href="https://wa.me/233544514692" class="btn btn-success" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="tel:+233544514692" class="btn btn-primary">
+                            <i class="fas fa-phone"></i> Call Us
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h4>Send a Message</h4>
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Name" required />
+                        <input type="email" placeholder="Your Email" required />
+                        <input type="text" placeholder="Subject" />
+                        <textarea placeholder="Your Message" rows="4" required></textarea>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Smile <span>Life</span> Enterprise</h3>
+                    <p>Your trusted partner for quality smartphones, electronics, gaming consoles, and fashion. Retail and wholesale across Ghana.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://wa.me/233544514692"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Delivery Info</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-phone" style="margin-right:8px;color:#2c7be5;"></i> <a href="tel:+233544514692">054 451 4692</a></li>
+                        <li><i class="fab fa-whatsapp" style="margin-right:8px;color:#25D366;"></i> <a href="https://wa.me/233544514692">WhatsApp</a></li>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right:8px;color:#2c7be5;"></i> Tip Toe Lane, Circle, Accra</li>
+                        <li><i class="fas fa-envelope" style="margin-right:8px;color:#2c7be5;"></i> info@smilelifeenterprise.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Smile Life Enterprise. All rights reserved. &nbsp;|&nbsp;
+                Designed with <span class="heart"><i class="fas fa-heart"></i></span> by <span class="designer">Mr. K</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== CART SIDEBAR ===== -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+            <button onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="total"><span>Total:</span><span id="cartTotal">₵0.00</span></div>
+            <button class="checkout-btn" onclick="checkout()"><i class="fas fa-lock"></i> Proceed to Checkout</button>
+            <p style="text-align:center;font-size:11px;color:#b0c0d0;margin-top:6px;"><i class="fas fa-shield-alt"></i> Secured by Paystack</p>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================================
+    JAVASCRIPT — DESIGNED BY MR. K
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // PAYSTACK TEST KEY
+        // ============================================================
+        const PAYSTACK_PUBLIC_KEY = 'pk_test_cfd2f3845a3448a0744254dcbeec6afcd9217306';
+
+        // ============================================================
+        // CATEGORIES WITH ICONS
+        // ============================================================
+        const categories = [
+            { id: 'all', name: 'All Products', icon: 'fa-th-large' },
+            { id: 'Smartphones', name: 'Smartphones', icon: 'fa-mobile-alt' },
+            { id: 'Electronics', name: 'Electronics', icon: 'fa-laptop' },
+            { id: 'Gaming', name: 'Gaming', icon: 'fa-gamepad' },
+            { id: 'Clothing', name: 'Clothing', icon: 'fa-tshirt' },
+            { id: 'Accessories', name: 'Accessories', icon: 'fa-headphones' },
+            { id: 'TVs', name: 'TVs & Audio', icon: 'fa-tv' },
+            { id: 'Computers', name: 'Computers', icon: 'fa-desktop' },
+            { id: 'Cameras', name: 'Cameras', icon: 'fa-camera' },
+            { id: 'Home Appliances', name: 'Home Appliances', icon: 'fa-blender' },
+        ];
+
+        // ============================================================
+        // PRODUCT DATA — 35+ Products Across Categories
+        // ============================================================
+        const products = [
+            // === SMARTPHONES ===
+            { id: 1, name: 'iPhone 15 Pro Max 256GB', category: 'Smartphones', price: 18500, oldPrice: 21000,
+                image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.8, reviews: 125 },
+            { id: 2, name: 'Samsung Galaxy S24 Ultra', category: 'Smartphones', price: 17200, oldPrice: 19500,
+                image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.7, reviews: 98 },
+            { id: 3, name: 'Google Pixel 8 Pro', category: 'Smartphones', price: 14800, oldPrice: 16500,
+                image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.6, reviews: 67 },
+            { id: 4, name: 'OnePlus 12 512GB', category: 'Smartphones', price: 13500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.5, reviews: 89 },
+            { id: 5, name: 'Xiaomi 14 Pro', category: 'Smartphones', price: 9800, oldPrice: 11500,
+                image: 'https://images.unsplash.com/photo-1678911820864-e3c5a1f6f6b4?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.4, reviews: 112 },
+
+            // === ELECTRONICS ===
+            { id: 6, name: 'MacBook Air M2 2026', category: 'Electronics', price: 24500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.9, reviews: 203 },
+            { id: 7, name: 'HP Spectre x360 Laptop', category: 'Electronics', price: 21500, oldPrice: 25000,
+                image: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.6, reviews: 72 },
+            { id: 8, name: 'Dell XPS 16 2026', category: 'Electronics', price: 19800, oldPrice: 22000,
+                image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.7, reviews: 88 },
+            { id: 9, name: 'Canon EOS R6 Camera', category: 'Electronics', price: 32500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.8, reviews: 56 },
+            { id: 10, name: 'DJI Mini 3 Drone', category: 'Electronics', price: 9800, oldPrice: 11500,
+                image: 'https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.6, reviews: 89 },
+
+            // === GAMING ===
+            { id: 11, name: 'PlayStation 5 Console', category: 'Gaming', price: 12500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.9, reviews: 210 },
+            { id: 12, name: 'Xbox Series X 1TB', category: 'Gaming', price: 11800, oldPrice: 13500,
+                image: 'https://images.unsplash.com/photo-1621259182978-fbf93132d2c3?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.7, reviews: 156 },
+            { id: 13, name: 'Nintendo Switch OLED', category: 'Gaming', price: 8900, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1612374398024-5ef4b453d665?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.8, reviews: 134 },
+            { id: 14, name: 'PS5 DualSense Controller', category: 'Gaming', price: 1800, oldPrice: 2200,
+                image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.6, reviews: 78 },
+            { id: 15, name: 'Gaming Chair Pro', category: 'Gaming', price: 4500, oldPrice: 5500,
+                image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.5, reviews: 45 },
+
+            // === CLOTHING ===
+            { id: 16, name: 'Men\'s Classic Denim Jacket', category: 'Clothing', price: 850, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.5, reviews: 89 },
+            { id: 17, name: 'Women\'s Summer Dress', category: 'Clothing', price: 650, oldPrice: 950,
+                image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.4, reviews: 143 },
+            { id: 18, name: 'Premium Sneakers', category: 'Clothing', price: 1200, oldPrice: 1600,
+                image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.3, reviews: 98 },
+            { id: 19, name: 'Kids\' Summer Collection', category: 'Clothing', price: 450, oldPrice: 700,
+                image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.2, reviews: 210 },
+            { id: 20, name: 'Designer Handbag', category: 'Clothing', price: 2800, oldPrice: 3500,
+                image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300&h=200&fit=crop', badge: 'LIMITED',
+                rating: 4.7, reviews: 56 },
+            { id: 21, name: 'Men\'s Formal Suit', category: 'Clothing', price: 3200, oldPrice: 4200,
+                image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&h=200&fit=crop', badge: 'STAFF',
+                rating: 4.6, reviews: 34 },
+
+            // === ACCESSORIES ===
+            { id: 22, name: 'AirPods Pro 2', category: 'Accessories', price: 3200, oldPrice: 3800,
+                image: 'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.8, reviews: 312 },
+            { id: 23, name: 'Sony WH-1000XM5', category: 'Accessories', price: 4200, oldPrice: 5000,
+                image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.8, reviews: 178 },
+            { id: 24, name: 'Apple Watch Series 9', category: 'Accessories', price: 5600, oldPrice: 6500,
+                image: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.7, reviews: 145 },
+            { id: 25, name: 'Samsung Galaxy Watch 6', category: 'Accessories', price: 4800, oldPrice: 5500,
+                image: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=300&h=200&fit=crop', badge: 'NEW',
+                rating: 4.6, reviews: 89 },
+            { id: 26, name: 'Wireless Charging Pad', category: 'Accessories', price: 850, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=300&h=200&fit=crop', badge: 'ECO',
+                rating: 4.4, reviews: 156 },
+
+            // === TVS & AUDIO ===
+            { id: 27, name: 'Samsung 55" QLED TV', category: 'TVs', price: 28500, oldPrice: 32000,
+                image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.7, reviews: 67 },
+            { id: 28, name: 'LG 65" OLED TV', category: 'TVs', price: 38500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.9, reviews: 112 },
+            { id: 29, name: 'Sonos Soundbar', category: 'TVs', price: 5600, oldPrice: 6800,
+                image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.6, reviews: 78 },
+
+            // === COMPUTERS ===
+            { id: 30, name: 'Lenovo ThinkPad X1 Carbon', category: 'Computers', price: 22500, oldPrice: 26000,
+                image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop', badge: 'STAFF',
+                rating: 4.7, reviews: 92 },
+            { id: 31, name: 'ASUS ROG Gaming Laptop', category: 'Computers', price: 26500, oldPrice: null,
+                image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=300&h=200&fit=crop', badge: 'HOT',
+                rating: 4.8, reviews: 134 },
+
+            // === CAMERAS ===
+            { id: 32, name: 'Sony Alpha 7 IV', category: 'Cameras', price: 34500, oldPrice: 39000,
+                image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.9, reviews: 45 },
+
+            // === HOME APPLIANCES ===
+            { id: 33, name: 'Dyson Vacuum Cleaner', category: 'Home Appliances', price: 8200, oldPrice: 9800,
+                image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=300&h=200&fit=crop', badge: 'ECO',
+                rating: 4.5, reviews: 67 },
+            { id: 34, name: 'KitchenAid Stand Mixer', category: 'Home Appliances', price: 4500, oldPrice: 5500,
+                image: 'https://images.unsplash.com/photo-1584999734482-0361a687adfa?w=300&h=200&fit=crop', badge: 'STAFF',
+                rating: 4.4, reviews: 89 },
+            { id: 35, name: 'Air Fryer Pro', category: 'Home Appliances', price: 2800, oldPrice: 3500,
+                image: 'https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=300&h=200&fit=crop', badge: 'SALE',
+                rating: 4.3, reviews: 156 },
+        ];
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let cart = [];
+        let currentCategory = 'all';
+        let filteredProducts = [...products];
+
+        // ============================================================
+        // RENDER CATEGORIES
+        // ============================================================
+        function renderCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = categories.map(cat => `
+                <div class="category-card ${cat.id === 'all' ? 'active' : ''}" onclick="filterCategory('${cat.id}')" id="cat-${cat.id}">
+                    <div class="icon"><i class="fas ${cat.icon}"></i></div>
+                    <h4>${cat.name}</h4>
+                </div>
+            `).join('');
         }
 
-        function initiatePayment() {
-            const phoneInput = document.getElementById('phone');
-            const amountInput = document.getElementById('amount');
+        // ============================================================
+        // RENDER PRODUCTS
+        // ============================================================
+        function renderProducts(productsToRender = filteredProducts) {
+            const grid = document.getElementById('productGrid');
+            const label = document.getElementById('categoryLabel');
 
-            let phone = phoneInput.value.replace(/\s/g, '');
-            const amount = parseFloat(amountInput.value);
+            const cat = categories.find(c => c.id === currentCategory);
+            label.textContent = cat ? cat.name : 'All Categories';
 
-            if (!phone || phone.length < 7) {
-                showStatus('❌ Please enter a valid phone number.', 'error');
-                phoneInput.focus();
+            if (productsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#b0c0d0;">
+                        <i class="fas fa-search" style="font-size:32px;display:block;margin-bottom:10px;"></i>
+                        <p>No products found in this category.</p>
+                        <button onclick="filterCategory('all')" class="btn btn-primary" style="margin-top:12px;">View All Products</button>
+                    </div>
+                `;
                 return;
             }
 
-            if (!amount || amount <= 0) {
-                showStatus('❌ Please enter a valid amount.', 'error');
-                amountInput.focus();
+            grid.innerHTML = productsToRender.map(p => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+                        <span class="badge ${p.badge.toLowerCase()}">${p.badge}</span>
+                        <button class="wishlist-btn" onclick="toggleWishlist(${p.id})"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <div class="category-tag">${p.category}</div>
+                        <div class="name">${p.name}</div>
+                        <div class="rating">⭐ ${p.rating} <span>(${p.reviews})</span></div>
+                        <div>
+                            <span class="price">₵${p.price.toLocaleString()}</span>
+                            ${p.oldPrice ? `<span class="old-price">₵${p.oldPrice.toLocaleString()}</span>` : ''}
+                        </div>
+                        <button class="add-btn" onclick="addToCart(${p.id})">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // FILTER
+        // ============================================================
+        function filterCategory(categoryId) {
+            currentCategory = categoryId;
+
+            // Highlight active category
+            document.querySelectorAll('.category-card').forEach(el => {
+                el.classList.remove('active');
+            });
+            const active = document.getElementById(`cat-${categoryId}`);
+            if (active) {
+                active.classList.add('active');
+            }
+
+            if (categoryId === 'all') {
+                filteredProducts = [...products];
+            } else {
+                filteredProducts = products.filter(p => p.category === categoryId);
+            }
+
+            renderProducts();
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // CART
+        // ============================================================
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast('✅ Added: ' + product.name, 'success');
+
+            const btns = document.querySelectorAll('.product-card .add-btn');
+            const btn = btns[btns.length - 1];
+            if (btn) {
+                btn.innerHTML = '✅ Added!';
+                btn.classList.add('added');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart';
+                    btn.classList.remove('added');
+                }, 1500);
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+            renderCartItems();
+        }
+
+        function updateQuantity(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                removeFromCart(id);
+                return;
+            }
+            updateCartUI();
+            renderCartItems();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').textContent = count;
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('cartTotal').textContent = '₵' + total.toLocaleString();
+
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty</p>
+                        <button onclick="closeCart()" class="btn btn-primary btn-sm" style="margin-top:10px;">Start Shopping</button>
+                    </div>
+                `;
                 return;
             }
 
-            if (!phone.startsWith('+')) {
-                phone = '+233' + phone.replace(/^0/, '');
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" />
+                    <div class="item-info">
+                        <div class="name">${item.name}</div>
+                        <div class="price">₵${item.price.toLocaleString()}</div>
+                    </div>
+                    <div class="qty-control">
+                        <button onclick="updateQuantity(${item.id}, -1)">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // CART SIDEBAR
+        // ============================================================
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+            document.getElementById('cartSidebar').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            renderCartItems();
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.getElementById('cartSidebar').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ============================================================
+        // CHECKOUT — PAYSTACK
+        // ============================================================
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('❌ Your cart is empty!', 'error');
+                return;
             }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
             if (typeof PaystackPop === 'undefined') {
-                showStatus('❌ Paystack library not loaded. Check internet.', 'error');
+                showToast('⚠️ Paystack not loaded. Check your internet.', 'error');
                 return;
             }
 
-            showStatus('⏳ Initializing payment...', 'info');
+            const items = cart.map(item => `${item.name} x${item.qty}`).join(', ');
+            const email = 'customer@smilelifeenterprise.com';
 
-            const pendingTxn = {
-                phone: phone,
-                amount: amount,
-                status: 'pending',
-                reference: 'TXN-' + Date.now().toString().slice(-8),
-                timestamp: Date.now()
-            };
-
-            transactions.push(pendingTxn);
-            saveTransactions();
-
-            if (!isHistoryOpen) {
-                toggleHistory();
-            }
-
-            const index = transactions.length - 1;
-            viewReceipt(index);
+            showToast('⏳ Opening payment window...', 'info');
 
             try {
                 const handler = PaystackPop.setup({
                     key: PAYSTACK_PUBLIC_KEY,
-                    email: 'customer@adm-pay.com',
-                    amount: Math.round(amount * 100),
+                    email: email,
+                    amount: Math.round(total * 100),
                     currency: 'GHS',
-                    phone: phone,
+                    metadata: {
+                        custom_fields: [{
+                            display_name: "Items",
+                            variable_name: "items",
+                            value: items
+                        }, {
+                            display_name: "Cart Items",
+                            variable_name: "cart_items",
+                            value: cart.length.toString()
+                        }]
+                    },
                     callback: function(response) {
-                        transactions[index].status = 'success';
-                        transactions[index].reference = response.reference;
-                        transactions[index].timestamp = Date.now();
-                        saveTransactions();
-                        viewReceipt(index);
-                        document.getElementById('amount').value = '';
-                        showStatus('✅ Payment successful! Ref: ' + response.reference, 'success');
+                        showToast('✅ Payment successful! Ref: ' + response.reference, 'success');
+                        cart = [];
+                        updateCartUI();
+                        closeCart();
+                        console.log('Payment Success:', response);
                     },
                     onClose: function() {
-                        if (transactions[index] && transactions[index].status === 'pending') {
-                            transactions[index].status = 'failed';
-                            saveTransactions();
-                            viewReceipt(index);
-                            showStatus('❌ Payment cancelled or closed.', 'error');
-                        }
+                        showToast('❌ Payment window closed.', 'error');
                     }
                 });
                 handler.openIframe();
             } catch (error) {
-                showStatus('❌ Error: ' + error.message, 'error');
+                showToast('❌ Error: ' + error.message, 'error');
                 console.error('Paystack Error:', error);
             }
         }
 
-        function viewReceipt(index) {
-            const txn = transactions[index];
-            if (!txn) return;
-
-            currentReceiptIndex = index;
-
-            const statusMap = {
-                'success': '✅ Successful',
-                'failed': '❌ Failed',
-                'pending': '⏳ Pending'
-            };
-
-            const statusColor = {
-                'success': '#4ade80',
-                'failed': '#f87171',
-                'pending': '#d4d4d4'
-            };
-
-            document.getElementById('receiptStatus').textContent = statusMap[txn.status] || txn.status;
-            document.getElementById('receiptStatus').style.color = statusColor[txn.status] || '#ffffff';
-            document.getElementById('receiptAmount').textContent = '₵ ' + parseFloat(txn.amount).toFixed(2);
-            document.getElementById('receiptPhone').textContent = txn.phone;
-            document.getElementById('receiptRef').textContent = txn.reference || 'N/A';
-
-            const date = new Date(txn.timestamp);
-            document.getElementById('receiptDate').textContent =
-                date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            document.getElementById('receiptModal').classList.add('active');
+        // ============================================================
+        // WISHLIST
+        // ============================================================
+        function toggleWishlist(id) {
+            showToast('❤️ Added to wishlist!', 'info');
         }
 
-        function closeReceipt() {
-            document.getElementById('receiptModal').classList.remove('active');
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        function printReceipt() {
-            const modalContent = document.querySelector('.modal');
-            const original = document.body.innerHTML;
-            const printHTML = modalContent.outerHTML;
-
-            document.body.innerHTML = `
-                <style>
-                    body { background: white; padding: 40px; font-family: -apple-system, sans-serif; }
-                    .modal { max-width: 400px; margin: 0 auto; }
-                    .receipt-header { text-align: center; }
-                    .receipt-row { display: flex; justify-content: space-between; padding: 6px 0; }
-                    .receipt-actions { display: none; }
-                    .receipt-divider { border-top: 1px dashed #ddd; margin: 12px 0; }
-                </style>
-                ${printHTML}
-            `;
-
-            window.print();
-            document.body.innerHTML = original;
-            loadTransactions();
-            if (currentReceiptIndex >= 0) {
-                viewReceipt(currentReceiptIndex);
-            }
-            location.reload();
-        }
-
-        function clearHistory() {
-            if (transactions.length === 0) return;
-            if (confirm('🗑️ Delete all transaction history?')) {
-                transactions = [];
-                saveTransactions();
-                if (isHistoryOpen) {
-                    toggleHistory();
-                }
-                showStatus('🗑️ History cleared.', 'info');
-            }
-        }
-
-        document.getElementById('receiptModal').addEventListener('click', function(e) {
-            if (e.target === this) closeReceipt();
+        // ============================================================
+        // MOBILE MENU
+        // ============================================================
+        document.getElementById('hamburgerBtn').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('open');
         });
 
+        // ============================================================
+        // CONTACT FORM
+        // ============================================================
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('✅ Thank you! We\'ll get back to you shortly.', 'success');
+            this.reset();
+        });
+
+        // ============================================================
+        // SMOOTH SCROLL
+        // ============================================================
+        document.querySelectorAll('nav a, .footer-col a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const target = this.getAttribute('href');
+                if (target && target.startsWith('#')) {
+                    e.preventDefault();
+                    const element = document.querySelector(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                        document.getElementById('mainNav').classList.remove('open');
+                    }
+                }
+            });
+        });
+
+        // ============================================================
+        // KEYBOARD SHORTCUT
+        // ============================================================
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const active = document.activeElement;
-                if (active && (active.id === 'phone' || active.id === 'amount')) {
-                    initiatePayment();
-                }
-            }
+            if (e.key === 'Escape') closeCart();
         });
 
-        loadTransactions();
-        document.getElementById('phone').focus();
-
+        // ============================================================
+        // CHECK PAYSTACK
+        // ============================================================
         window.addEventListener('load', function() {
             if (typeof PaystackPop !== 'undefined') {
-                showStatus('✅ Paystack loaded successfully! Ready for payments.', 'success');
+                console.log('✅ Paystack loaded successfully!');
             } else {
-                showStatus('⚠️ Paystack library not loaded. Check your internet connection.', 'error');
+                console.warn('⚠️ Paystack not loaded.');
+                showToast('⚠️ Paystack not loaded. Check your internet.', 'error');
             }
         });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        renderCategories();
+        renderProducts();
+        updateCartUI();
+
+        console.log('🏪 Smile Life Enterprise loaded successfully!');
+        console.log('📦 ' + products.length + ' products available');
+        console.log('📂 ' + categories.length + ' categories');
+        console.log('🎨 Designed by Mr. K');
     </script>
 
 </body>
