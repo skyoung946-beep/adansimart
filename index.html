@@ -1,491 +1,2221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AD BEVERAGES - POS System</title>
-    <!-- Tailwind CSS for Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Paystack Inline JS -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>BizManager POS</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg:#f9fafb; --bg2:#fff; --bg3:#f3f4f6; --bg4:#e5e7eb;
+  --accent:#4f46e5; --accent2:#6366f1; --accent-soft:#eef2ff;
+  --text:#111827; --text2:#6b7280; --text3:#9ca3af;
+  --success:#10b981; --success-soft:#ecfdf5;
+  --warning:#f59e0b; --warning-soft:#fffbeb;
+  --danger:#ef4444; --danger-soft:#fef2f2;
+  --border:#e5e7eb;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.08);
+  --radius:16px; --radius-lg:20px;
+}
+[data-theme="dark"] {
+  --bg:#0f172a; --bg2:#1e293b; --bg3:#334155; --bg4:#475569;
+  --accent:#6366f1; --accent2:#818cf8; --accent-soft:rgba(99,102,241,.15);
+  --text:#f8fafc; --text2:#94a3b8; --text3:#64748b;
+  --success-soft:rgba(16,185,129,.12);
+  --warning-soft:rgba(245,158,11,.12);
+  --danger-soft:rgba(239,68,68,.12);
+  --border:#334155;
+  --shadow:0 1px 3px rgba(0,0,0,.3);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.4);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;font-size:14px;-webkit-font-smoothing:antialiased;transition:background .2s,color .2s}
+
+/* LANDING */
+.landing {
+  height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #0f172a 0%, #4f46e5 50%, #6366f1 100%);
+  padding: 20px; position: relative; overflow: hidden;
+}
+.landing::before, .landing::after {
+  content:""; position:absolute; border-radius:50%; opacity:.35;
+  background: radial-gradient(circle, rgba(255,255,255,.9), transparent 70%);
+  filter: blur(40px);
+}
+.landing::before { width: 400px; height: 400px; top: -100px; left: -100px; }
+.landing::after { width: 500px; height: 500px; bottom: -150px; right: -150px; }
+.landing-content {
+  position: relative; z-index: 2; text-align: center; color: #fff;
+  max-width: 540px; padding: 40px 32px;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 28px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.3);
+  animation: fadeInUp .8s;
+}
+@keyframes fadeInUp { from { opacity:0; transform: translateY(30px);} to {opacity:1;transform:translateY(0);} }
+.landing-logo {
+  width: 88px; height: 88px; margin: 0 auto 24px;
+  background: linear-gradient(135deg, #fff, #e0e7ff);
+  border-radius: 24px; display: flex; align-items: center; justify-content: center;
+  font-size: 42px; font-weight: 800; color: #4f46e5;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+}
+.landing h1 {
+  font-size: 40px; font-weight: 800; letter-spacing: -.8px; margin-bottom: 12px;
+  background: linear-gradient(135deg,#fff,#c7d2fe); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+}
+.landing p { font-size: 16px; opacity: .85; margin-bottom: 28px; line-height: 1.5; }
+.landing-features {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px;
+}
+.landing-feature {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px; padding: 14px 10px; text-align: center;
+}
+.landing-feature i { font-size: 22px; margin-bottom: 6px; display: block; opacity: .9; }
+.landing-feature div { font-size: 11.5px; font-weight: 500; opacity: .9; }
+.landing-cta {
+  padding: 16px 48px; border-radius: 14px; border: none;
+  background: #fff; color: #4f46e5; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.landing-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.3); }
+.landing-footer { margin-top: 26px; font-size: 12px; opacity: .7; }
+
+/* LOGIN */
+.login-screen {
+  height: 100vh; display: none; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 20% 20%, var(--accent-soft), transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(99,102,241,.08), transparent 40%), var(--bg);
+  padding: 20px;
+}
+.login-screen.active { display: flex; }
+.login-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 40px 32px; width: 100%; max-width: 380px; text-align: center; box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.login-back {
+  position: absolute; top: 16px; left: 16px;
+  background: none; border: none; color: var(--text2); cursor: pointer;
+  font-size: 14px; padding: 6px; border-radius: 8px;
+}
+.login-back:hover { background: var(--bg3); }
+.login-logo {
+  width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 18px; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700; color: #fff; margin: 0 auto 20px;
+  box-shadow: 0 8px 20px rgba(99,102,241,.3);
+}
+.pin-display { font-size: 30px; letter-spacing: 14px; margin: 24px 0; min-height: 42px; color: var(--accent); font-weight: 700; }
+.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 280px; margin: 0 auto; }
+.pin-btn {
+  height: 58px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg3);
+  color: var(--text); font-size: 20px; font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.pin-btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.pin-btn:active { transform: scale(.97); }
+.pin-btn.clear { font-size: 13px; }
+.pin-btn.enter { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; }
+
+/* APP */
+.app { display: none; grid-template-columns: 260px 1fr; height: 100vh; }
+.app.active { display: grid; }
+.sidebar {
+  background: var(--bg2); border-right: 1px solid var(--border); padding: 18px 14px;
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 6px 18px; }
+.logo-icon {
+  width: 38px; height: 38px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 11px; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 16px;
+}
+.shop-box { background: var(--bg3); border-radius: 14px; padding: 10px; margin-bottom: 16px; }
+.shop-item { display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 10px; cursor: pointer; margin-bottom: 3px; transition: all .15s; position: relative; }
+.shop-item:hover { background: var(--bg4); }
+.shop-item.active { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.shop-avatar {
+  width: 30px; height: 30px; border-radius: 8px; background: var(--bg2); color: var(--accent);
+  display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0;
+}
+.shop-del {
+  width: 22px; height: 22px; border-radius: 6px; border: none; background: transparent;
+  color: var(--text3); cursor: pointer; font-size: 11px; opacity: 0; transition: all .15s;
+}
+.shop-item:hover .shop-del { opacity: 1; }
+.shop-del:hover { background: var(--danger-soft); color: var(--danger); }
+.nav-item {
+  display: flex; align-items: center; gap: 11px; padding: 10px 13px; border-radius: 10px;
+  color: var(--text2); cursor: pointer; margin-bottom: 3px; font-size: 13.5px; font-weight: 500; transition: all .15s;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(79,70,229,.25); }
+.nav-item i { width: 18px; text-align: center; }
+.nav-item .nav-badge {
+  margin-left: auto; background: var(--danger); color: #fff; font-size: 10px;
+  padding: 2px 7px; border-radius: 20px; font-weight: 700;
+}
+.user-box { margin-top: auto; padding: 10px; background: var(--bg3); border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center; font-weight: 600; color: #fff; font-size: 13px;
+}
+.main { padding: 26px; overflow-y: auto; height: 100vh; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+.header p { color: var(--text2); font-size: 13px; margin-top: 2px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.stat-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px; box-shadow: var(--shadow); transition: all .2s;
+}
+.stat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.stat-value { font-size: 22px; font-weight: 700; letter-spacing: -.5px; }
+.stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 18px; box-shadow: var(--shadow);
+}
+.btn {
+  padding: 9px 16px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer;
+  font-size: 13px; display: inline-flex; align-items: center; gap: 7px; transition: all .15s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(79,70,229,.25); }
+.btn-primary:hover { background: var(--accent2); }
+.btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--bg4); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-whatsapp { background: #25D366; color: #fff; }
+.btn-whatsapp:hover { background: #128C7E; }
+.btn-ghost { background: transparent; color: var(--text2); }
+.btn-ghost:hover { background: var(--bg3); }
+.btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+.btn-icon { width: 32px; height: 32px; padding: 0; justify-content: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.chip {
+  padding: 6px 12px; border-radius: 20px; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 12px; font-weight: 500; cursor: pointer; transition: all .15s;
+}
+.chip:hover { background: var(--bg4); }
+.chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+.chip.danger { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
+.chip.danger.active { background: var(--danger); color: #fff; }
+.pos-grid { display: grid; grid-template-columns: 1fr 330px; gap: 18px; }
+.product-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;
+  max-height: 68vh; overflow-y: auto; padding-right: 4px;
+}
+.product-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 10px;
+  cursor: pointer; text-align: center; transition: all .2s; box-shadow: var(--shadow); position: relative;
+}
+.product-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.product-card.out { opacity: .45; pointer-events: none; }
+.product-card.low { border-color: var(--danger); }
+.product-card.low::after {
+  content: "LOW"; position: absolute; top: 6px; right: 6px;
+  background: var(--danger); color: #fff; font-size: 9px; font-weight: 700;
+  padding: 2px 6px; border-radius: 6px; letter-spacing: .5px;
+}
+.product-img {
+  width: 100%; height: 82px; object-fit: cover; border-radius: 10px; background: var(--bg3);
+  margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: var(--text3); font-size: 26px;
+}
+.product-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.product-price { font-size: 14px; font-weight: 700; color: var(--accent); }
+.product-stock { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.cart {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; position: sticky; top: 0; box-shadow: var(--shadow);
+}
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 8px; }
+.cart-item:last-child { border-bottom: none; }
+.qty-btn {
+  width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg3);
+  color: var(--text); cursor: pointer; font-weight: 600; transition: all .15s;
+}
+.qty-btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.del-btn {
+  width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--danger-soft); background: var(--danger-soft);
+  color: var(--danger); cursor: pointer; transition: all .15s;
+}
+.del-btn:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+.pay-btn {
+  padding: 10px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; font-size: 13px; font-weight: 600; transition: all .15s;
+}
+.pay-btn:hover { background: var(--bg4); }
+.pay-btn.active { background: var(--accent); color: #fff; border-color: transparent; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 11px 8px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+.table th { color: var(--text2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+.table tbody tr:hover { background: var(--bg3); }
+.table tr.row-low { background: var(--danger-soft); }
+.table tr.row-low:hover { background: rgba(239,68,68,.15); }
+.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-success { background: var(--success-soft); color: var(--success); }
+.badge-warning { background: var(--warning-soft); color: var(--warning); }
+.badge-danger  { background: var(--danger-soft);  color: var(--danger); }
+.badge-accent  { background: var(--accent-soft);   color: var(--accent); }
+.badge-muted   { background: var(--bg3); color: var(--text2); }
+.badge-admin   { background: linear-gradient(135deg,#f59e0b,#ef4444); color: #fff; }
+.modal {
+  position: fixed; inset: 0; background: rgba(17,24,39,.5); backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+}
+.modal.active { display: flex; animation: fadeIn .2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 28px; width: 90%; max-width: 460px; max-height: 85vh; overflow-y: auto;
+  position: relative; box-shadow: var(--shadow-lg); animation: slideUp .25s;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-close {
+  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg3); border: none; color: var(--text2); cursor: pointer; transition: all .15s;
+}
+.modal-close:hover { background: var(--bg4); color: var(--text); }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text2); font-weight: 500; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 11px 13px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text); font-size: 14px; transition: all .15s; font-family: inherit;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--accent); background: var(--bg2); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.img-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; margin-top: 8px; display: none; border: 1px solid var(--border); }
+.toast-wrap { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 2000; pointer-events: none; }
+.toast {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px;
+  box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; font-size: 13px;
+  font-weight: 500; pointer-events: auto; animation: toastIn .25s; min-width: 240px; max-width: 340px;
+}
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error   { border-left: 4px solid var(--danger); }
+.toast.info    { border-left: 4px solid var(--accent); }
+.toast.warning { border-left: 4px solid var(--warning); }
+.toast i { font-size: 16px; }
+.toast.success i { color: var(--success); }
+.toast.error i   { color: var(--danger); }
+.toast.info i    { color: var(--accent); }
+.toast.warning i { color: var(--warning); }
+@keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.theme-toggle { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 15px; padding: 6px; border-radius: 8px; transition: all .15s; }
+.theme-toggle:hover { background: var(--bg3); color: var(--text); }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
+.empty-state i { font-size: 36px; color: var(--text3); margin-bottom: 12px; display: block; }
+.action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 160px 1fr 90px; gap: 12px; align-items: center; font-size: 13px; }
+.bar-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { height: 22px; background: var(--bg3); border-radius: 6px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 6px; transition: width .4s; }
+.bar-fill.food { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.bar-val { text-align: right; font-weight: 600; color: var(--text2); }
+.import-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--bg3); border-radius: 10px; margin-bottom: 8px;
+  font-size: 13px;
+}
+.food-hero {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #fff; border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.food-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 90% 10%, rgba(255,255,255,.25), transparent 40%);
+}
+.food-hero h2 { font-size: 22px; margin-bottom: 4px; position: relative; }
+.food-hero p { opacity: .9; font-size: 13px; position: relative; }
+.food-hero .food-stats { display: flex; gap: 28px; margin-top: 16px; position: relative; flex-wrap: wrap; }
+.food-hero .food-stat { font-size: 13px; }
+.food-hero .food-stat strong { display: block; font-size: 20px; margin-bottom: 2px; }
+
+/* Games */
+.game-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.game-tab {
+  padding: 8px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg2);
+  color: var(--text2); font-weight: 600; font-size: 13px; cursor: pointer; transition: all .15s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.game-tab:hover { background: var(--bg3); }
+.game-tab.active { background: var(--accent); color: #fff; border-color: transparent; }
+.game-area { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 10px 0; }
+.game-scoreboard { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }
+.game-scoreboard strong { color: var(--accent); font-size: 18px; }
+.game-controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+/* Snake */
+.snake-canvas { background: var(--bg3); border-radius: 12px; max-width: 100%; touch-action: none; }
+.snake-controls-mobile {
+  display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(2, 60px); gap: 8px;
+  justify-content: center; margin-top: 12px;
+}
+.snake-ctrl {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 12px;
+  font-size: 20px; color: var(--text); cursor: pointer; transition: all .15s;
+}
+.snake-ctrl:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.snake-ctrl.up { grid-column: 2; grid-row: 1; }
+.snake-ctrl.left { grid-column: 1; grid-row: 2; }
+.snake-ctrl.down { grid-column: 2; grid-row: 2; }
+.snake-ctrl.right { grid-column: 3; grid-row: 2; }
+/* 2048 */
+.game-2048 { background: var(--bg3); border-radius: 14px; padding: 10px; }
+.grid-2048 { display: grid; grid-template-columns: repeat(4, 70px); grid-template-rows: repeat(4, 70px); gap: 8px; }
+.tile-2048 {
+  background: var(--bg2); border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; color: var(--text);
+  transition: all .1s;
+}
+.tile-2048[data-v="2"]    { background: #eee4da; color: #776e65; }
+.tile-2048[data-v="4"]    { background: #ede0c8; color: #776e65; }
+.tile-2048[data-v="8"]    { background: #f2b179; color: #f9f6f2; }
+.tile-2048[data-v="16"]   { background: #f59563; color: #f9f6f2; }
+.tile-2048[data-v="32"]   { background: #f67c5f; color: #f9f6f2; }
+.tile-2048[data-v="64"]   { background: #f65e3b; color: #f9f6f2; }
+.tile-2048[data-v="128"]  { background: #edcf72; color: #f9f6f2; font-size: 20px; }
+.tile-2048[data-v="256"]  { background: #edcc61; color: #f9f6f2; font-size: 20px; }
+.tile-2048[data-v="512"]  { background: #edc850; color: #f9f6f2; font-size: 20px; }
+.tile-2048[data-v="1024"] { background: #edc53f; color: #f9f6f2; font-size: 16px; }
+.tile-2048[data-v="2048"] { background: #edc22e; color: #f9f6f2; font-size: 16px; }
+/* Memory */
+.memory-grid { display: grid; grid-template-columns: repeat(4, 70px); gap: 10px; }
+.memory-card {
+  width: 70px; height: 70px; border-radius: 10px; background: var(--bg3); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 28px;
+  transition: all .2s; border: 2px solid transparent;
+}
+.memory-card:hover { background: var(--bg4); }
+.memory-card.flipped { background: var(--accent-soft); border-color: var(--accent); }
+.memory-card.matched { background: var(--success-soft); border-color: var(--success); cursor: default; }
+/* Tic Tac Toe */
+.ttt-grid {
+  display: grid; grid-template-columns: repeat(3, 90px); grid-template-rows: repeat(3, 90px); gap: 6px;
+  background: var(--bg3); padding: 6px; border-radius: 14px;
+}
+.ttt-cell {
+  background: var(--bg2); border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 42px; font-weight: 700; cursor: pointer; transition: all .15s; color: var(--text);
+}
+.ttt-cell:hover { background: var(--accent-soft); }
+.ttt-cell.x { color: var(--accent); }
+.ttt-cell.o { color: var(--danger); }
+/* Puzzle */
+.puzzle-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+  width: 300px; height: 300px; background: var(--bg3); padding: 4px; border-radius: 14px;
+}
+.puzzle-tile {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; font-size: 26px; font-weight: 700; display: flex; align-items: center;
+  justify-content: center; border-radius: 10px; cursor: pointer; transition: all .15s; user-select: none;
+}
+.puzzle-tile:hover { transform: scale(1.03); }
+.puzzle-tile.empty { background: var(--bg2); cursor: default; }
+.puzzle-tile.empty:hover { transform: none; }
+/* Send modal */
+.send-option {
+  display: flex; align-items: center; gap: 14px; padding: 16px;
+  background: var(--bg3); border-radius: 12px; margin-bottom: 10px;
+  cursor: pointer; transition: all .15s; border: 1px solid transparent;
+}
+.send-option:hover { background: var(--bg4); border-color: var(--accent); transform: translateY(-1px); }
+.send-option .icon-circle {
+  width: 44px; height: 44px; border-radius: 12px; display: flex;
+  align-items: center; justify-content: center; font-size: 18px; color: #fff; flex-shrink: 0;
+}
+.send-option .icon-circle.whatsapp { background: #25D366; }
+.send-option .icon-circle.email { background: #EA4335; }
+.send-option .icon-circle.copy { background: var(--accent); }
+.send-option .send-info { flex: 1; }
+.send-option .send-title { font-weight: 600; font-size: 14px; }
+.send-option .send-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .pos-grid { grid-template-columns: 1fr; }
+  .main { padding: 18px; }
+  .bar-row { grid-template-columns: 110px 1fr 70px; }
+  .landing h1 { font-size: 30px; }
+  .landing-features { grid-template-columns: 1fr 1fr; }
+}
+</style>
 </head>
-<body class="bg-slate-100 font-sans min-h-screen flex flex-col">
+<body>
 
-    <!-- Header / Navbar -->
-    <header class="bg-indigo-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid font-bold text-2xl text-amber-400 fa-wine-glass-empty"></i>
-                <h1 class="text-xl font-bold tracking-wide">AD BEVERAGES POS</h1>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <span id="roleBadge" class="bg-indigo-700 px-3 py-1 rounded-full text-xs font-semibold uppercase">Worker Mode</span>
-                <button id="switchRoleBtn" onclick="toggleRoleModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg text-sm font-semibold transition">
-                    <i class="fa-solid fa-user-shield mr-1"></i> Admin Login
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Workspace -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- WORKER / TERMINAL VIEW -->
-        <section id="terminalSection" class="lg:col-span-8 flex flex-col gap-4">
-            <!-- Catalog & Category Filter -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-cubes text-indigo-600 mr-2"></i> Drink Menu & Inventory</h2>
-                    <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search items..." class="border rounded-lg px-3 py-1.5 text-sm w-48 focus:outline-none focus:border-indigo-500">
-                </div>
-                <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[60vh] overflow-y-auto custom-scroll p-1">
-                    <!-- Dynamic Product Cards Injected Here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- CART / CHECKOUT SIDEBAR -->
-        <section id="cartSection" class="lg:col-span-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between h-[75vh]">
-            <div>
-                <div class="flex justify-between items-center pb-3 border-b">
-                    <h2 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-cart-shopping text-indigo-600 mr-2"></i> Current Order</h2>
-                    <button onclick="clearCart()" class="text-xs text-red-500 hover:underline">Clear All</button>
-                </div>
-
-                <div id="cartItems" class="divide-y max-h-[40vh] overflow-y-auto custom-scroll my-2">
-                    <p class="text-slate-400 text-center py-8 text-sm">Cart is empty</p>
-                </div>
-            </div>
-
-            <!-- Total & Payment Methods -->
-            <div class="border-t pt-4 bg-slate-50 -mx-4 -mb-4 p-4 rounded-b-xl">
-                <div class="flex justify-between text-slate-600 mb-1">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">GHS 0.00</span>
-                </div>
-                <div class="flex justify-between text-xl font-bold text-slate-900 mb-4">
-                    <span>Total Amount:</span>
-                    <span id="grandTotal" class="text-indigo-600">GHS 0.00</span>
-                </div>
-
-                <div class="space-y-2">
-                    <button onclick="processCheckout('Cash')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-money-bill-wave"></i> Pay with Cash
-                    </button>
-                    <button onclick="processCheckout('Paystack')" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-credit-card"></i> Pay with Paystack
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ADMIN DASHBOARD SECTION (Hidden by Default) -->
-        <section id="adminDashboard" class="lg:col-span-12 hidden space-y-6">
-            
-            <!-- Key Metrics -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">Today's Sales</p>
-                    <h3 id="dailySales" class="text-2xl font-bold text-emerald-600 mt-1">GHS 0.00</h3>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">This Week's Sales</p>
-                    <h3 id="weeklySales" class="text-2xl font-bold text-indigo-600 mt-1">GHS 0.00</h3>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">This Month's Sales</p>
-                    <h3 id="monthlySales" class="text-2xl font-bold text-blue-600 mt-1">GHS 0.00</h3>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <p class="text-slate-500 text-sm font-medium">Total Transactions</p>
-                    <h3 id="totalCount" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
-                </div>
-            </div>
-
-            <!-- Admin Tabs & Control -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Product & Stock Management -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-plus-circle text-indigo-600 mr-2"></i> Add / Update Drink Item</h3>
-                    <form id="productForm" onsubmit="saveProduct(event)" class="space-y-3">
-                        <input type="hidden" id="productId">
-                        <div>
-                            <label class="text-xs font-semibold text-slate-600">Drink Name</label>
-                            <input type="text" id="pName" required placeholder="e.g., Sobolo 500ml" class="w-full border rounded-lg p-2 text-sm">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-xs font-semibold text-slate-600">Price (GHS)</label>
-                                <input type="number" step="0.01" id="pPrice" required placeholder="10.00" class="w-full border rounded-lg p-2 text-sm">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold text-slate-600">Stock Available</label>
-                                <input type="number" id="pStock" required placeholder="50" class="w-full border rounded-lg p-2 text-sm">
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg text-sm shadow">Save Product</button>
-                    </form>
-
-                    <!-- Paystack Live Key Configuration -->
-                    <div class="mt-6 border-t pt-4">
-                        <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-key text-amber-500 mr-1"></i> Paystack API Key Settings</h4>
-                        <input type="text" id="paystackKeyInput" placeholder="pk_live_xxxx... or pk_test_xxxx..." class="w-full border rounded-lg p-2 text-xs mb-2">
-                        <button onclick="savePaystackKey()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-1.5 rounded-lg text-xs">Save Key</button>
-                    </div>
-                </div>
-
-                <!-- Live Inventory Overview -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm lg:col-span-2">
-                    <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-boxes-stacked text-indigo-600 mr-2"></i> Stock & Sales Overview</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-slate-600">
-                            <thead class="bg-slate-50 border-b">
-                                <tr>
-                                    <th class="p-2">Item Name</th>
-                                    <th class="p-2">Price</th>
-                                    <th class="p-2">In Stock</th>
-                                    <th class="p-2">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryTable">
-                                <!-- Inventory Rows Injected Here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ADMIN AUTH MODAL -->
-    <div id="authModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl p-6 w-full max-w-sm shadow-xl">
-            <h3 class="font-bold text-lg text-slate-800 mb-2">Admin Authorization</h3>
-            <p class="text-xs text-slate-500 mb-4">Enter Admin PIN to switch access level (Default PIN: 1234)</p>
-            <input type="password" id="adminPinInput" placeholder="Enter PIN" class="w-full border rounded-lg p-2 text-center text-lg tracking-widest mb-4 focus:outline-none focus:border-indigo-600">
-            <div class="flex gap-2">
-                <button onclick="toggleRoleModal()" class="w-1/2 border py-2 rounded-lg text-slate-600 text-sm">Cancel</button>
-                <button onclick="verifyAdminPin()" class="w-1/2 bg-indigo-600 text-white py-2 rounded-lg text-sm font-semibold">Login</button>
-            </div>
-        </div>
+<!-- ===== LANDING PAGE ===== -->
+<div class="landing" id="landingScreen">
+  <div class="landing-content">
+    <div class="landing-logo">B</div>
+    <h1>Welcome to BizManager</h1>
+    <p>The all-in-one point of sale system for bars, restaurants, and retail shops. Fast, reliable, and beautiful.</p>
+    <div class="landing-features">
+      <div class="landing-feature">
+        <i class="fas fa-cash-register"></i>
+        <div>Point of Sale</div>
+      </div>
+      <div class="landing-feature">
+        <i class="fas fa-boxes"></i>
+        <div>Inventory</div>
+      </div>
+      <div class="landing-feature">
+        <i class="fas fa-chart-line"></i>
+        <div>Reports</div>
+      </div>
     </div>
+    <button class="landing-cta" onclick="showLogin()">
+      <i class="fas fa-sign-in-alt"></i> Get Started
+    </button>
+    <div class="landing-footer">Secure · PIN protected · Works offline</div>
+  </div>
+</div>
 
-    <!-- Application JavaScript Logic -->
-    <script>
-        // Default Data Initialization
-        const DEFAULT_PIN = "1234";
-        let isAdmin = false;
-        let cart = [];
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <button class="login-back" onclick="showLanding()"><i class="fas fa-arrow-left"></i> Back</button>
+    <div class="login-logo">B</div>
+    <h2 style="margin-bottom:6px;font-size:22px;">Enter PIN</h2>
+    <p style="color:var(--text2);font-size:13.5px;margin-bottom:4px;">Use your staff PIN to sign in</p>
+    <div class="pin-display" id="pinDisplay">••••</div>
+    <div class="pin-pad">
+      <button class="pin-btn" onclick="pressPin(1)">1</button>
+      <button class="pin-btn" onclick="pressPin(2)">2</button>
+      <button class="pin-btn" onclick="pressPin(3)">3</button>
+      <button class="pin-btn" onclick="pressPin(4)">4</button>
+      <button class="pin-btn" onclick="pressPin(5)">5</button>
+      <button class="pin-btn" onclick="pressPin(6)">6</button>
+      <button class="pin-btn" onclick="pressPin(7)">7</button>
+      <button class="pin-btn" onclick="pressPin(8)">8</button>
+      <button class="pin-btn" onclick="pressPin(9)">9</button>
+      <button class="pin-btn clear" onclick="clearPin()">CLEAR</button>
+      <button class="pin-btn" onclick="pressPin(0)">0</button>
+      <button class="pin-btn enter" onclick="submitPin()"><i class="fas fa-check"></i></button>
+    </div>
+    <p style="margin-top:22px;font-size:12px;color:var(--text2);">Default Owner PIN: <strong style="color:var(--accent);">1234</strong></p>
+  </div>
+</div>
 
-        let products = JSON.parse(localStorage.getItem('ad_products')) || [
-            { id: 1, name: "Sobolo 500ml", price: 10.00, stock: 40 },
-            { id: 2, name: "Vanilla Ice Cream", price: 15.00, stock: 25 },
-            { id: 3, name: "Chocolate Ice Cream", price: 15.00, stock: 20 },
-            { id: 4, name: "Chilled Bottled Water", price: 5.00, stock: 100 }
-        ];
+<!-- ===== APP ===== -->
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">B</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;">BizManager</div>
+        <div style="font-size:11px;color:var(--text2);">Multi-Business POS</div>
+      </div>
+      <button class="theme-toggle" style="margin-left:auto;" onclick="toggleTheme()" title="Toggle theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+    </div>
+    <div class="shop-box">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">
+        <span>Businesses</span>
+        <button class="btn btn-secondary btn-sm" onclick="openModal('bizModal')" id="addBizBtn">+</button>
+      </div>
+      <div id="shopList"></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="user-box">
+      <div class="avatar" id="userAvatar">O</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="userName">Owner</div>
+        <div style="font-size:11px;color:var(--text2);" id="userRole">Owner</div>
+      </div>
+      <button onclick="logout()" class="theme-toggle" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
 
-        let salesHistory = JSON.parse(localStorage.getItem('ad_sales')) || [];
-        let paystackPublicKey = localStorage.getItem('ad_paystack_key') || "";
+<div class="toast-wrap" id="toastWrap"></div>
 
-        // Application Startup
-        window.onload = () => {
-            renderProducts();
-            renderCart();
-            updateDashboardMetrics();
-            if(paystackPublicKey) {
-                document.getElementById('paystackKeyInput').value = paystackPublicKey;
-            }
-        };
+<!-- ===== MODALS ===== -->
+<div class="modal" id="bizModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('bizModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:18px;font-size:18px;">Add Business</h2>
+    <div class="form-group"><label>Name</label><input id="bizName" placeholder="Sunrise Bar"></div>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="bizType">
+        <option value="bar">Bar</option>
+        <option value="food">Food / Restaurant</option>
+        <option value="electrical">Electrical</option>
+        <option value="printing">Printing</option>
+        <option value="supermarket">Supermarket</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Currency</label><input id="bizCurrency" value="GH₵"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="addBusiness()">Create Business</button>
+  </div>
+</div>
 
-        // Render Drink Catalog
-        function renderProducts(filter = '') {
-            const grid = document.getElementById('productGrid');
-            const table = document.getElementById('inventoryTable');
-            grid.innerHTML = '';
-            table.innerHTML = '';
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('productModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:18px;font-size:18px;" id="productModalTitle">Add Product</h2>
+    <input type="hidden" id="prodEditId">
+    <div class="form-group"><label>Name</label><input id="prodName"></div>
+    <div class="form-group"><label>Category</label><input id="prodCategory" placeholder="Drinks"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>Cost Price</label><input type="number" id="prodCost" value="0" step="0.01"></div>
+      <div class="form-group"><label>Selling Price</label><input type="number" id="prodPrice" value="0" step="0.01"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>Stock</label><input type="number" id="prodStock" value="0"></div>
+      <div class="form-group"><label>Min Stock</label><input type="number" id="prodMin" value="5"></div>
+    </div>
+    <div class="form-group">
+      <label>Product Image <span style="color:var(--text3);font-weight:400;">(optional)</span></label>
+      <input type="file" id="prodImage" accept="image/*" onchange="previewImage(this)">
+      <img id="imgPreview" class="img-preview">
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveProduct()" id="productSaveBtn">Save Product</button>
+  </div>
+</div>
 
-            products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
-                // Render Cards for Terminal
-                grid.innerHTML += `
-                    <div onclick="addToCart(${p.id})" class="bg-slate-50 border rounded-lg p-3 hover:border-indigo-500 cursor-pointer transition flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm">${p.name}</h4>
-                            <p class="text-xs text-indigo-600 font-semibold mt-1">GHS ${p.price.toFixed(2)}</p>
-                        </div>
-                        <div class="mt-2 flex justify-between items-center text-xs text-slate-500">
-                            <span>Stock: <strong class="${p.stock < 5 ? 'text-red-500' : ''}">${p.stock}</strong></span>
-                            <i class="fa-solid fa-plus-circle text-indigo-600 text-base"></i>
-                        </div>
-                    </div>
-                `;
+<div class="modal" id="staffModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('staffModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:18px;font-size:18px;">Add Staff</h2>
+    <div class="form-group"><label>Full Name</label><input id="staffName"></div>
+    <div class="form-group"><label>PIN (4 digits)</label><input id="staffPin" type="password" maxlength="4" placeholder="e.g. 5678"></div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="staffRole">
+        <option value="cashier">Cashier (POS + Sales + Games)</option>
+        <option value="manager">Manager (Everything except delete)</option>
+        <option value="admin">Admin (Full control)</option>
+        <option value="owner">Owner (Full control)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="addStaff()">Save Staff</button>
+  </div>
+</div>
 
-                // Render Table for Admin
-                table.innerHTML += `
-                    <tr class="border-b">
-                        <td class="p-2 font-medium text-slate-800">${p.name}</td>
-                        <td class="p-2">GHS ${p.price.toFixed(2)}</td>
-                        <td class="p-2">${p.stock}</td>
-                        <td class="p-2">
-                            <button onclick="editProduct(${p.id})" class="text-indigo-600 text-xs mr-2 hover:underline">Edit</button>
-                            <button onclick="deleteProduct(${p.id})" class="text-red-500 text-xs hover:underline">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            });
+<div class="modal" id="auditModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('auditModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Stock Audit</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;">Enter the physical count.</p>
+    <input type="hidden" id="auditProdId">
+    <div class="form-group"><label>Product</label><input id="auditProdName" readonly style="background:var(--bg4);cursor:not-allowed;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>System Stock</label><input id="auditSystemStock" readonly style="background:var(--bg4);cursor:not-allowed;"></div>
+      <div class="form-group"><label>Physical Count</label><input type="number" id="auditPhysical" value="0" min="0" oninput="updateAuditPreview()"></div>
+    </div>
+    <div id="auditPreview" style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;"></div>
+    <div class="form-group"><label>Note (optional)</label><input id="auditNote"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="confirmAudit()"><i class="fas fa-clipboard-check"></i> Confirm Audit</button>
+  </div>
+</div>
 
-            localStorage.setItem('ad_products', JSON.stringify(products));
+<div class="modal" id="importModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('importModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Import Data</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;">Select a JSON file.</p>
+    <div class="form-group"><label>Backup File (.json)</label><input type="file" id="importFile" accept="application/json,.json"></div>
+    <div class="form-group"><label>Label (optional)</label><input id="importLabel" placeholder="e.g. products-batch"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="doImport()"><i class="fas fa-file-import"></i> Import Data</button>
+  </div>
+</div>
+
+<div class="modal" id="dayModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('dayModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Sales for Day</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;" id="dayModalSub"></p>
+    <div id="dayModalContent"></div>
+  </div>
+</div>
+
+<div class="modal" id="sendModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('sendModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Send Sales Report</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;">Choose how to send today's sales report.</p>
+    <div class="send-option" onclick="sendViaWhatsApp()">
+      <div class="icon-circle whatsapp"><i class="fab fa-whatsapp"></i></div>
+      <div class="send-info">
+        <div class="send-title">WhatsApp</div>
+        <div class="send-sub">Opens WhatsApp with the report pre-filled</div>
+      </div>
+      <i class="fas fa-chevron-right" style="color:var(--text3);"></i>
+    </div>
+    <div class="send-option" onclick="sendViaEmail()">
+      <div class="icon-circle email"><i class="fas fa-envelope"></i></div>
+      <div class="send-info">
+        <div class="send-title">Email</div>
+        <div class="send-sub">Opens email app with subject + body ready</div>
+      </div>
+      <i class="fas fa-chevron-right" style="color:var(--text3);"></i>
+    </div>
+    <div class="send-option" onclick="copyReportToClipboard()">
+      <div class="icon-circle copy"><i class="fas fa-copy"></i></div>
+      <div class="send-info">
+        <div class="send-title">Copy report text</div>
+        <div class="send-sub">Copy to clipboard, paste anywhere</div>
+      </div>
+      <i class="fas fa-chevron-right" style="color:var(--text3);"></i>
+    </div>
+    <button class="btn btn-secondary" style="width:100%;justify-content:center;margin-top:12px;" onclick="openReportSettings()">
+      <i class="fas fa-cog"></i> Report Settings
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="reportSettingsModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('reportSettingsModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Report Settings</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;">Where should reports go?</p>
+    <div class="form-group">
+      <label>WhatsApp Number</label>
+      <input id="reportPhone" type="tel" placeholder="e.g. 233241234567">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input id="reportEmail" type="email" placeholder="owner@example.com">
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveReportSettings()">
+      <i class="fas fa-save"></i> Save Settings
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="adminModal">
+  <div class="modal-box" style="max-width:600px;">
+    <button class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></button>
+    <h2 style="margin-bottom:6px;font-size:18px;">Admin Controls</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px;">System-wide overview and staff management</p>
+    <div id="adminContent"></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   BizManager POS — v7
+   ===================================================== */
+
+function defaultBiz(name, type) {
+  return {
+    id: uid(), name: name, type: type || 'other',
+    currency: 'GH₵',
+    mode: (type === 'food' ? 'food' : 'bar'),
+    reportPhone: '', reportEmail: '',
+    inventory: [], sales: [], audits: [], imports: [],
+    food: { inventory: [], sales: [] }
+  };
+}
+
+var data = JSON.parse(localStorage.getItem('bizmanager_v7')) || {
+  businesses: [],
+  staff: [{ id: 'owner1', name: 'Owner', pin: '1234', role: 'owner', businessId: null }]
+};
+
+(function migrate() {
+  var old = localStorage.getItem('bizmanager_v6');
+  if (old && !localStorage.getItem('bizmanager_v7')) {
+    try {
+      var parsed = JSON.parse(old);
+      if (parsed.businesses) {
+        parsed.businesses.forEach(function(b) {
+          b.mode = b.mode || (b.type === 'food' ? 'food' : 'bar');
+          b.reportPhone = b.reportPhone || '';
+          b.reportEmail = b.reportEmail || '';
+          b.food = b.food || { inventory: [], sales: [] };
+          b.imports = b.imports || [];
+        });
+        data = parsed;
+        save();
+      }
+    } catch(e) {}
+  }
+})();
+
+var currentUser = null;
+var currentBizId = null;
+var currentTab = 'dashboard';
+var currentMode = 'bar';
+var cart = [];
+var paymentMethod = 'cash';
+var pinBuffer = '';
+var tempImage = null;
+var invFilterCategory = 'all';
+var invFilterLow = false;
+var activeGame = 'snake';
+
+function save() { localStorage.setItem('bizmanager_v7', JSON.stringify(data)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function money(n) {
+  var cur = currentBiz() ? currentBiz().currency : 'GH₵';
+  return cur + ' ' + Number(n||0).toFixed(2);
+}
+function currentBiz() { return data.businesses.find(function(b){ return b.id === currentBizId; }); }
+function fmtDate(iso) {
+  var d = new Date(iso);
+  return d.toLocaleDateString([], {year:'numeric',month:'short',day:'numeric'}) + ' · ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+}
+function dayKey(iso) {
+  var d = new Date(iso);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function todayKey() { return dayKey(new Date().toISOString()); }
+function yesterdayKey() { var d = new Date(); d.setDate(d.getDate()-1); return dayKey(d.toISOString()); }
+function activeInv(biz) { return biz.mode === 'food' ? biz.food.inventory : biz.inventory; }
+function activeSales(biz) { return biz.mode === 'food' ? biz.food.sales : biz.sales; }
+
+function can(action) {
+  if (!currentUser) return false;
+  var role = currentUser.role;
+  if (role === 'owner' || role === 'admin') return true;
+  if (role === 'manager') return action !== 'delete_business';
+  if (role === 'cashier') return ['pos','view_inventory','view_sales','play_game','view_dashboard','send_report'].indexOf(action) !== -1;
+  return false;
+}
+
+function autoImage(name, mode) {
+  var initials = (name||'?').trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();
+  var hash = 0;
+  for (var i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  var hue = hash % 360;
+  if (mode === 'food') hue = 20 + (hash % 60);
+  var bg1 = 'hsl(' + hue + ',60%,55%)';
+  var bg2 = 'hsl(' + ((hue+30)%360) + ',70%,42%)';
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + bg1 + '"/><stop offset="1" stop-color="' + bg2 + '"/></linearGradient></defs>' +
+    '<rect width="200" height="200" fill="url(#g)"/>' +
+    '<text x="100" y="120" font-family="Inter,sans-serif" font-size="72" font-weight="700" fill="#fff" text-anchor="middle" opacity=".95">' + initials + '</text></svg>';
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+function toast(msg, type) {
+  type = type || 'info';
+  var wrap = document.getElementById('toastWrap');
+  var el = document.createElement('div');
+  el.className = 'toast ' + type;
+  var icons = {success:'fa-check-circle',error:'fa-circle-exclamation',warning:'fa-triangle-exclamation',info:'fa-circle-info'};
+  el.innerHTML = '<i class="fas ' + (icons[type]||icons.info) + '"></i><span>' + msg + '</span>';
+  wrap.appendChild(el);
+  setTimeout(function(){ el.style.opacity='0'; el.style.transform='translateX(120%)'; el.style.transition='all .3s'; }, 3200);
+  setTimeout(function(){ el.remove(); }, 3600);
+}
+
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next === 'dark' ? 'dark' : '');
+  document.getElementById('themeIcon').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  localStorage.setItem('bizmanager_theme', next);
+}
+(function initTheme() {
+  var t = localStorage.getItem('bizmanager_theme');
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    var icon = document.getElementById('themeIcon');
+    if (icon) icon.className = 'fas fa-sun';
+  }
+})();
+
+function showLogin() {
+  document.getElementById('landingScreen').style.display = 'none';
+  document.getElementById('loginScreen').classList.add('active');
+}
+function showLanding() {
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('landingScreen').style.display = 'flex';
+  clearPin();
+}
+
+function pressPin(n) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += n;
+  document.getElementById('pinDisplay').textContent = '•'.repeat(pinBuffer.length).padEnd(4, '•');
+  if (pinBuffer.length === 4) setTimeout(submitPin, 200);
+}
+function clearPin() {
+  pinBuffer = '';
+  var el = document.getElementById('pinDisplay');
+  if (el) el.textContent = '••••';
+}
+function submitPin() {
+  var staff = data.staff.find(function(s){ return s.pin === pinBuffer; });
+  if (!staff) { toast('Incorrect PIN. Try again.', 'error'); clearPin(); return; }
+  currentUser = staff;
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  document.getElementById('userName').textContent = staff.name;
+  document.getElementById('userRole').textContent = staff.role.charAt(0).toUpperCase() + staff.role.slice(1);
+  document.getElementById('userAvatar').textContent = staff.name.charAt(0).toUpperCase();
+  if (data.businesses.length && !currentBizId) {
+    currentBizId = data.businesses[0].id;
+    currentMode = data.businesses[0].mode;
+  }
+  toast('Welcome back, ' + staff.name + '!', 'success');
+  render();
+}
+function logout() {
+  currentUser = null; currentBizId = null; cart = []; pinBuffer = ''; currentMode = 'bar';
+  document.getElementById('app').classList.remove('active');
+  showLanding();
+  toast('Logged out', 'info');
+}
+
+function addBusiness() {
+  if (!can('manage_business')) return toast('No permission', 'error');
+  var name = document.getElementById('bizName').value.trim();
+  if (!name) return toast('Business name required', 'error');
+  var type = document.getElementById('bizType').value;
+  var biz = defaultBiz(name, type);
+  biz.currency = document.getElementById('bizCurrency').value || 'GH₵';
+  if (type === 'food') {
+    var defaults = [
+      {name:'Jollof Rice',category:'Rice',cost:8,price:15,stock:50,minStock:10},
+      {name:'Fried Rice',category:'Rice',cost:8,price:15,stock:50,minStock:10},
+      {name:'Water',category:'Drinks',cost:1,price:2,stock:100,minStock:20},
+      {name:'Soft Drink',category:'Drinks',cost:4,price:7,stock:60,minStock:15},
+      {name:'Meat',category:'Protein',cost:5,price:10,stock:40,minStock:10},
+      {name:'Egg',category:'Protein',cost:1.5,price:3,stock:80,minStock:20}
+    ];
+    defaults.forEach(function(d) {
+      var p = {id:uid(),name:d.name,category:d.category,cost:d.cost,price:d.price,stock:d.stock,minStock:d.minStock};
+      p.image = autoImage(d.name, 'food');
+      biz.food.inventory.push(p);
+    });
+  }
+  data.businesses.push(biz);
+  currentBizId = biz.id;
+  currentMode = biz.mode;
+  save();
+  closeModal('bizModal');
+  document.getElementById('bizName').value = '';
+  toast('Business created' + (type === 'food' ? ' — Food menu seeded!' : ''), 'success');
+  render();
+}
+function switchBiz(id) {
+  currentBizId = id;
+  var b = currentBiz();
+  currentMode = b.mode;
+  cart = [];
+  render();
+}
+function deleteBusiness(id) {
+  if (!can('delete_business')) return toast('No permission', 'error');
+  var b = data.businesses.find(function(x){ return x.id === id; });
+  if (!b) return;
+  if (!confirm('Delete "' + b.name + '" and ALL data? Cannot be undone.')) return;
+  data.businesses = data.businesses.filter(function(x){ return x.id !== id; });
+  if (currentBizId === id) {
+    currentBizId = data.businesses[0] ? data.businesses[0].id : null;
+    currentMode = currentBiz() ? currentBiz().mode : 'bar';
+  }
+  save();
+  toast('Business deleted', 'success');
+  render();
+}
+
+/* Import / export */
+function splitCsvRow(headers, value) {
+  var h = headers.split(',').map(function(s){ return s.trim().toLowerCase(); });
+  var v = String(value == null ? '' : value).split(',').map(function(s){ return s.trim(); });
+  var row = {};
+  h.forEach(function(k, i) { row[k] = v[i] == null ? '' : v[i]; });
+  return row;
+}
+function unwrapCsvObject(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return obj;
+  var keys = Object.keys(obj);
+  if (keys.length === 1 && keys[0].indexOf(',') !== -1) {
+    var header = keys[0];
+    var val = obj[header];
+    if (Array.isArray(val)) return val.map(function(v){ return splitCsvRow(header, v); });
+    if (typeof val === 'string') return splitCsvRow(header, val);
+  }
+  return obj;
+}
+function normProduct(p, mode) {
+  p = p || {};
+  var price = p.price != null ? p.price : (p.sellingPrice != null ? p.sellingPrice : (p['selling price'] != null ? p['selling price'] : 0));
+  var cost = p.cost != null ? p.cost : (p.costPrice != null ? p.costPrice : (p['cost price'] != null ? p['cost price'] : 0));
+  var stock = p.stock != null ? p.stock : (p.quantity != null ? p.quantity : 0);
+  var min = p.minStock != null ? p.minStock : (p['min stock'] != null ? p['min stock'] : 5);
+  var name = p.name != null ? p.name : (p['product name'] != null ? p['product name'] : 'Unnamed Product');
+  var cat = p.category != null ? p.category : (mode === 'food' ? 'Food' : 'General');
+  return {
+    id: p.id || uid(),
+    name: String(name).trim(),
+    category: String(cat).trim() || 'General',
+    cost: Number(cost) || 0,
+    price: Number(price) || 0,
+    stock: Number(stock) || 0,
+    minStock: Number(min) || 5,
+    image: p.image || null
+  };
+}
+function normBusiness(b) {
+  b = b || {};
+  var inv = b.inventory || b.products || [];
+  var foodInv = (b.food && b.food.inventory) || [];
+  return {
+    id: b.id || uid(),
+    name: b.name || 'Imported Business',
+    type: b.type || 'other',
+    currency: b.currency || 'GH₵',
+    mode: b.mode || (b.type === 'food' ? 'food' : 'bar'),
+    reportPhone: b.reportPhone || '',
+    reportEmail: b.reportEmail || '',
+    inventory: inv.map(function(p){ return normProduct(p, 'bar'); }),
+    sales: b.sales || [],
+    audits: b.audits || [],
+    imports: b.imports || [],
+    food: {
+      inventory: foodInv.map(function(p){ return normProduct(p, 'food'); }),
+      sales: (b.food && b.food.sales) || []
+    }
+  };
+}
+function openImport() {
+  document.getElementById('importFile').value = '';
+  document.getElementById('importLabel').value = '';
+  openModal('importModal');
+}
+function doImport() {
+  var fileInput = document.getElementById('importFile');
+  var file = fileInput.files[0];
+  if (!file) return toast('Select a JSON file', 'warning');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var parsed;
+    try { parsed = JSON.parse(e.target.result); }
+    catch(err) { return toast('Not valid JSON', 'error'); }
+    try {
+      var arr = Array.isArray(parsed) ? parsed.map(unwrapCsvObject) : [unwrapCsvObject(parsed)];
+      var isProducts = arr.length && arr.every(function(x){ return x && (x['product name'] || x.productName || x.name); });
+      if (isProducts && currentBiz()) {
+        var biz = currentBiz();
+        var inv = currentMode === 'food' ? biz.food.inventory : biz.inventory;
+        var added = [];
+        arr.forEach(function(p) {
+          var np = normProduct(p, currentMode);
+          np.image = np.image || autoImage(np.name, currentMode);
+          var found = inv.find(function(x){ return x.name.toLowerCase() === np.name.toLowerCase(); });
+          if (found) Object.assign(found, {cost:np.cost,price:np.price,stock:np.stock,minStock:np.minStock,category:np.category});
+          else { inv.push(np); added.push(np.id); }
+        });
+        biz.imports = biz.imports || [];
+        biz.imports.push({id:uid(),label:file.name,date:new Date().toISOString(),mode:currentMode,count:arr.length,addedIds:added});
+        save();
+        closeModal('importModal');
+        toast('Imported ' + arr.length + ' products', 'success');
+        render();
+        return;
+      }
+      if (parsed.businesses) {
+        data.businesses = parsed.businesses.map(normBusiness);
+        if (!data.staff.find(function(s){ return s.role === 'owner'; })) {
+          data.staff = parsed.staff || data.staff;
         }
+        save();
+        currentBizId = data.businesses[0] ? data.businesses[0].id : null;
+        currentMode = currentBiz() ? currentBiz().mode : 'bar';
+        closeModal('importModal');
+        toast('Imported ' + data.businesses.length + ' businesses', 'success');
+        render();
+      }
+    } catch(err) { toast('Import failed: ' + err.message, 'error'); }
+  };
+  reader.readAsText(file);
+}
+function undoImport(importId) {
+  if (!can('manage_inventory')) return toast('No permission', 'error');
+  var biz = currentBiz();
+  if (!biz || !biz.imports) return;
+  var rec = biz.imports.find(function(x){ return x.id === importId; });
+  if (!rec) return;
+  if (!confirm('Undo import "' + rec.label + '"?')) return;
+  var ids = {}; (rec.addedIds || []).forEach(function(id){ ids[id] = true; });
+  if (rec.mode === 'food') biz.food.inventory = biz.food.inventory.filter(function(p){ return !ids[p.id]; });
+  else biz.inventory = biz.inventory.filter(function(p){ return !ids[p.id]; });
+  biz.imports = biz.imports.filter(function(x){ return x.id !== importId; });
+  save();
+  toast('Import undone', 'success');
+  render();
+}
 
-        // Cart Actions
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product || product.stock <= 0) {
-                alert("Out of stock!");
-                return;
-            }
+function previewImage(input) {
+  var file = input.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    tempImage = e.target.result;
+    var img = document.getElementById('imgPreview');
+    img.src = tempImage; img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+function openProductModal(editId) {
+  tempImage = null;
+  var img = document.getElementById('imgPreview');
+  img.style.display = 'none'; img.src = '';
+  document.getElementById('prodImage').value = '';
+  document.getElementById('prodEditId').value = '';
+  if (editId) {
+    var p = activeInv(currentBiz()).find(function(x){ return x.id === editId; });
+    if (!p) return;
+    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    document.getElementById('productSaveBtn').innerHTML = '<i class="fas fa-save"></i> Update';
+    document.getElementById('prodEditId').value = editId;
+    document.getElementById('prodName').value = p.name;
+    document.getElementById('prodCategory').value = p.category || '';
+    document.getElementById('prodCost').value = p.cost || 0;
+    document.getElementById('prodPrice').value = p.price || 0;
+    document.getElementById('prodStock').value = p.stock || 0;
+    document.getElementById('prodMin').value = p.minStock || 5;
+    if (p.image) { tempImage = p.image; img.src = p.image; img.style.display = 'block'; }
+  } else {
+    document.getElementById('productModalTitle').textContent = currentMode === 'food' ? 'Add Food Item' : 'Add Product';
+    document.getElementById('productSaveBtn').innerHTML = '<i class="fas fa-plus"></i> Save';
+    document.getElementById('prodName').value = '';
+    document.getElementById('prodCategory').value = currentMode === 'food' ? 'Food' : '';
+    document.getElementById('prodCost').value = 0;
+    document.getElementById('prodPrice').value = 0;
+    document.getElementById('prodStock').value = 0;
+    document.getElementById('prodMin').value = 5;
+  }
+  openModal('productModal');
+}
+function saveProduct() {
+  if (!can('manage_inventory')) return toast('No permission', 'error');
+  var biz = currentBiz(); if (!biz) return;
+  var editId = document.getElementById('prodEditId').value;
+  var name = document.getElementById('prodName').value.trim();
+  var price = parseFloat(document.getElementById('prodPrice').value) || 0;
+  if (!name || price <= 0) return toast('Name and price required', 'error');
+  var payload = {
+    name: name,
+    category: document.getElementById('prodCategory').value || 'General',
+    cost: parseFloat(document.getElementById('prodCost').value) || 0,
+    price: price,
+    stock: parseInt(document.getElementById('prodStock').value) || 0,
+    minStock: parseInt(document.getElementById('prodMin').value) || 5,
+    image: tempImage || autoImage(name, currentMode)
+  };
+  var inv = activeInv(biz);
+  if (editId) {
+    var p = inv.find(function(x){ return x.id === editId; });
+    if (p) Object.assign(p, payload);
+    toast('Updated', 'success');
+  } else {
+    inv.push(Object.assign({id:uid()}, payload));
+    toast('Added', 'success');
+  }
+  save();
+  closeModal('productModal');
+  render();
+}
+function deleteProduct(id) {
+  if (!can('manage_inventory')) return toast('No permission', 'error');
+  if (!confirm('Delete this product?')) return;
+  var biz = currentBiz();
+  if (currentMode === 'food') biz.food.inventory = biz.food.inventory.filter(function(p){ return p.id !== id; });
+  else biz.inventory = biz.inventory.filter(function(p){ return p.id !== id; });
+  save();
+  toast('Deleted', 'success');
+  render();
+}
 
-            const itemInCart = cart.find(c => c.id === productId);
-            if (itemInCart) {
-                if(itemInCart.qty < product.stock) {
-                    itemInCart.qty++;
-                } else {
-                    alert("Maximum available stock added to cart.");
-                }
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-            renderCart();
-        }
+function addStaff() {
+  if (!can('manage_staff')) return toast('No permission', 'error');
+  var name = document.getElementById('staffName').value.trim();
+  var pin = document.getElementById('staffPin').value.trim();
+  var role = document.getElementById('staffRole').value;
+  if (!name || pin.length !== 4) return toast('Name and 4-digit PIN required', 'error');
+  if (data.staff.find(function(s){ return s.pin === pin; })) return toast('PIN already used', 'error');
+  data.staff.push({id:uid(),name:name,pin:pin,role:role,businessId:currentBizId});
+  save();
+  closeModal('staffModal');
+  document.getElementById('staffName').value = '';
+  document.getElementById('staffPin').value = '';
+  toast('Staff added', 'success');
+  render();
+}
+function deleteStaff(id) {
+  if (!can('manage_staff')) return toast('No permission', 'error');
+  var staff = data.staff.find(function(s){ return s.id === id; });
+  if (!staff) return;
+  if (staff.id === currentUser.id) return toast("Can't delete yourself", 'error');
+  if (staff.role === 'owner' && data.staff.filter(function(s){ return s.role === 'owner'; }).length <= 1) {
+    return toast('Cannot delete last owner', 'error');
+  }
+  if (!confirm('Delete staff "' + staff.name + '"?')) return;
+  data.staff = data.staff.filter(function(s){ return s.id !== id; });
+  save();
+  toast('Staff deleted', 'success');
+  render();
+}
 
-        function updateCartQty(id, delta) {
-            const item = cart.find(c => c.id === id);
-            const product = products.find(p => p.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty > product.stock) {
-                    item.qty = product.stock;
-                    alert("Cannot exceed available stock.");
-                }
-                if (item.qty <= 0) {
-                    cart = cart.filter(c => c.id !== id);
-                }
-            }
-            renderCart();
-        }
+function addToCart(id) {
+  var p = activeInv(currentBiz()).find(function(x){ return x.id === id; });
+  if (!p || p.stock <= 0) return;
+  var existing = cart.find(function(c){ return c.id === id; });
+  if (existing) {
+    if (existing.qty >= p.stock) return toast('No more stock', 'warning');
+    existing.qty++;
+  } else {
+    cart.push({id:p.id,name:p.name,price:p.price,cost:p.cost||0,qty:1,image:p.image});
+  }
+  renderCart();
+}
+function changeQty(id, d) {
+  var item = cart.find(function(c){ return c.id === id; }); if (!item) return;
+  var p = activeInv(currentBiz()).find(function(x){ return x.id === id; });
+  item.qty += d;
+  if (item.qty <= 0) cart = cart.filter(function(c){ return c.id !== id; });
+  else if (item.qty > p.stock) item.qty = p.stock;
+  renderCart();
+}
+function removeCartItem(id) {
+  cart = cart.filter(function(c){ return c.id !== id; });
+  renderCart();
+  toast('Item removed', 'info');
+}
+function checkout() {
+  if (!cart.length) return toast('Cart is empty', 'warning');
+  var biz = currentBiz();
+  var total = cart.reduce(function(s,i){ return s + i.price * i.qty; }, 0);
+  var inv = activeInv(biz);
+  cart.forEach(function(item) {
+    var p = inv.find(function(x){ return x.id === item.id; });
+    if (p) p.stock -= item.qty;
+  });
+  var sale = {
+    id: uid(),
+    receiptNo: 'S-' + Date.now().toString().slice(-6),
+    items: cart.map(function(i){ return {productId:i.id,name:i.name,qty:i.qty,price:i.price,cost:i.cost||0,lineTotal:i.price*i.qty}; }),
+    total: total,
+    payment: paymentMethod,
+    staff: currentUser.name,
+    staffId: currentUser.id,
+    mode: currentMode,
+    date: new Date().toISOString()
+  };
+  if (currentMode === 'food') biz.food.sales.push(sale);
+  else biz.sales.push(sale);
+  save(); cart = [];
+  toast('Sale complete — ' + money(total), 'success');
+  render();
+}
 
-        function clearCart() {
-            cart = [];
-            renderCart();
-        }
+function openAudit(productId) {
+  var p = activeInv(currentBiz()).find(function(x){ return x.id === productId; });
+  if (!p) return;
+  document.getElementById('auditProdId').value = productId;
+  document.getElementById('auditProdName').value = p.name;
+  document.getElementById('auditSystemStock').value = p.stock;
+  document.getElementById('auditPhysical').value = p.stock;
+  document.getElementById('auditNote').value = '';
+  updateAuditPreview();
+  openModal('auditModal');
+}
+function updateAuditPreview() {
+  var pid = document.getElementById('auditProdId').value;
+  var p = activeInv(currentBiz()).find(function(x){ return x.id === pid; });
+  if (!p) return;
+  var sys = parseInt(document.getElementById('auditSystemStock').value) || 0;
+  var phys = parseInt(document.getElementById('auditPhysical').value) || 0;
+  var diff = phys - sys;
+  var cost = p.cost || 0;
+  var preview = document.getElementById('auditPreview');
+  if (diff === 0) {
+    preview.innerHTML = '<i class="fas fa-check-circle" style="color:var(--success);"></i> No discrepancy.';
+    preview.style.background = 'var(--success-soft)';
+  } else if (diff > 0) {
+    preview.innerHTML = '<div style="font-weight:600;color:var(--success);margin-bottom:6px;">Surplus: +' + diff + '</div><div><strong>Gain:</strong> ' + money(diff*cost) + '</div>';
+    preview.style.background = 'var(--success-soft)';
+  } else {
+    preview.innerHTML = '<div style="font-weight:600;color:var(--danger);margin-bottom:6px;">Shortage: ' + diff + '</div><div><strong>Loss:</strong> ' + money(Math.abs(diff)*cost) + '</div>';
+    preview.style.background = 'var(--danger-soft)';
+  }
+}
+function confirmAudit() {
+  if (!can('manage_inventory')) return toast('No permission', 'error');
+  var biz = currentBiz();
+  var pid = document.getElementById('auditProdId').value;
+  var p = activeInv(biz).find(function(x){ return x.id === pid; });
+  if (!p) return;
+  var sys = parseInt(document.getElementById('auditSystemStock').value) || 0;
+  var phys = parseInt(document.getElementById('auditPhysical').value) || 0;
+  var diff = phys - sys;
+  var cost = p.cost || 0;
+  var note = document.getElementById('auditNote').value.trim();
+  if (diff === 0 && !note) { closeModal('auditModal'); return toast('No discrepancy', 'info'); }
+  biz.audits.push({
+    id:uid(),productId:p.id,productName:p.name,
+    systemStock:sys,physicalStock:phys,diff:diff,
+    costValue:diff*cost,note:note,
+    staff:currentUser.name,mode:currentMode,
+    date:new Date().toISOString()
+  });
+  p.stock = phys;
+  save(); closeModal('auditModal');
+  toast(diff === 0 ? 'Note saved' : (diff > 0 ? 'Surplus +' + diff : 'Shortage ' + diff), diff === 0 ? 'info' : (diff > 0 ? 'success' : 'warning'));
+  render();
+}
 
-        function renderCart() {
-            const cartContainer = document.getElementById('cartItems');
-            if (cart.length === 0) {
-                cartContainer.innerHTML = `<p class="text-slate-400 text-center py-8 text-sm">Cart is empty</p>`;
-                document.getElementById('subtotal').innerText = 'GHS 0.00';
-                document.getElementById('grandTotal').innerText = 'GHS 0.00';
-                return;
-            }
+function openDay(dateStr) {
+  var biz = currentBiz();
+  var sales = activeSales(biz).filter(function(s){ return dayKey(s.date) === dateStr; });
+  var revenue = sales.reduce(function(s,x){ return s + x.total; }, 0);
+  var cost = sales.reduce(function(s,x){ return s + (x.items||[]).reduce(function(c,i){ return c + (i.cost||0)*i.qty; }, 0); }, 0);
+  var profit = revenue - cost;
+  document.getElementById('dayModalSub').textContent = new Date(dateStr + 'T00:00').toLocaleDateString([], {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var html = '<div class="stats" style="grid-template-columns:1fr 1fr 1fr;">' +
+    '<div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">' + money(revenue) + '</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Profit</div><div class="stat-value" style="color:' + (profit>=0?'var(--success)':'var(--danger)') + ';">' + money(profit) + '</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Sales</div><div class="stat-value">' + sales.length + '</div></div>' +
+  '</div>';
+  if (sales.length === 0) {
+    html += '<div class="empty-state"><i class="fas fa-receipt"></i>No sales this day</div>';
+  } else {
+    html += '<table class="table"><thead><tr><th>Time</th><th>Staff</th><th>Payment</th><th>Total</th></tr></thead><tbody>';
+    sales.forEach(function(s) {
+      html += '<tr><td>' + new Date(s.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) + '</td><td>' + s.staff + '</td><td><span class="badge badge-accent">' + s.payment + '</span></td><td><strong>' + money(s.total) + '</strong></td></tr>';
+    });
+    html += '</tbody></table>';
+  }
+  document.getElementById('dayModalContent').innerHTML = html;
+  openModal('dayModal');
+}
 
-            cartContainer.innerHTML = '';
-            let total = 0;
+/* ===== SEND REPORT (fixed) ===== */
+function buildReportText() {
+  var biz = currentBiz();
+  if (!biz) return '';
+  var day = todayKey();
+  var sales = activeSales(biz).filter(function(s){ return dayKey(s.date) === day; });
+  var revenue = sales.reduce(function(s,x){ return s + x.total; }, 0);
+  var cost = sales.reduce(function(s,x){ return s + (x.items||[]).reduce(function(c,i){ return c + (i.cost||0)*i.qty; }, 0); }, 0);
+  var profit = revenue - cost;
+  var itemMap = {};
+  sales.forEach(function(s) {
+    (s.items||[]).forEach(function(i) {
+      if (!itemMap[i.name]) itemMap[i.name] = {name:i.name,qty:0};
+      itemMap[i.name].qty += i.qty;
+    });
+  });
+  var top = Object.keys(itemMap).map(function(k){return itemMap[k];}).sort(function(a,b){return b.qty-a.qty;}).slice(0,5);
 
-            cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                total += itemTotal;
-                cartContainer.innerHTML += `
-                    <div class="flex justify-between items-center py-2">
-                        <div>
-                            <h5 class="font-semibold text-slate-800 text-sm">${item.name}</h5>
-                            <p class="text-xs text-slate-500">GHS ${item.price.toFixed(2)} x ${item.qty}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 border rounded bg-slate-100 text-xs font-bold">-</button>
-                            <span class="text-xs font-bold">${item.qty}</span>
-                            <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 border rounded bg-slate-100 text-xs font-bold">+</button>
-                            <span class="text-xs font-bold text-slate-800 ml-2">GHS ${itemTotal.toFixed(2)}</span>
-                        </div>
-                    </div>
-                `;
-            });
+  var text = '📊 ' + biz.name + ' — Sales Report\n';
+  text += '📅 ' + new Date().toLocaleDateString() + '\n';
+  text += '⏰ ' + new Date().toLocaleTimeString() + '\n\n';
+  text += '💰 Revenue: ' + money(revenue) + '\n';
+  text += '💸 Cost: ' + money(cost) + '\n';
+  text += '📈 Profit: ' + money(profit) + '\n';
+  text += '🧾 Sales: ' + sales.length + '\n\n';
+  if (top.length) {
+    text += '🏆 Top Items:\n';
+    top.forEach(function(t, i) { text += (i+1) + '. ' + t.name + ' — ' + t.qty + ' sold\n'; });
+    text += '\n';
+  }
+  if (sales.length) {
+    text += '📋 All Sales:\n';
+    sales.forEach(function(s) {
+      text += '• ' + new Date(s.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) + ' — ' + s.staff + ' — ' + money(s.total) + ' (' + s.payment + ')\n';
+    });
+  } else {
+    text += 'No sales recorded today.';
+  }
+  return text;
+}
 
-            document.getElementById('subtotal').innerText = `GHS ${total.toFixed(2)}`;
-            document.getElementById('grandTotal').innerText = `GHS ${total.toFixed(2)}`;
-        }
+function openSendModal() {
+  if (!currentBiz()) return;
+  openModal('sendModal');
+}
+function sendViaWhatsApp() {
+  try {
+    var biz = currentBiz();
+    var text = buildReportText();
+    var phone = (biz.reportPhone || '').replace(/\D/g, '');
+    var url = phone ? ('https://wa.me/' + phone + '?text=' + encodeURIComponent(text))
+                    : ('https://wa.me/?text=' + encodeURIComponent(text));
+    window.open(url, '_blank');
+    closeModal('sendModal');
+    toast('Opening WhatsApp…', 'success');
+  } catch(e) { toast('Could not open WhatsApp: ' + e.message, 'error'); }
+}
+function sendViaEmail() {
+  try {
+    var biz = currentBiz();
+    var text = buildReportText();
+    var to = biz.reportEmail || '';
+    var subject = 'Sales Report — ' + biz.name + ' — ' + new Date().toLocaleDateString();
+    var url = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+    window.location.href = url;
+    closeModal('sendModal');
+    toast('Opening email…', 'success');
+  } catch(e) { toast('Could not open email: ' + e.message, 'error'); }
+}
+function copyReportToClipboard() {
+  var text = buildReportText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      closeModal('sendModal');
+      toast('Report copied', 'success');
+    }).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta);
+  ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  closeModal('sendModal');
+  toast('Report copied', 'success');
+}
+function openReportSettings() {
+  var biz = currentBiz();
+  if (!biz) return;
+  document.getElementById('reportPhone').value = biz.reportPhone || '';
+  document.getElementById('reportEmail').value = biz.reportEmail || '';
+  closeModal('sendModal');
+  openModal('reportSettingsModal');
+}
+function saveReportSettings() {
+  var biz = currentBiz();
+  if (!biz) return;
+  biz.reportPhone = document.getElementById('reportPhone').value.replace(/\D/g, '');
+  biz.reportEmail = document.getElementById('reportEmail').value.trim();
+  save();
+  closeModal('reportSettingsModal');
+  toast('Report settings saved', 'success');
+}
 
-        // Search Filter
-        function filterProducts() {
-            const val = document.getElementById('searchInput').value;
-            renderProducts(val);
-        }
+function openAdminPanel() {
+  var html = '';
+  html += '<div style="font-weight:600;margin-bottom:10px;font-size:14px;">All Staff</div>';
+  html += '<table class="table" style="margin-bottom:20px;"><thead><tr><th>Name</th><th>Role</th><th>Action</th></tr></thead><tbody>';
+  data.staff.forEach(function(s) {
+    var badgeClass = s.role === 'admin' ? 'badge-admin' : 'badge-accent';
+    html += '<tr><td><strong>' + s.name + '</strong></td>' +
+      '<td><span class="badge ' + badgeClass + '" style="text-transform:capitalize;">' + s.role + '</span></td>' +
+      '<td>' + (s.id !== currentUser.id ? '<button class="btn btn-danger btn-sm" onclick="deleteStaff(\'' + s.id + '\');openAdminPanel();"><i class="fas fa-trash"></i></button>' : '<span style="color:var(--text3);">You</span>') + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  html += '<div style="font-weight:600;margin-bottom:10px;font-size:14px;">Businesses Overview</div>';
+  data.businesses.forEach(function(b) {
+    var inv = activeInv(b);
+    var sales = activeSales(b);
+    var total = sales.reduce(function(s,x){ return s + x.total; }, 0);
+    html += '<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;">' +
+      '<div style="font-weight:600;">' + b.name + '</div>' +
+      '<div style="font-size:12px;color:var(--text2);margin-top:4px;">' +
+        inv.length + ' products · ' + sales.length + ' sales · ' + money(total) + ' revenue' +
+      '</div></div>';
+  });
+  html += '<button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="openModal(\'staffModal\')"><i class="fas fa-user-plus"></i> Add Staff Member</button>';
+  document.getElementById('adminContent').innerHTML = html;
+  openModal('adminModal');
+}
 
-        // Checkout & Sales Processing
-        function processCheckout(method) {
-            if (cart.length === 0) {
-                alert("Cart is empty!");
-                return;
-            }
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function render() { renderShopList(); renderNav(); renderMain(); }
 
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+function renderShopList() {
+  var el = document.getElementById('shopList');
+  if (!data.businesses.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:6px;">No businesses yet</div>';
+    return;
+  }
+  el.innerHTML = data.businesses.map(function(b) {
+    return '<div class="shop-item ' + (b.id === currentBizId ? 'active' : '') + '" onclick="switchBiz(\'' + b.id + '\')">' +
+      '<div class="shop-avatar">' + b.name[0].toUpperCase() + '</div>' +
+      '<div style="min-width:0;flex:1;">' +
+        '<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + b.name + '</div>' +
+        '<div style="font-size:11px;color:var(--text2);text-transform:capitalize;">' + b.type + '</div>' +
+      '</div>' +
+      (can('delete_business') ? '<button class="shop-del" title="Delete" onclick="event.stopPropagation();deleteBusiness(\'' + b.id + '\')"><i class="fas fa-trash"></i></button>' : '') +
+    '</div>';
+  }).join('');
+}
 
-            if (method === 'Paystack') {
-                if (!paystackPublicKey) {
-                    alert("Paystack Key not set. Please add key in Admin settings.");
-                    return;
-                }
-                
-                const handler = PaystackPop.setup({
-                    key: paystackPublicKey,
-                    email: 'customer@adbeverages.com',
-                    amount: totalAmount * 100, // Amount in kobo/pesewas
-                    currency: 'GHS',
-                    callback: function(response) {
-                        finalizeTransaction(method, response.reference);
-                    },
-                    onClose: function() {
-                        alert('Payment cancelled.');
-                    }
-                });
-                handler.openIframe();
-            } else {
-                finalizeTransaction(method, 'CASH-' + Date.now());
-            }
-        }
+function renderNav() {
+  var biz = currentBiz();
+  var lowCount = biz ? activeInv(biz).filter(function(p){ return p.stock <= p.minStock; }).length : 0;
+  var items = [];
+  items.push({tab:'dashboard',icon:'fa-chart-pie',label:'Dashboard'});
+  if (can('pos')) items.push({tab:'pos',icon:'fa-cash-register',label:'Point of Sale'});
+  if (can('view_sales') || can('pos')) items.push({tab:'sales',icon:'fa-receipt',label:'Sales History'});
+  if (can('view_inventory') || can('manage_inventory')) items.push({tab:'inventory',icon:'fa-boxes',label:'Inventory',badge:lowCount});
+  if (can('view_inventory') || can('manage_inventory')) items.push({tab:'audit',icon:'fa-clipboard-check',label:'Stock Audit'});
+  if (can('manage_staff')) items.push({tab:'staff',icon:'fa-users',label:'Staff'});
+  if (can('view_reports')) items.push({tab:'reports',icon:'fa-chart-bar',label:'Reports'});
+  if (can('play_game')) items.push({tab:'game',icon:'fa-gamepad',label:'Games'});
+  if (can('manage_business') || can('manage_staff')) items.push({tab:'data',icon:'fa-database',label:'Import / Export'});
+  if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'owner')) {
+    items.push({tab:'admin',icon:'fa-shield-halved',label:'Admin'});
+  }
 
-        function finalizeTransaction(method, reference) {
-            // Subtract inventory
-            cart.forEach(item => {
-                const product = products.find(p => p.id === item.id);
-                if (product) product.stock -= item.qty;
-            });
+  document.getElementById('nav').innerHTML = items.map(function(i) {
+    return '<div class="nav-item ' + (currentTab === i.tab ? 'active' : '') + '" onclick="switchTab(\'' + i.tab + '\')">' +
+      '<i class="fas ' + i.icon + '"></i> ' + i.label +
+      (i.badge ? '<span class="nav-badge">' + i.badge + '</span>' : '') +
+    '</div>';
+  }).join('');
 
-            const transaction = {
-                id: Date.now(),
-                reference: reference,
-                items: [...cart],
-                total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
-                method: method,
-                timestamp: new Date().toISOString()
-            };
+  document.getElementById('addBizBtn').style.display = can('manage_business') ? 'inline-flex' : 'none';
+}
 
-            salesHistory.push(transaction);
-            localStorage.setItem('ad_sales', JSON.stringify(salesHistory));
+function switchTab(tab) {
+  currentTab = tab;
+  if (tab === 'game') initActiveGame();
+  if (tab === 'admin') openAdminPanel();
+  render();
+}
 
-            cart = [];
-            renderCart();
-            renderProducts();
-            updateDashboardMetrics();
-            alert("Transaction completed successfully!");
-        }
+function renderMain() {
+  var main = document.getElementById('main');
+  var biz = currentBiz();
+  if (!biz) {
+    main.innerHTML = '<div class="empty-state" style="padding:80px 20px;">' +
+      '<i class="fas fa-store"></i>' +
+      '<h2 style="font-size:20px;margin-bottom:8px;color:var(--text);">Welcome, ' + currentUser.name + '</h2>' +
+      '<p style="margin:6px 0 20px;">Create your first business to get started</p>' +
+      '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">' +
+      (can('manage_business') ? '<button class="btn btn-primary" onclick="openModal(\'bizModal\')"><i class="fas fa-plus"></i> Add Business</button>' : '') +
+      '<button class="btn btn-secondary" onclick="openImport()"><i class="fas fa-file-import"></i> Import Data</button>' +
+      '</div></div>';
+    return;
+  }
+  currentMode = biz.mode;
+  var content = '';
+  if (currentTab === 'dashboard') content = renderDashboardHTML(biz);
+  else if (currentTab === 'pos') content = renderPOSHTML(biz);
+  else if (currentTab === 'inventory') content = renderInventoryHTML(biz);
+  else if (currentTab === 'audit') content = renderAuditHTML(biz);
+  else if (currentTab === 'sales') content = renderSalesHTML(biz);
+  else if (currentTab === 'staff') content = renderStaffHTML();
+  else if (currentTab === 'reports') content = renderReportsHTML(biz);
+  else if (currentTab === 'data') content = renderDataHTML(biz);
+  else if (currentTab === 'game') content = renderGameHTML();
+  else if (currentTab === 'admin') content = '<div class="empty-state"><i class="fas fa-shield-halved"></i>Admin panel opened — check the modal.</div>';
+  main.innerHTML = content;
+  if (currentTab === 'pos') renderCart();
+  if (currentTab === 'game') renderActiveGame();
+}
 
-        // Admin Dashboards & Sales Tracking Calculations
-        function updateDashboardMetrics() {
-            const now = new Date();
-            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-            const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())).getTime();
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+function computeDayTotals(sales, key) {
+  var filtered = sales.filter(function(s){ return dayKey(s.date) === key; });
+  var revenue = filtered.reduce(function(s,x){ return s + x.total; }, 0);
+  var cost = filtered.reduce(function(s,x){ return s + (x.items||[]).reduce(function(c,i){ return c + (i.cost||0)*i.qty; }, 0); }, 0);
+  return {revenue:revenue,profit:revenue-cost,count:filtered.length};
+}
 
-            let daily = 0, weekly = 0, monthly = 0;
+function renderDashboardHTML(biz) {
+  var inv = activeInv(biz);
+  var sales = activeSales(biz);
+  var today = computeDayTotals(sales, todayKey());
+  var yesterday = computeDayTotals(sales, yesterdayKey());
+  var lowItems = inv.filter(function(p){ return p.stock <= p.minStock; });
+  var isFood = currentMode === 'food';
 
-            salesHistory.forEach(s => {
-                const saleTime = new Date(s.timestamp).getTime();
-                if (saleTime >= startOfDay) daily += s.total;
-                if (saleTime >= startOfWeek) weekly += s.total;
-                if (saleTime >= startOfMonth) monthly += s.total;
-            });
+  var hero = '';
+  if (isFood) {
+    hero = '<div class="food-hero">' +
+      '<h2><i class="fas fa-utensils"></i> Kitchen Dashboard</h2>' +
+      '<p>Fresh food • Fast service • Happy customers</p>' +
+      '<div class="food-stats">' +
+        '<div class="food-stat"><strong>' + money(today.revenue) + '</strong>Today</div>' +
+        '<div class="food-stat"><strong>' + today.count + '</strong>Orders</div>' +
+        '<div class="food-stat"><strong>' + inv.length + '</strong>Menu</div>' +
+        '<div class="food-stat"><strong>' + lowItems.length + '</strong>Low stock</div>' +
+      '</div></div>';
+  }
 
-            document.getElementById('dailySales').innerText = `GHS ${daily.toFixed(2)}`;
-            document.getElementById('weeklySales').innerText = `GHS ${weekly.toFixed(2)}`;
-            document.getElementById('monthlySales').innerText = `GHS ${monthly.toFixed(2)}`;
-            document.getElementById('totalCount').innerText = salesHistory.length;
-        }
+  var lowAlert = '';
+  if (lowItems.length) {
+    lowAlert = '<div class="card" style="border-color:var(--danger);">' +
+      '<div style="font-weight:600;margin-bottom:12px;color:var(--danger);font-size:15px;"><i class="fas fa-triangle-exclamation"></i> Low Stock</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">' +
+      lowItems.slice(0,12).map(function(p) {
+        return '<div style="background:var(--danger-soft);border-radius:8px;padding:8px 10px;font-size:12.5px;">' +
+          '<strong>' + p.name + '</strong><br><span style="color:var(--danger);">Only ' + p.stock + ' left (min ' + p.minStock + ')</span></div>';
+      }).join('') + '</div></div>';
+  }
 
-        // Admin Management Controls
-        function saveProduct(e) {
-            e.preventDefault();
-            const id = document.getElementById('productId').value;
-            const name = document.getElementById('pName').value;
-            const price = parseFloat(document.getElementById('pPrice').value);
-            const stock = parseInt(document.getElementById('pStock').value);
+  var recentSales = '';
+  if (sales.length === 0) {
+    recentSales = '<div class="empty-state"><i class="fas fa-receipt"></i>No sales yet</div>';
+  } else {
+    recentSales = '<table class="table"><thead><tr><th>Time</th><th>Items</th><th>Staff</th><th>Payment</th><th>Total</th></tr></thead><tbody>';
+    sales.slice().reverse().slice(0,6).forEach(function(s) {
+      recentSales += '<tr><td style="color:var(--text2);">' + fmtDate(s.date) + '</td>' +
+        '<td>' + (s.items||[]).reduce(function(q,i){return q+i.qty;},0) + ' items</td>' +
+        '<td>' + (s.staff||'-') + '</td>' +
+        '<td><span class="badge badge-accent">' + s.payment + '</span></td>' +
+        '<td><strong>' + money(s.total) + '</strong></td></tr>';
+    });
+    recentSales += '</tbody></table>';
+  }
 
-            if (id) {
-                const p = products.find(prod => prod.id == id);
-                if (p) { p.name = name; p.price = price; p.stock = stock; }
-            } else {
-                products.push({ id: Date.now(), name, price, stock });
-            }
+  var reportBtn = can('send_report') ? '<button class="btn btn-whatsapp" onclick="openSendModal()"><i class="fas fa-paper-plane"></i> Send Report</button>' : '';
 
-            document.getElementById('productForm').reset();
-            document.getElementById('productId').value = '';
-            renderProducts();
-        }
+  return '<div class="header"><div><h1>' + (isFood ? 'Food' : 'Bar') + ' Dashboard</h1><p>' + biz.name + '</p></div>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;">' + reportBtn +
+    '<button class="btn btn-secondary" onclick="exportData()"><i class="fas fa-download"></i> Export</button></div></div>' +
+    hero +
+    '<div class="stats">' +
+      '<div class="stat-card"><div class="stat-label"><i class="fas fa-sun" style="color:var(--warning);"></i> Today</div><div class="stat-value">' + money(today.revenue) + '</div><div class="stat-sub">' + today.count + ' sales · profit ' + money(today.profit) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label"><i class="fas fa-moon" style="color:var(--accent);"></i> Yesterday</div><div class="stat-value">' + money(yesterday.revenue) + '</div><div class="stat-sub">' + yesterday.count + ' sales · profit ' + money(yesterday.profit) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label"><i class="fas fa-boxes"></i> Products</div><div class="stat-value">' + inv.length + '</div></div>' +
+      '<div class="stat-card"' + (lowItems.length?' style="border-color:var(--danger);"':'') + '><div class="stat-label"><i class="fas fa-triangle-exclamation" style="color:var(--danger);"></i> Low Stock</div><div class="stat-value" style="color:' + (lowItems.length?'var(--danger)':'inherit') + ';">' + lowItems.length + '</div></div>' +
+    '</div>' + lowAlert +
+    '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">' +
+      '<div style="font-weight:600;font-size:15px;">Recent Sales</div>' +
+      '<button class="btn btn-ghost btn-sm" onclick="switchTab(\'sales\')">View all →</button></div>' + recentSales + '</div>';
+}
 
-        function editProduct(id) {
-            const p = products.find(prod => prod.id === id);
-            if (p) {
-                document.getElementById('productId').value = p.id;
-                document.getElementById('pName').value = p.name;
-                document.getElementById('pPrice').value = p.price;
-                document.getElementById('pStock').value = p.stock;
-            }
-        }
+function renderPOSHTML(biz) {
+  var inv = activeInv(biz);
+  var productsHtml = '';
+  if (inv.length === 0) {
+    productsHtml = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-box-open"></i>No products yet.' +
+      (can('manage_inventory') ? '<br><button class="btn btn-primary" style="margin-top:14px;" onclick="openProductModal()"><i class="fas fa-plus"></i> Add</button>' : '') + '</div>';
+  } else {
+    productsHtml = inv.map(function(p) {
+      var low = p.stock > 0 && p.stock <= p.minStock;
+      return '<div class="product-card ' + (p.stock<=0?'out':'') + ' ' + (low?'low':'') + '" onclick="addToCart(\'' + p.id + '\')">' +
+        '<img src="' + (p.image || autoImage(p.name, currentMode)) + '" class="product-img" alt="' + p.name + '">' +
+        '<div class="product-name">' + p.name + '</div>' +
+        '<div class="product-price">' + money(p.price) + '</div>' +
+        '<div class="product-stock">Stock: ' + p.stock + '</div></div>';
+    }).join('');
+  }
+  return '<div class="header"><div><h1>Point of Sale</h1><p>' + biz.name + '</p></div></div>' +
+    '<div class="pos-grid">' +
+      '<div class="product-grid">' + productsHtml + '</div>' +
+      '<div class="cart"><div style="font-weight:600;margin-bottom:12px;font-size:15px;">Current Sale</div><div id="cartBox"></div></div>' +
+    '</div>';
+}
 
-        function deleteProduct(id) {
-            if (confirm("Delete this drink from inventory?")) {
-                products = products.filter(p => p.id !== id);
-                renderProducts();
-            }
-        }
+function renderCart() {
+  var box = document.getElementById('cartBox');
+  if (!box) return;
+  if (!cart.length) {
+    box.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i>Cart is empty</div>';
+    return;
+  }
+  var total = cart.reduce(function(s,i){ return s + i.price * i.qty; }, 0);
+  var html = '<div style="max-height:300px;overflow-y:auto;">';
+  cart.forEach(function(i) {
+    html += '<div class="cart-item">' +
+      '<div style="min-width:0;flex:1;">' +
+        '<div style="font-weight:600;">' + i.name + '</div>' +
+        '<div style="font-size:11px;color:var(--text2);">' + money(i.price) + '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:4px;">' +
+        '<button class="qty-btn" onclick="changeQty(\'' + i.id + '\',-1)">−</button>' +
+        '<span style="min-width:16px;text-align:center;font-weight:600;">' + i.qty + '</span>' +
+        '<button class="qty-btn" onclick="changeQty(\'' + i.id + '\',1)">+</button>' +
+        '<button class="del-btn" onclick="removeCartItem(\'' + i.id + '\')" title="Remove"><i class="fas fa-times"></i></button>' +
+      '</div></div>';
+  });
+  html += '</div>' +
+    '<div style="font-size:20px;font-weight:700;text-align:right;margin:14px 0;">' + money(total) + '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">' +
+      '<button class="pay-btn ' + (paymentMethod==='cash'?'active':'') + '" onclick="paymentMethod=\'cash\';renderCart()">Cash</button>' +
+      '<button class="pay-btn ' + (paymentMethod==='momo'?'active':'') + '" onclick="paymentMethod=\'momo\';renderCart()">MoMo</button>' +
+      '<button class="pay-btn ' + (paymentMethod==='card'?'active':'') + '" onclick="paymentMethod=\'card\';renderCart()">Card</button>' +
+      '<button class="pay-btn ' + (paymentMethod==='credit'?'active':'') + '" onclick="paymentMethod=\'credit\';renderCart()">Credit</button>' +
+    '</div>' +
+    '<button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="checkout()"><i class="fas fa-check"></i> Complete Sale</button>' +
+    '<button class="btn btn-secondary" style="width:100%;justify-content:center;margin-top:8px;" onclick="cart=[];renderCart()">Clear Cart</button>';
+  box.innerHTML = html;
+}
 
-        function savePaystackKey() {
-            const key = document.getElementById('paystackKeyInput').value.trim();
-            paystackPublicKey = key;
-            localStorage.setItem('ad_paystack_key', key);
-            alert("Paystack key updated!");
-        }
+function renderInventoryHTML(biz) {
+  var inv = activeInv(biz);
+  var cats = ['all'];
+  inv.forEach(function(p) { if (p.category && cats.indexOf(p.category) === -1) cats.push(p.category); });
+  cats.sort();
+  var filtered = inv.filter(function(p) {
+    if (invFilterCategory !== 'all' && p.category !== invFilterCategory) return false;
+    if (invFilterLow && p.stock > p.minStock) return false;
+    return true;
+  });
+  var chipsHtml = cats.map(function(c) {
+    return '<div class="chip ' + (invFilterCategory===c?'active':'') + '" onclick="invFilterCategory=\'' + c.replace(/'/g,"\\'") + '\';render()">' + (c==='all'?'All':c) + '</div>';
+  }).join('') + '<div class="chip danger ' + (invFilterLow?'active':'') + '" onclick="invFilterLow=!invFilterLow;render()"><i class="fas fa-triangle-exclamation"></i> Low only</div>';
 
-        // Role Authentication Modals
-        function toggleRoleModal() {
-            if (isAdmin) {
-                // Switch back to worker
-                isAdmin = false;
-                document.getElementById('roleBadge').innerText = "Worker Mode";
-                document.getElementById('roleBadge').className = "bg-indigo-700 px-3 py-1 rounded-full text-xs font-semibold uppercase";
-                document.getElementById('switchRoleBtn').innerHTML = `<i class="fa-solid fa-user-shield mr-1"></i> Admin Login`;
-                document.getElementById('adminDashboard').classList.add('hidden');
-                document.getElementById('terminalSection').classList.remove('hidden');
-                document.getElementById('cartSection').classList.remove('hidden');
-            } else {
-                document.getElementById('authModal').classList.remove('hidden');
-            }
-        }
+  var tableHtml;
+  if (filtered.length === 0) {
+    tableHtml = '<div class="empty-state"><i class="fas fa-box-open"></i>No products</div>';
+  } else {
+    tableHtml = '<div style="overflow-x:auto;"><table class="table"><thead><tr><th></th><th>Product</th><th>Category</th><th>Cost</th><th>Selling</th><th>Margin</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+    filtered.forEach(function(p) {
+      var status='In Stock',cls='badge-success',rowCls='';
+      if (p.stock === 0) { status='Out';cls='badge-danger';rowCls='row-low'; }
+      else if (p.stock <= p.minStock) { status='Low';cls='badge-danger';rowCls='row-low'; }
+      var margin = p.price > 0 ? ((p.price - (p.cost||0)) / p.price * 100) : 0;
+      tableHtml += '<tr class="' + rowCls + '">' +
+        '<td><img src="' + (p.image || autoImage(p.name, currentMode)) + '" style="width:40px;height:40px;object-fit:cover;border-radius:8px;"></td>' +
+        '<td><strong>' + p.name + '</strong></td>' +
+        '<td><span class="badge badge-accent">' + p.category + '</span></td>' +
+        '<td>' + money(p.cost||0) + '</td>' +
+        '<td>' + money(p.price) + '</td>' +
+        '<td style="color:' + (margin>=0?'var(--success)':'var(--danger)') + ';">' + margin.toFixed(0) + '%</td>' +
+        '<td><strong style="color:' + (p.stock<=p.minStock?'var(--danger)':'inherit') + ';">' + p.stock + '</strong></td>' +
+        '<td><span class="badge ' + cls + '">' + status + '</span></td>' +
+        '<td><div class="action-btns">' +
+          '<button class="btn btn-secondary btn-sm btn-icon" title="Edit" onclick="openProductModal(\'' + p.id + '\')"><i class="fas fa-pen"></i></button>' +
+          '<button class="btn btn-secondary btn-sm btn-icon" title="Audit" onclick="openAudit(\'' + p.id + '\')"><i class="fas fa-clipboard-check"></i></button>' +
+          '<button class="btn btn-danger btn-sm btn-icon" title="Delete" onclick="deleteProduct(\'' + p.id + '\')"><i class="fas fa-trash"></i></button>' +
+        '</div></td></tr>';
+    });
+    tableHtml += '</tbody></table></div>';
+  }
 
-        function verifyAdminPin() {
-            const pin = document.getElementById('adminPinInput').value;
-            if (pin === DEFAULT_PIN) {
-                isAdmin = true;
-                document.getElementById('roleBadge').innerText = "Admin Mode";
-                document.getElementById('roleBadge').className = "bg-emerald-600 px-3 py-1 rounded-full text-xs font-semibold uppercase";
-                document.getElementById('switchRoleBtn').innerHTML = `<i class="fa-solid fa-right-from-bracket mr-1"></i> Exit Admin`;
-                
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                document.getElementById('terminalSection').classList.add('hidden');
-                document.getElementById('cartSection').classList.add('hidden');
-                
-                document.getElementById('authModal').classList.add('hidden');
-                document.getElementById('adminPinInput').value = '';
-            } else {
-                alert("Incorrect PIN!");
-            }
-        }
-    </script>
+  return '<div class="header"><div><h1>Inventory</h1><p>' + inv.length + ' products</p></div>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+      '<button class="btn btn-secondary" onclick="exportData()"><i class="fas fa-download"></i> Export</button>' +
+      (can('manage_inventory') ? '<button class="btn btn-primary" onclick="openProductModal()"><i class="fas fa-plus"></i> Add</button>' : '') +
+    '</div></div>' +
+    '<div class="chips">' + chipsHtml + '</div>' +
+    '<div class="card">' + tableHtml + '</div>';
+}
+
+function renderAuditHTML(biz) {
+  var audits = (biz.audits || []).filter(function(a){ return (a.mode||'bar') === currentMode; });
+  var totalGain = audits.filter(function(a){return a.diff>0;}).reduce(function(s,a){return s+a.costValue;},0);
+  var totalLoss = audits.filter(function(a){return a.diff<0;}).reduce(function(s,a){return s+Math.abs(a.costValue);},0);
+  var inv = activeInv(biz);
+  var listHtml = inv.length === 0 ? '<p style="color:var(--text2);">Add products first.</p>' :
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">' +
+    inv.map(function(p) {
+      return '<div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg3);border-radius:10px;padding:10px;">' +
+        '<div style="min-width:0;"><div style="font-weight:600;font-size:13px;">' + p.name + '</div><div style="font-size:11px;color:var(--text2);">System: ' + p.stock + '</div></div>' +
+        '<button class="btn btn-primary btn-sm" onclick="openAudit(\'' + p.id + '\')"><i class="fas fa-clipboard-check"></i></button></div>';
+    }).join('') + '</div>';
+  var historyHtml = audits.length === 0 ? '<div class="empty-state"><i class="fas fa-clipboard"></i>No audits yet</div>' :
+    '<div style="overflow-x:auto;"><table class="table"><thead><tr><th>Date</th><th>Product</th><th>System</th><th>Physical</th><th>Diff</th><th>Value</th><th>By</th></tr></thead><tbody>' +
+    audits.slice().reverse().map(function(a) {
+      var positive = a.diff > 0;
+      var cls = a.diff === 0 ? 'badge-muted' : (positive ? 'badge-success' : 'badge-danger');
+      return '<tr><td style="color:var(--text2);">' + fmtDate(a.date) + '</td><td><strong>' + a.productName + '</strong></td>' +
+        '<td>' + a.systemStock + '</td><td>' + a.physicalStock + '</td>' +
+        '<td><span class="badge ' + cls + '">' + (positive?'+':'') + a.diff + '</span></td>' +
+        '<td style="color:' + (a.diff>=0?'var(--success)':'var(--danger)') + ';font-weight:600;">' + money(a.costValue) + '</td>' +
+        '<td>' + a.staff + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+  return '<div class="header"><div><h1>Stock Audit</h1></div></div>' +
+    '<div class="stats">' +
+      '<div class="stat-card"><div class="stat-label">Gain</div><div class="stat-value" style="color:var(--success);">' + money(totalGain) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Loss</div><div class="stat-value" style="color:var(--danger);">' + money(totalLoss) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Net</div><div class="stat-value" style="color:' + (totalGain-totalLoss>=0?'var(--success)':'var(--danger)') + ';">' + money(totalGain-totalLoss) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Records</div><div class="stat-value">' + audits.length + '</div></div>' +
+    '</div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:14px;font-size:15px;">Run new audit</div>' + listHtml + '</div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:14px;font-size:15px;">History</div>' + historyHtml + '</div>';
+}
+
+function renderSalesHTML(biz) {
+  var sales = activeSales(biz).slice().reverse();
+  var content = sales.length === 0 ? '<div class="empty-state"><i class="fas fa-receipt"></i>No sales yet</div>' :
+    sales.map(function(s) {
+      var itemsHtml = (s.items||[]).map(function(i) {
+        return '<tr><td>' + i.name + '</td><td>' + i.qty + '</td><td>' + money(i.price) + '</td><td><strong>' + money(i.lineTotal || (i.price*i.qty)) + '</strong></td></tr>';
+      }).join('');
+      return '<div style="border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;">' +
+        '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">' +
+          '<div><div style="font-weight:700;font-size:14px;">' + (s.receiptNo || s.id.slice(-6)) + '</div>' +
+          '<div style="font-size:12px;color:var(--text2);">' + fmtDate(s.date) + ' · <strong>' + (s.staff||'—') + '</strong></div></div>' +
+          '<div style="text-align:right;"><div style="font-size:18px;font-weight:700;color:var(--accent);">' + money(s.total) + '</div>' +
+          '<span class="badge badge-accent">' + s.payment + '</span></div></div>' +
+        '<table class="table"><thead><tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr></thead><tbody>' + itemsHtml + '</tbody></table></div>';
+    }).join('');
+  var reportBtn = can('send_report') ? '<button class="btn btn-whatsapp" onclick="openSendModal()"><i class="fas fa-paper-plane"></i> Send Report</button>' : '';
+  return '<div class="header"><div><h1>Sales History</h1><p>' + sales.length + ' sales</p></div>' +
+    '<div style="display:flex;gap:8px;">' + reportBtn +
+    '<button class="btn btn-secondary" onclick="exportData()"><i class="fas fa-download"></i> Export</button></div></div>' +
+    '<div class="card">' + content + '</div>';
+}
+
+function renderStaffHTML() {
+  var rows = data.staff.map(function(s) {
+    var badgeClass = s.role === 'admin' ? 'badge-admin' : 'badge-accent';
+    return '<tr><td><strong>' + s.name + '</strong></td><td><span class="badge ' + badgeClass + '" style="text-transform:capitalize;">' + s.role + '</span></td><td style="color:var(--text2);">••••</td>' +
+      '<td>' + (s.id !== currentUser.id ? '<button class="btn btn-danger btn-sm btn-icon" onclick="deleteStaff(\'' + s.id + '\')"><i class="fas fa-trash"></i></button>' : '<span style="color:var(--text3);">You</span>') + '</td></tr>';
+  }).join('');
+  return '<div class="header"><div><h1>Staff</h1><p>Manage team & PINs</p></div>' +
+    '<button class="btn btn-primary" onclick="openModal(\'staffModal\')"><i class="fas fa-user-plus"></i> Add Staff</button></div>' +
+    '<div class="card"><table class="table"><thead><tr><th>Name</th><th>Role</th><th>PIN</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+function renderReportsHTML(biz) {
+  var sales = activeSales(biz);
+  var total = sales.reduce(function(s,x){ return s + x.total; }, 0);
+  var totalCost = sales.reduce(function(s,x){ return s + (x.items||[]).reduce(function(c,i){ return c + (i.cost||0)*i.qty; }, 0); }, 0);
+  var grossProfit = total - totalCost;
+  var itemMap = {};
+  sales.forEach(function(s) {
+    (s.items||[]).forEach(function(i) {
+      if (!itemMap[i.name]) itemMap[i.name] = {name:i.name,qty:0};
+      itemMap[i.name].qty += i.qty;
+    });
+  });
+  var topItems = Object.keys(itemMap).map(function(k){return itemMap[k];}).sort(function(a,b){return b.qty-a.qty;}).slice(0,10);
+  var maxQty = topItems.length ? topItems[0].qty : 1;
+
+  var topHtml = topItems.length === 0 ? '<div class="empty-state"><i class="fas fa-chart-bar"></i>No sales data</div>' :
+    '<div class="bar-chart">' + topItems.map(function(item,idx) {
+      return '<div class="bar-row"><div class="bar-name">' + (idx+1) + '. ' + item.name + '</div>' +
+        '<div class="bar-track"><div class="bar-fill ' + (currentMode==='food'?'food':'') + '" style="width:' + ((item.qty/maxQty*100).toFixed(1)) + '%;"></div></div>' +
+        '<div class="bar-val">' + item.qty + ' sold</div></div>';
+    }).join('') + '</div>';
+
+  var days = [];
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(); d.setDate(d.getDate()-i);
+    var k = dayKey(d.toISOString());
+    var t = computeDayTotals(sales, k);
+    days.push({key:k,label:d.toLocaleDateString([],{weekday:'short',day:'numeric'}),revenue:t.revenue});
+  }
+  var maxDayRev = 1;
+  days.forEach(function(d){ if (d.revenue > maxDayRev) maxDayRev = d.revenue; });
+  var daysHtml = '<div class="bar-chart">' + days.slice().reverse().map(function(d) {
+    return '<div class="bar-row" style="cursor:pointer;" onclick="openDay(\'' + d.key + '\')"><div class="bar-name">' + d.label + '</div>' +
+      '<div class="bar-track"><div class="bar-fill ' + (currentMode==='food'?'food':'') + '" style="width:' + ((d.revenue/maxDayRev*100).toFixed(1)) + '%;"></div></div>' +
+      '<div class="bar-val">' + money(d.revenue) + '</div></div>';
+  }).join('') + '</div>';
+
+  var reportBtn = can('send_report') ? '<button class="btn btn-whatsapp" onclick="openSendModal()"><i class="fas fa-paper-plane"></i> Send Report</button>' : '';
+
+  return '<div class="header"><div><h1>Reports</h1><p>' + biz.name + '</p></div>' + reportBtn + '</div>' +
+    '<div class="stats">' +
+      '<div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value">' + money(total) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Cost of Goods</div><div class="stat-value">' + money(totalCost) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Gross Profit</div><div class="stat-value" style="color:' + (grossProfit>=0?'var(--success)':'var(--danger)') + ';">' + money(grossProfit) + '</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Total Sales</div><div class="stat-value">' + sales.length + '</div></div>' +
+    '</div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:16px;font-size:15px;"><i class="fas fa-trophy" style="color:var(--warning);"></i> Top 10 Items</div>' + topHtml + '</div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:16px;font-size:15px;"><i class="fas fa-calendar-day" style="color:var(--accent);"></i> Last 7 Days</div>' + daysHtml +
+      '<div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+        '<label style="font-size:13px;color:var(--text2);">Inspect date:</label>' +
+        '<input type="date" id="reportDatePicker" style="padding:7px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;" value="' + todayKey() + '">' +
+        '<button class="btn btn-primary btn-sm" onclick="openDay(document.getElementById(\'reportDatePicker\').value)"><i class="fas fa-search"></i> View</button>' +
+      '</div></div>';
+}
+
+function renderDataHTML(biz) {
+  var imports = (biz.imports || []).slice().reverse();
+  var importsHtml = imports.length === 0 ? '<div class="empty-state"><i class="fas fa-history"></i>No imports yet</div>' :
+    imports.map(function(imp) {
+      return '<div class="import-row"><div style="min-width:0;flex:1;">' +
+        '<div style="font-weight:600;">' + imp.label + '</div>' +
+        '<div style="font-size:11.5px;color:var(--text2);">' + fmtDate(imp.date) + ' · ' + imp.count + ' products · ' + ((imp.addedIds && imp.addedIds.length) || 0) + ' added</div></div>' +
+        (can('manage_inventory') ? '<button class="btn btn-danger btn-sm" onclick="undoImport(\'' + imp.id + '\')"><i class="fas fa-undo"></i> Undo</button>' : '') +
+      '</div>';
+    }).join('');
+  return '<div class="header"><div><h1>Import / Export</h1></div></div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:6px;font-size:15px;"><i class="fas fa-download" style="color:var(--accent);"></i> Export</div>' +
+      '<p style="color:var(--text2);font-size:13px;margin-bottom:14px;">Download all data as JSON.</p>' +
+      '<button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Export</button></div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:6px;font-size:15px;"><i class="fas fa-file-import" style="color:var(--accent);"></i> Import</div>' +
+      '<p style="color:var(--text2);font-size:13px;margin-bottom:14px;">Restore a backup or import products.</p>' +
+      '<button class="btn btn-secondary" onclick="openImport()"><i class="fas fa-upload"></i> Choose File…</button></div>' +
+    '<div class="card"><div style="font-weight:600;margin-bottom:14px;font-size:15px;"><i class="fas fa-history"></i> Import History</div>' + importsHtml + '</div>';
+}
+
+/* ===== GAMES ===== */
+function initActiveGame() {
+  if (activeGame === 'snake') initSnake();
+  else if (activeGame === '2048') init2048();
+  else if (activeGame === 'memory') initMemory();
+  else if (activeGame === 'ttt') initTTT();
+  else if (activeGame === 'puzzle') initPuzzle();
+}
+function switchGame(game) {
+  activeGame = game;
+  initActiveGame();
+  renderActiveGame();
+  renderGameTabsActive();
+}
+
+function renderGameTabsActive() {
+  var tabs = ['snake','2048','memory','ttt','puzzle'];
+  tabs.forEach(function(g) {
+    var el = document.getElementById('gt-' + g);
+    if (el) el.classList.toggle('active', g === activeGame);
+  });
+}
+
+function renderGameHTML() {
+  return '<div class="header"><div><h1>Games</h1><p>Take a break and have some fun</p></div></div>' +
+    '<div class="game-tabs" id="gameTabs">' +
+      '<div class="game-tab active" id="gt-snake" onclick="switchGame(\'snake\')"><i class="fas fa-staff-snake"></i> Snake</div>' +
+      '<div class="game-tab" id="gt-2048" onclick="switchGame(\'2048\')"><i class="fas fa-table-cells"></i> 2048</div>' +
+      '<div class="game-tab" id="gt-memory" onclick="switchGame(\'memory\')"><i class="fas fa-clone"></i> Memory</div>' +
+      '<div class="game-tab" id="gt-ttt" onclick="switchGame(\'ttt\')"><i class="fas fa-xmark"></i> Tic-Tac-Toe</div>' +
+      '<div class="game-tab" id="gt-puzzle" onclick="switchGame(\'puzzle\')"><i class="fas fa-puzzle-piece"></i> Puzzle</div>' +
+    '</div>' +
+    '<div class="card"><div id="gameArea"></div></div>';
+}
+
+function renderActiveGame() {
+  var area = document.getElementById('gameArea');
+  if (!area) return;
+  if (activeGame === 'snake') drawSnake(area);
+  else if (activeGame === '2048') draw2048(area);
+  else if (activeGame === 'memory') drawMemory(area);
+  else if (activeGame === 'ttt') drawTTT(area);
+  else if (activeGame === 'puzzle') drawPuzzle(area);
+}
+
+/* --- Snake --- */
+var snakeState = null;
+function initSnake() {
+  snakeState = {
+    snake: [{x:10,y:10}],
+    dir: {x:1,y:0},
+    food: {x:15,y:15},
+    score: 0,
+    size: 20,
+    interval: null,
+    gameOver: false
+  };
+  placeFood();
+  if (snakeState.interval) clearInterval(snakeState.interval);
+  snakeState.interval = setInterval(snakeTick, 120);
+  document.addEventListener('keydown', snakeKeyHandler);
+}
+function placeFood() {
+  snakeState.food = {
+    x: Math.floor(Math.random() * snakeState.size),
+    y: Math.floor(Math.random() * snakeState.size)
+  };
+}
+function snakeTick() {
+  if (!snakeState || snakeState.gameOver) return;
+  var s = snakeState;
+  var head = {x: s.snake[0].x + s.dir.x, y: s.snake[0].y + s.dir.y};
+  if (head.x < 0 || head.y < 0 || head.x >= s.size || head.y >= s.size) { endSnake(); return; }
+  if (s.snake.some(function(p){ return p.x === head.x && p.y === head.y; })) { endSnake(); return; }
+  s.snake.unshift(head);
+  if (head.x === s.food.x && head.y === s.food.y) {
+    s.score += 10;
+    placeFood();
+  } else {
+    s.snake.pop();
+  }
+  var scoreEl = document.getElementById('snakeScore');
+  if (scoreEl) scoreEl.textContent = s.score;
+  var canvas = document.getElementById('snakeCanvas');
+  if (canvas) drawSnakeCanvas(canvas);
+}
+function endSnake() {
+  snakeState.gameOver = true;
+  if (snakeState.interval) clearInterval(snakeState.interval);
+  var canvas = document.getElementById('snakeCanvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(17,24,39,.7)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 28px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over!', canvas.width/2, canvas.height/2 - 10);
+    ctx.font = '16px Inter, sans-serif';
+    ctx.fillText('Score: ' + snakeState.score, canvas.width/2, canvas.height/2 + 20);
+  }
+}
+function snakeKeyHandler(e) {
+  if (!snakeState || snakeState.gameOver) return;
+  if (currentTab !== 'game' || activeGame !== 'snake') return;
+  var s = snakeState;
+  if (e.key === 'ArrowUp' && s.dir.y === 0) { s.dir = {x:0,y:-1}; e.preventDefault(); }
+  else if (e.key === 'ArrowDown' && s.dir.y === 0) { s.dir = {x:0,y:1}; e.preventDefault(); }
+  else if (e.key === 'ArrowLeft' && s.dir.x === 0) { s.dir = {x:-1,y:0}; e.preventDefault(); }
+  else if (e.key === 'ArrowRight' && s.dir.x === 0) { s.dir = {x:1,y:0}; e.preventDefault(); }
+}
+function drawSnake(area) {
+  area.innerHTML = '<div class="game-area">' +
+    '<div class="game-scoreboard"><span>Score: <strong id="snakeScore">' + snakeState.score + '</strong></span></div>' +
+    '<canvas id="snakeCanvas" class="snake-canvas" width="400" height="400"></canvas>' +
+    '<div class="game-controls"><button class="btn btn-secondary btn-sm" onclick="initSnake();renderActiveGame();"><i class="fas fa-rotate"></i> Restart</button></div>' +
+    '<p style="color:var(--text2);font-size:12.5px;text-align:center;">Use arrow keys (or the buttons below). Eat the red squares.</p>' +
+    '<div class="snake-controls-mobile">' +
+      '<button class="snake-ctrl up" onclick="snakeDir(0,-1)"><i class="fas fa-arrow-up"></i></button>' +
+      '<button class="snake-ctrl left" onclick="snakeDir(-1,0)"><i class="fas fa-arrow-left"></i></button>' +
+      '<button class="snake-ctrl down" onclick="snakeDir(0,1)"><i class="fas fa-arrow-down"></i></button>' +
+      '<button class="snake-ctrl right" onclick="snakeDir(1,0)"><i class="fas fa-arrow-right"></i></button>' +
+    '</div></div>';
+  var canvas = document.getElementById('snakeCanvas');
+  drawSnakeCanvas(canvas);
+}
+function snakeDir(dx, dy) {
+  if (!snakeState || snakeState.gameOver) return;
+  var s = snakeState;
+  if (dx === 0 && s.dir.y === 0) s.dir = {x:dx,y:dy};
+  else if (dy === 0 && s.dir.x === 0) s.dir = {x:dx,y:dy};
+}
+function drawSnakeCanvas(canvas) {
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var cell = w / snakeState.size;
+  ctx.fillStyle = '#f3f4f6';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.arc(snakeState.food.x * cell + cell/2, snakeState.food.y * cell + cell/2, cell/2 - 1, 0, Math.PI * 2);
+  ctx.fill();
+  snakeState.snake.forEach(function(p, idx) {
+    var g = ctx.createLinearGradient(p.x*cell, p.y*cell, (p.x+1)*cell, (p.y+1)*cell);
+    g.addColorStop(0, idx === 0 ? '#6366f1' : '#818cf8');
+    g.addColorStop(1, idx === 0 ? '#4f46e5' : '#6366f1');
+    ctx.fillStyle = g;
+    ctx.fillRect(p.x*cell + 1, p.y*cell + 1, cell - 2, cell - 2);
+  });
+}
+
+/* --- 2048 --- */
+var state2048 = null;
+function init2048() {
+  state2048 = { grid: [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], score: 0, over: false };
+  addRandom2048();
+  addRandom2048();
+  document.removeEventListener('keydown', snakeKeyHandler);
+  document.addEventListener('keydown', key2048);
+}
+function addRandom2048() {
+  var empty = [];
+  for (var y = 0; y < 4; y++) for (var x = 0; x < 4; x++) if (state2048.grid[y][x] === 0) empty.push({x:x,y:y});
+  if (!empty.length) return;
+  var c = empty[Math.floor(Math.random() * empty.length)];
+  state2048.grid[c.y][c.x] = Math.random() < 0.9 ? 2 : 4;
+}
+function key2048(e) {
+  if (currentTab !== 'game' || activeGame !== '2048' || !state2048 || state2048.over) return;
+  var dirs = {ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+  if (!dirs[e.key]) return;
+  e.preventDefault();
+  var moved = move2048(dirs[e.key][0], dirs[e.key][1]);
+  if (moved) {
+    addRandom2048();
+    if (check2048Over()) state2048.over = true;
+    draw2048(document.getElementById('gameArea'));
+  }
+}
+function move2048(dx, dy) {
+  var g = state2048.grid;
+  var moved = false;
+  for (var pass = 0; pass < 4; pass++) {
+    var fy = dy < 0 ? pass : 3 - pass;
+    var fx = dx < 0 ? pass : 3 - pass;
+    for (var i = 0; i < 4; i++) {
+      var y = dy !== 0 ? fy : i;
+      var x = dx !== 0 ? fx : i;
+      if (g[y][x] === 0) continue;
+      var ny = y + dy, nx = x + dx;
+      if (ny < 0 || ny > 3 || nx < 0 || nx > 3) continue;
+      if (g[ny][nx] === 0) { g[ny][nx] = g[y][x]; g[y][x] = 0; moved = true; }
+      else if (g[ny][nx] === g[y][x] && !g[ny][nx].merged) {
+        g[ny][nx] *= 2;
+        g[ny][nx].merged = true;
+        state2048.score += g[ny][nx];
+        g[y][x] = 0;
+        moved = true;
+      }
+    }
+  }
+  g.forEach(function(row){ row.forEach(function(v, i, arr){ delete arr[i].merged; }); });
+  return moved;
+}
+function check2048Over() {
+  var g = state2048.grid;
+  for (var y = 0; y < 4; y++) for (var x = 0; x < 4; x++) {
+    if (g[y][x] === 0) return false;
+    if (x < 3 && g[y][x] === g[y][x+1]) return false;
+    if (y < 3 && g[y][x] === g[y+1][x]) return false;
+  }
+  return true;
+}
+function draw2048(area) {
+  var html = '<div class="game-area">' +
+    '<div class="game-scoreboard"><span>Score: <strong>' + state2048.score + '</strong></span></div>' +
+    '<div class="game-2048"><div class="grid-2048">';
+  state2048.grid.forEach(function(row) {
+    row.forEach(function(v) {
+      html += '<div class="tile-2048" data-v="' + v + '">' + (v || '') + '</div>';
+    });
+  });
+  html += '</div></div>' +
+    '<div class="game-controls"><button class="btn btn-secondary btn-sm" onclick="init2048();renderActiveGame();"><i class="fas fa-rotate"></i> Restart</button></div>' +
+    '<p style="color:var(--text2);font-size:12.5px;text-align:center;">Use arrow keys to slide tiles. Combine matching numbers.</p>';
+  if (state2048.over) html += '<div style="color:var(--danger);font-weight:600;text-align:center;">Game over!</div>';
+  html += '</div>';
+  area.innerHTML = html;
+}
+
+/* --- Memory --- */
+var memoryState = null;
+function initMemory() {
+  var icons = ['🍎','🍌','🍇','🍓','🍒','🍑','🍍','🥝'];
+  var cards = icons.concat(icons).sort(function(){ return Math.random() - 0.5; });
+  memoryState = { cards: cards, flipped: [], matched: [], moves: 0, lock: false };
+}
+function flipMemory(idx) {
+  if (!memoryState || memoryState.lock) return;
+  if (memoryState.flipped.indexOf(idx) !== -1 || memoryState.matched.indexOf(idx) !== -1) return;
+  memoryState.flipped.push(idx);
+  if (memoryState.flipped.length === 2) {
+    memoryState.moves++;
+    memoryState.lock = true;
+    var a = memoryState.flipped[0], b = memoryState.flipped[1];
+    if (memoryState.cards[a] === memoryState.cards[b]) {
+      memoryState.matched.push(a, b);
+      memoryState.flipped = [];
+      memoryState.lock = false;
+      if (memoryState.matched.length === memoryState.cards.length) setTimeout(function(){ toast('🎉 You won in ' + memoryState.moves + ' moves!', 'success'); }, 300);
+    } else {
+      setTimeout(function() {
+        memoryState.flipped = [];
+        memoryState.lock = false;
+        drawMemory(document.getElementById('gameArea'));
+      }, 700);
+    }
+  }
+  drawMemory(document.getElementById('gameArea'));
+}
+function drawMemory(area) {
+  var html = '<div class="game-area">' +
+    '<div class="game-scoreboard"><span>Moves: <strong>' + memoryState.moves + '</strong></span><span>Pairs: <strong>' + (memoryState.matched.length/2) + '/8</strong></span></div>' +
+    '<div class="memory-grid">';
+  memoryState.cards.forEach(function(c, i) {
+    var flipped = memoryState.flipped.indexOf(i) !== -1 || memoryState.matched.indexOf(i) !== -1;
+    var matched = memoryState.matched.indexOf(i) !== -1;
+    html += '<div class="memory-card ' + (matched ? 'matched' : (flipped ? 'flipped' : '')) + '" onclick="flipMemory(' + i + ')">' + (flipped ? c : '?') + '</div>';
+  });
+  html += '</div>' +
+    '<div class="game-controls"><button class="btn btn-secondary btn-sm" onclick="initMemory();renderActiveGame();"><i class="fas fa-rotate"></i> Restart</button></div>' +
+    '<p style="color:var(--text2);font-size:12.5px;text-align:center;">Match all 8 pairs.</p></div>';
+  area.innerHTML = html;
+}
+
+/* --- Tic-Tac-Toe --- */
+var tttState = null;
+function initTTT() {
+  tttState = { board: ['','','','','','','','',''], turn: 'X', winner: null };
+}
+function tttPlay(idx) {
+  if (!tttState || tttState.board[idx] || tttState.winner) return;
+  tttState.board[idx] = tttState.turn;
+  if (checkTTT(tttState.board, tttState.turn)) { tttState.winner = tttState.turn; }
+  else if (tttState.board.indexOf('') === -1) { tttState.winner = 'draw'; }
+  else { tttState.turn = tttState.turn === 'X' ? 'O' : 'X'; }
+  drawTTT(document.getElementById('gameArea'));
+}
+function checkTTT(b, p) {
+  var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return lines.some(function(l){ return l.every(function(i){ return b[i] === p; }); });
+}
+function drawTTT(area) {
+  var msg = tttState.winner ? (tttState.winner === 'draw' ? "It's a draw!" : tttState.winner + ' wins!') : (tttState.turn + "'s turn");
+  var html = '<div class="game-area">' +
+    '<div class="game-scoreboard"><span style="font-size:16px;font-weight:700;">' + msg + '</span></div>' +
+    '<div class="ttt-grid">';
+  tttState.board.forEach(function(c, i) {
+    var cls = c === 'X' ? 'x' : (c === 'O' ? 'o' : '');
+    html += '<div class="ttt-cell ' + cls + '" onclick="tttPlay(' + i + ')">' + c + '</div>';
+  });
+  html += '</div>' +
+    '<div class="game-controls"><button class="btn btn-secondary btn-sm" onclick="initTTT();renderActiveGame();"><i class="fas fa-rotate"></i> New Game</button></div>' +
+    '<p style="color:var(--text2);font-size:12.5px;text-align:center;">Get 3 in a row to win.</p></div>';
+  area.innerHTML = html;
+}
+
+/* --- Puzzle --- */
+var puzzleState = null;
+function initPuzzle() {
+  var tiles = [1,2,3,4,5,6,7,8,0];
+  do {
+    for (var i = tiles.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = tiles[i]; tiles[i] = tiles[j]; tiles[j] = tmp;
+    }
+  } while (!isPuzzleSolvable(tiles) || isPuzzleSolved(tiles));
+  puzzleState = { tiles: tiles, moves: 0 };
+}
+function isPuzzleSolvable(tiles) {
+  var arr = tiles.filter(function(x){ return x !== 0; });
+  var inv = 0;
+  for (var i = 0; i < arr.length; i++) for (var j = i+1; j < arr.length; j++) if (arr[i] > arr[j]) inv++;
+  return inv % 2 === 0;
+}
+function isPuzzleSolved(tiles) {
+  for (var i = 0; i < 8; i++) if (tiles[i] !== i+1) return false;
+  return tiles[8] === 0;
+}
+function puzzleTileClick(idx) {
+  if (!puzzleState) return;
+  var emptyIdx = puzzleState.tiles.indexOf(0);
+  var row = Math.floor(idx/3), col = idx%3;
+  var erow = Math.floor(emptyIdx/3), ecol = emptyIdx%3;
+  if ((Math.abs(row-erow) + Math.abs(col-ecol)) !== 1) return;
+  var tmp = puzzleState.tiles[idx];
+  puzzleState.tiles[idx] = puzzleState.tiles[emptyIdx];
+  puzzleState.tiles[emptyIdx] = tmp;
+  puzzleState.moves++;
+  drawPuzzle(document.getElementById('gameArea'));
+  if (isPuzzleSolved(puzzleState.tiles)) setTimeout(function(){ toast('🎉 Solved in ' + puzzleState.moves + ' moves!', 'success'); }, 100);
+}
+function drawPuzzle(area) {
+  var html = '<div class="game-area">' +
+    '<div class="game-scoreboard"><span>Moves: <strong>' + puzzleState.moves + '</strong></span></div>' +
+    '<div class="puzzle-grid">';
+  puzzleState.tiles.forEach(function(t, i) {
+    html += '<div class="puzzle-tile ' + (t===0?'empty':'') + '" onclick="puzzleTileClick(' + i + ')">' + (t||'') + '</div>';
+  });
+  html += '</div>' +
+    '<div class="game-controls"><button class="btn btn-secondary btn-sm" onclick="initPuzzle();renderActiveGame();"><i class="fas fa-rotate"></i> New Puzzle</button></div>' +
+    '<p style="color:var(--text2);font-size:12.5px;text-align:center;">Slide the numbered tiles into order.</p></div>';
+  area.innerHTML = html;
+}
+
+function exportData() {
+  var payload = {_meta:{app:'BizManager POS',version:7,exportedAt:new Date().toISOString()}, businesses: data.businesses, staff: data.staff};
+  var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = 'bizmanager-backup-' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup exported', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('landingScreen').style.display = 'flex';
+});
+</script>
 </body>
 </html>
